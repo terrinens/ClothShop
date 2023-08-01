@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+</head>
+<body>
+	<nav th:replace="~{layout/nav :: topnav}"></nav>
+	
+	<th:block layout:fragment="content"></th:block>
+</body>
+<script type="text/javascript" th:src="@{/bootstrap.min.js}"></script>
+</html>

@@ -1,0 +1,45 @@
+package com.cloth.clothshop.Member;
+
+import java.sql.Date;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
+
+@DynamicInsert @DynamicUpdate @Entity @Setter @Getter
+public class Member {
+	
+	@Id @Column(name = "PK_member_id" ,length = 20)
+	private String id;
+	
+	@Column
+	private String pwd;
+	
+	@Column (length = 50)
+	private String name;
+	
+	@Column (length = 20, columnDefinition = "VARCHAR(20)")
+	@ColumnDefault("'User'")
+	private String role;
+	
+	/*@ManyToOne(optional = false)
+	private tb_Zipcode zipcode;*/
+	
+	@Column (length = 20)
+	private String address;
+	
+	@Column (length = 13)
+	private String tel;
+
+	@Column @CreatedDate @CreationTimestamp
+	private Date indate;
+}

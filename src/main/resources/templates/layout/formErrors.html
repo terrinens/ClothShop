@@ -1,0 +1,11 @@
+<!-- 유효성 체크 출력 부분 시작 -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<div th:fragment="formErrorsFragment" class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+    <div th:each="err : ${#fields.allErrors()}" th:text="${err}"></div>
+</div>
+<div></div>
+</html>
+<!-- 유효성 체크 출력 부분 끝 -->

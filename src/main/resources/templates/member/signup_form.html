@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout}">
+<div layout:fragment="content">
+	<div>
+		<h3>회원가입</h3>
+	</div>
+	<form th:action="@{/member/signup}" th:object="${memberForm}" method="post">
+		<div th:replace="~{layout/formErrors :: formErrorsFragment}"></div>
+		<div>
+			<label for="id">ID</label>
+			<input type="text" th:field="*{id}">
+		</div>
+		<div>
+			<label for="pwd">비밀번호</label>
+			<input type="text" th:field="*{pwd}">
+		</div>
+		<div>
+			<label for="pwd_check">비밀번호 재확인</label>
+			<input type="text" th:field="*{pwd_check}">
+		</div>
+		<div>
+			<label for="name">성함</label>
+			<input type="text" th:field="*{name}">
+		</div>
+<!--
+		<div>
+			<label for="zipcode">주소</label>
+			<input type="text" th:field="*{zipcode}">
+		</div>
+-->
+		<div>
+			<label for="address">이메일</label>
+			<input type="text" th:field="*{address}">
+		</div>
+		<div>
+			<label for="tel">휴대폰 번호</label>
+			<input type="text" th:field="*{tel}" pattern="[0-9]*">
+		</div>
+		<input type="submit" value="회원가입">
+	</form>
+</div>
+</html>
