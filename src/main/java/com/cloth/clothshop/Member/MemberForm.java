@@ -14,7 +14,7 @@ public class MemberForm {
 	@NotEmpty(message = "비밀번호는 필수 입력 사항 입니다.")
 	private String pwd;
 	
-	@NotEmpty(message = "비밀번호는 필수 입력 사항 입니다.")
+	@NotEmpty(message = "비밀번호 재확인은 필수 입력 사항 입니다.")
 	private String pwd_check;
 	
 	@NotEmpty(message = "성함은 필수 입력 사항 입니다.")

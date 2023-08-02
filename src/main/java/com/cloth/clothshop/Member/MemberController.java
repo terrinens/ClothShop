@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @Controller 
 @RequiredArgsConstructor 
 @RequestMapping("/member")
 public class MemberController {
 
-
 	private final MemberService memberService;
+	private final MemberRepository memberRepository;
 
 	@GetMapping("/signup")
 	public String memberSingup(MemberForm memberForm){
@@ -26,13 +28,6 @@ public class MemberController {
 	@PostMapping("/signup")
 	public String memberSingup(@Valid MemberForm memberForm, BindingResult bindingResult) {
 
-		System.out.println(memberForm.getId());
-		System.out.println(memberForm.getPwd());
-		System.out.println(memberForm.getPwd_check());
-		System.out.println(memberForm.getName());
-		System.out.println(memberForm.getAddress());
-		System.out.println(memberForm.getTel());
-
 		if (bindingResult.hasErrors()) {
 
 			return "/member/signup_form";
@@ -41,10 +36,17 @@ public class MemberController {
 		if (!memberForm.getPwd().equals(memberForm.getPwd_check())) {
 
 			bindingResult.rejectValue("pwd_check", "passwordInCorrect", "비밀번호를 재확인 해주세요!");
+
+			return "/member/signup_form";
+		}
+
+		Optional<Member> memberCheck = memberRepository.findById(memberForm.getId());
+		if (memberCheck.isPresent()) {
+
+			return "/member/signup_form";
 		}
 
 		try {
-
 			memberService.memberSignup(
 					memberForm.getId(),
 					memberForm.getPwd(),
@@ -55,7 +57,7 @@ public class MemberController {
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			bindingResult.rejectValue("id", null,"이미 등록된 사용자 입니다.");
+			bindingResult.rejectValue("id", "","이미 등록된 사용자 입니다.");
 		}
 
 		return "redirect:/";

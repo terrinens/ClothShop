@@ -1,41 +1,63 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
 <div layout:fragment="content">
-	<div>
-		<h3>회원가입</h3>
-	</div>
-	<form th:action="@{/member/signup}" th:object="${memberForm}" method="post">
-		<div th:replace="~{layout/formErrors :: formErrorsFragment}"></div>
-		<div>
-			<label for="id">ID</label>
-			<input type="text" th:field="*{id}">
-		</div>
-		<div>
-			<label for="pwd">비밀번호</label>
-			<input type="text" th:field="*{pwd}">
-		</div>
-		<div>
-			<label for="pwd_check">비밀번호 재확인</label>
-			<input type="text" th:field="*{pwd_check}">
-		</div>
-		<div>
-			<label for="name">성함</label>
-			<input type="text" th:field="*{name}">
-		</div>
-<!--
-		<div>
-			<label for="zipcode">주소</label>
-			<input type="text" th:field="*{zipcode}">
-		</div>
--->
-		<div>
-			<label for="address">이메일</label>
-			<input type="text" th:field="*{address}">
-		</div>
-		<div>
-			<label for="tel">휴대폰 번호</label>
-			<input type="text" th:field="*{tel}" pattern="[0-9]*">
-		</div>
-		<input type="submit" value="회원가입">
-	</form>
+    <form th:action="@{/member/signup}" th:object="${memberForm}" method="post">
+        <div th:replace="~{layout/formErrors::formErrorsFragment}"></div>
+        <div th:if="${param.error}">
+                <div class="alert alert-danger">
+                    사용자ID 또는 비밀번호를 확인해 주세요.
+                </div>
+            </div>
+        <fieldset>
+            <legend>회원가입</legend>
+            <div class="form-group">
+                <label for="id" class="form-label mt-4">ID를 입력해주세요(id중복시 돌아오긴 하나, 경고 메세지는 구현해야함)</label>
+                <input th:field="*{id}" type="text" class="form-control" aria-describedby="idHelp"
+                       placeholder="ID">
+                <small id="idHelp" class="form-text text-muted">기억 할 수 있을 아이디를 만들어보세요!</small>
+            </div>
+            <div class="form-group">
+                <label for="pwd" class="form-label mt-4">비밀번호를 입력해주세요</label>
+                <input th:field="*{pwd}" type="password" class="form-control" placeholder="Password"
+                       autocomplete="off">
+                <small id="pwdHelp" class="form-text text-muted">간단하게 만들수록 개인정보 노출 위험도가 높아져요!</small>
+            </div>
+            <div class="form-group">
+                <label for="pwd_check" class="form-label mt-4">비밀번호를 재입력해주세요</label>
+                <input th:field="*{pwd_check}" type="password" class="form-control" placeholder="Password"
+                       autocomplete="off">
+                <small id="pwd_chek_Help" class="form-text text-muted">혹시 간단하게 만들어버리신거 아니겠죠? 1234 라던가?</small>
+            </div>
+            <div class="form-group">
+                <label for="name" class="form-label mt-4">성함을 입력해주세요.</label>
+                <input th:field="*{name}" type="text" class="form-control" placeholder="Name">
+            </div>
+            <div class="form-group">
+                <label for="address" class="form-label mt-4">이메일을 입력해주세요</label>
+                <input th:field="*{address}" type="email" class="form-control" placeholder="Example@Example.com">
+            </div>
+            <div class="form-group">
+                <label for="tel" class="form-label mt-4">휴대폰 번호를 입력 해주세요</label>
+                <input th:field="*{tel}" type="tel" class="form-control" placeholder="010-1234-1234">
+            </div>
+            <fieldset class="form-group">
+                <legend class="mt-4">회원가입 약관 동의</legend>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        개인정보 이용 약관 동의
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        사이트 이용 규칙 동의
+                    </label>
+                </div>
+            </fieldset>
+            <br>
+            <button type="submit" class="btn btn-primary">회원가입</button>
+        </fieldset>
+    </form>
 </div>
 </html>
