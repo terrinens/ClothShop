@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    
+    <title>MyPortfolio Bootstrap Template - Index</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+    
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+    
+    <!-- =======================================================
+    * Template Name: MyPortfolio
+    * Updated: Jul 27 2023 with Bootstrap v5.3.1
+    * Template URL: https://bootstrapmade.com/myportfolio-bootstrap-portfolio-website-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<div layout:fragment="content">
+    
+    <main id="main">
+        
+        <!-- ======= Works Section ======= -->
+        <section class="section site-portfolio">
+            <div class="container">
+                <div class="row mb-5 align-items-center">
+                    <div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
+                        <h2>추천 상품</h2>
+                        <p class="mb-0">추천하는 상품이에요!</p>
+                    </div>
+                    <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
+                        <div id="filters" class="filters">
+                            <!--data-filter에서 필터링 할 목록들을 추가 시킬 수 있음 js에서 자동적으로 처리-->
+                            <a href="#" data-filter="*" class="active">전부</a>
+                            <a href="#" data-filter=".s_sleeve">반팔</a>
+                            <a href="#" data-filter=".l_sleeve">긴팔</a>
+                            <a href="#" data-filter=".s_pants">반바지</a>
+                            <a href="#" data-filter=".l_pants">긴바지</a>
+                            <a href="#" data-filter=".skirt">치마</a>
+                        </div>
+                    </div>
+                </div>
+                <!--각 항목에 class 안에 필터링의 이름을 넣으면 필터링 가능함. -->
+                <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
+                    <div class="item s_sleeve col-sm-6 col-md-4 col-lg-4 mb-4">
+                        <a href="#" class="item-wrap fancybox">
+                            <div class="work-info">
+                                <h3>반팔</h3>
+                                <span>반팔 입니다.</span>
+                            </div>
+                            <img class="img-fluid" src="/cloth_imgs/top_st.jpg">
+                        </a>
+                    </div>
+                    <div class="item l_sleeve col-sm-6 col-md-4 col-lg-4 mb-4">
+                        <a href="#" class="item-wrap fancybox">
+                            <div class="work-info">
+                                <h3>긴팔</h3>
+                                <span>긴팔 입니다.</span>
+                            </div>
+                            <img class="img-fluid" src="/cloth_imgs/top_long.jpg">
+                        </a>
+                    </div>
+                    <div class="item s_pants col-sm-6 col-md-4 col-lg-4 mb-4">
+                        <a href="#" class="item-wrap fancybox">
+                            <div class="work-info">
+                                <h3>반바지</h3>
+                                <span>반바지 입니다.</span>
+                            </div>
+                            <img class="img-fluid" src="/cloth_imgs/under_st.jpg">
+                        </a>
+                    </div>
+                    <div class="item l_pants col-sm-6 col-md-4 col-lg-4 mb-4">
+                        <a href="#" class="item-wrap fancybox">
+                            <div class="work-info">
+                                <h3>긴바지</h3>
+                                <span>간바지 입니다.</span>
+                            </div>
+                            <img class="img-fluid" src="/cloth_imgs/under_long1.jpg">
+                        </a>
+                    </div>
+                    <div class="item skirt col-sm-6 col-md-4 col-lg-4 mb-4">
+                        <a href="#" class="item-wrap fancybox">
+                            <div class="work-info">
+                                <h3>치마</h3>
+                                <span>치마 입니다.</span>
+                            </div>
+                            <img class="img-fluid" src="/cloth_imgs/under_sc.jpg">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End  Works Section -->
+        
+        <!-- ======= Services Section ======= -->
+        <section class="section services">
+            <div class="container">
+                <div class="row justify-content-center text-center mb-4">
+                    <div class="col-5">
+                        <h3 class="h3 heading">My Services</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit explicabo inventore.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                        <i class="bi bi-card-checklist"></i>
+                        <h4 class="h4 mb-2">Web Design</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit explicabo inventore.</p>
+                        <ul class="list-unstyled list-line">
+                            <li>Lorem ipsum dolor sit amet consectetur adipisicing</li>
+                            <li>Non pariatur nisi</li>
+                            <li>Magnam soluta quod</li>
+                            <li>Lorem ipsum dolor</li>
+                            <li>Cumque quae aliquam</li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                        <i class="bi bi-binoculars"></i>
+                        <h4 class="h4 mb-2">Mobile Applications</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit explicabo inventore.</p>
+                        <ul class="list-unstyled list-line">
+                            <li>Lorem ipsum dolor sit amet consectetur adipisicing</li>
+                            <li>Non pariatur nisi</li>
+                            <li>Magnam soluta quod</li>
+                            <li>Lorem ipsum dolor</li>
+                            <li>Cumque quae aliquam</li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                        <i class="bi bi-brightness-high"></i>
+                        <h4 class="h4 mb-2">Graphic Design</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit explicabo inventore.</p>
+                        <ul class="list-unstyled list-line">
+                            <li>Lorem ipsum dolor sit amet consectetur adipisicing</li>
+                            <li>Non pariatur nisi</li>
+                            <li>Magnam soluta quod</li>
+                            <li>Lorem ipsum dolor</li>
+                            <li>Cumque quae aliquam</li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                        <i class="bi bi-calendar4-week"></i>
+                        <h4 class="h4 mb-2">SEO</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit explicabo inventore.</p>
+                        <ul class="list-unstyled list-line">
+                            <li>Lorem ipsum dolor sit amet consectetur adipisicing</li>
+                            <li>Non pariatur nisi</li>
+                            <li>Magnam soluta quod</li>
+                            <li>Lorem ipsum dolor</li>
+                            <li>Cumque quae aliquam</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End Services Section -->
+        
+        <!-- ======= Testimonials Section ======= -->
+        <section class="section pt-0">
+            <div class="container">
+                
+                <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="swiper-wrapper">
+                        
+                        <div class="swiper-slide">
+                            <div class="testimonial-wrap">
+                                <div class="testimonial">
+                                    <img src="/assets/img/person_1.jpg" alt="Image" class="img-fluid">
+                                    <blockquote>
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
+                                            necessitatibus incidunt ut officiis
+                                            explicabo inventore.</p>
+                                    </blockquote>
+                                    <p>&mdash; Jean Hicks</p>
+                                </div>
+                            </div>
+                        </div><!-- End testimonial item -->
+                        
+                        <div class="swiper-slide">
+                            <div class="testimonial-wrap">
+                                <div class="testimonial">
+                                    <img src="/assets/img/person_2.jpg" alt="Image" class="img-fluid">
+                                    <blockquote>
+                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
+                                            necessitatibus incidunt ut officiis
+                                            explicabo inventore.</p>
+                                    </blockquote>
+                                    <p>&mdash; Chris Stanworth</p>
+                                </div>
+                            </div>
+                        </div><!-- End testimonial item -->
+                    
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            
+            </div>
+        </section><!-- End Testimonials Section -->
+    
+    </main><!-- End #main -->
+    
+    <!-- ======= Footer ======= -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p class="mb-1">&copy; Copyright MyPortfolio. All Rights Reserved</p>
+                    <div class="credits">
+                        <!--
+                        All the links in the footer should remain intact.
+                        You can delete the links only if you purchased the pro version.
+                        Licensing information: https://bootstrapmade.com/license/
+                        Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=MyPortfolio
+                      -->
+                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    </div>
+                </div>
+                <div class="col-sm-6 social text-md-end">
+                    <a href="#"><span class="bi bi-twitter"></span></a>
+                    <a href="#"><span class="bi bi-facebook"></span></a>
+                    <a href="#"><span class="bi bi-instagram"></span></a>
+                    <a href="#"><span class="bi bi-linkedin"></span></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+    
+    <!-- Vendor JS Files -->
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    
+    <!-- Template Main JS File -->
+    <script src="/assets/js/main.js"></script>
+
+</div>
+
+</html>
