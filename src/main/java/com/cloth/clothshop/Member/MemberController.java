@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
@@ -61,6 +62,19 @@ public class MemberController {
 		}
 
 		return "redirect:/";
+	}
+
+	@GetMapping("/signin")
+	public String memberSignin() {
+
+		return "member/signin_form";
+	}
+
+	@PostMapping("/signin")
+	public void memberSignin(@RequestParam("id") String id, @RequestParam("pwd") String pwd) {
+
+		System.out.println(id);
+		System.out.println(pwd);
 	}
 	
 }

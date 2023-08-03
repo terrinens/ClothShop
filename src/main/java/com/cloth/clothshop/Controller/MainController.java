@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
 	@GetMapping("/")
-	
 	public String mainHome () {
 		
-		return "index";
+		return "MyPortfolio/index";
 	}
 }

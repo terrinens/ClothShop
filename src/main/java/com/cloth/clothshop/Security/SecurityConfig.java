@@ -29,14 +29,14 @@ public class SecurityConfig {
 				.headers((headers) -> headers.addHeaderWriter(
 						new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
 				
-				.formLogin((formLogin) -> formLogin.loginPage("/user/login")
-						
-						.usernameParameter("username")
-						.passwordParameter("password")
+				.formLogin((formLogin) -> formLogin.loginPage("/member/signin")
+
+						.usernameParameter("id")
+						.passwordParameter("pwd")
 						.defaultSuccessUrl("/"))
 				
 				.logout((logout) -> logout
-						.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+						.logoutRequestMatcher(new AntPathRequestMatcher("/member/signout"))
 						.logoutSuccessUrl("/")
 						.invalidateHttpSession(true))
 				; 
