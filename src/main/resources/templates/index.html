@@ -20,7 +20,6 @@
     
     <!-- Vendor CSS Files -->
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     
@@ -37,6 +36,7 @@
 </head>
 
 <div layout:fragment="content">
+    <nav th:replace="/layout/selectnav"></nav>
     
     <main id="main">
         
@@ -51,7 +51,7 @@
                     <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
                         <div id="filters" class="filters">
                             <!--data-filter에서 필터링 할 목록들을 추가 시킬 수 있음 js에서 자동적으로 처리-->
-                            <a href="#" data-filter="*" class="active">전부</a>
+                            <a href="#" data-filter="*" class="active">전체 추천</a>
                             <a href="#" data-filter=".s_sleeve">반팔</a>
                             <a href="#" data-filter=".l_sleeve">긴팔</a>
                             <a href="#" data-filter=".s_pants">반바지</a>
@@ -249,7 +249,6 @@
     
     <!-- Vendor JS Files -->
     <script src="/assets/vendor/aos/aos.js"></script>
-    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
     <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="/assets/vendor/php-email-form/validate.js"></script>

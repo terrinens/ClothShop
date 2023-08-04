@@ -1,7 +1,5 @@
 package com.cloth.clothshop.Member;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -76,7 +74,7 @@ class MemberTest {
         for (int i = 1; i < 5; i++) {
 
             Member m2 = new Member();
-            String num4 = String.valueOf(i) + String.valueOf(i) + String.valueOf(i) + String.valueOf(i);
+            String num4 = i + String.valueOf(i) + i + i;
 
             m2.setId("user" + i);
             m2.setPwd("1234");
@@ -88,4 +86,3 @@ class MemberTest {
         }
     }
 }
-		

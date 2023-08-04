@@ -18,7 +18,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/member/signup">
+                    <a sec:authorize="isAnonymous()" class="nav-link active" href="/member/signup">
                         회원가입
                         <span class="visually-hidden">(current)</span>
                     </a>
@@ -32,20 +32,24 @@
                 <li class="nav-item">
                     <a sec:authorize="isAuthenticated()" class="nav-link" href="/member/signout">로그아웃</a>
                 </li>
-                <li sec:authorize access="hasRole('admin')"
-                    class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="true" aria-expanded="false">관리자 메뉴</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
+                <li sec:authorize ="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        관리자 메뉴
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">회원 관리</a></li>
+                        <li><a class="dropdown-item" href="#">주문 내역 관리</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">추천 상품 관리</a></li>
+                        <li><a class="dropdown-item" href="#">전체 상품 관리</a></li>
+                    </ul>
                 </li>
             </ul>
         </div>
     </div>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </nav>
 </body>
