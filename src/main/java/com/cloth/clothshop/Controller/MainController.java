@@ -16,13 +16,13 @@ public class MainController {
 	@GetMapping("/allcloths")
 	public String allCloths() {
 
-		return allCloths();
+		return "cloths/allcloths";
 	}
 
 	@GetMapping("/cloth/sleeve")
 	public String sleeve() {
 
-		return "cloth/sleeve";
+		return "cloths/sleeve";
 	}
 
 	@GetMapping("/cloth/pants")
