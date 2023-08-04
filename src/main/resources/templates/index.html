@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/layout}">
@@ -51,11 +50,9 @@
                     <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
                         <div id="filters" class="filters">
                             <!--data-filter에서 필터링 할 목록들을 추가 시킬 수 있음 js에서 자동적으로 처리-->
-                            <a href="#" data-filter="*" class="active">전체 추천</a>
-                            <a href="#" data-filter=".s_sleeve">반팔</a>
-                            <a href="#" data-filter=".l_sleeve">긴팔</a>
-                            <a href="#" data-filter=".s_pants">반바지</a>
-                            <a href="#" data-filter=".l_pants">긴바지</a>
+                            <a href="#" data-filter="*" class="active">추천</a>
+                            <a href="#" data-filter=".s_sleeve, .l_sleeve">상의</a>
+                            <a href="#" data-filter=".s_pants, .l_pants">하의</a>
                             <a href="#" data-filter=".skirt">치마</a>
                         </div>
                     </div>

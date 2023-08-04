@@ -12,4 +12,28 @@ public class MainController {
 
 		return "index";
 	}
+
+	@GetMapping("/allcloths")
+	public String allCloths() {
+
+		return allCloths();
+	}
+
+	@GetMapping("/cloth/sleeve")
+	public String sleeve() {
+
+		return "cloth/sleeve";
+	}
+
+	@GetMapping("/cloth/pants")
+	public String pants() {
+
+		return "cloths/pants";
+	}
+
+	@GetMapping("/cloth/skirt")
+	public String skirt() {
+
+		return "cloths/skirt";
+	}
 }
