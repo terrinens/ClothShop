@@ -14,62 +14,35 @@
                         <h2>추천 상품</h2>
                         <p class="mb-0">추천하는 상품이에요!</p>
                     </div>
-                    <div th:each="" th:class="col-md-12 col-lg-6 text-start text-lg-end"></div>
                     <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
                         <div id="filters" class="filters">
                             <!--data-filter에서 필터링 할 목록들을 추가 시킬 수 있음 js에서 자동적으로 처리-->
-                            <a href="#" data-filter="*" class="active">추천</a>
-                            <a href="#" data-filter=".s_sleeve, .l_sleeve">상의</a>
-                            <a href="#" data-filter=".s_pants, .l_pants">하의</a>
-                            <a href="#" th:data-filter="${Pro}" data-filter=".skirt">치마</a>
+                            <a href="#" data-filter="*">전체 바지</a>
+                            <a href="#" data-filter=".c">반 바지</a>
+                            <a href="#" data-filter=".d">긴 바지</a>
                         </div>
                     </div>
                 </div>
                 <!--각 항목에 class 안에 필터링의 이름을 넣으면 필터링 가능함. -->
                 <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
-                    <div class="item s_sleeve col-sm-6 col-md-4 col-lg-4 mb-4">
+                    <!--<div class="item s_sleeve col-sm-6 col-md-4 col-lg-4 mb-4">
                         <a href="#" class="item-wrap fancybox">
                             <div class="work-info">
                                 <h3>반팔</h3>
                                 <span>반팔 입니다.</span>
                             </div>
-                            <img class="img-fluid" src="/cloth_imgs/top_st.jpg">
+                            <img class="img-fluid" src="/cloth_imgs/sleeve_ short.jpg">
                         </a>
-                    </div>
-                    <div class="item l_sleeve col-sm-6 col-md-4 col-lg-4 mb-4">
+                    </div>-->
+
+                    <div th:each="products, i : ${paging}"
+                         th:class="'item' +${products.getKind()}+ 'col-sm-6 col-md-4 col-lg-4 mb-4'">
                         <a href="#" class="item-wrap fancybox">
                             <div class="work-info">
-                                <h3>긴팔</h3>
-                                <span>긴팔 입니다.</span>
+                                <h3 th:text="${products.getName()}"></h3>
+                                <span th:text="${products.getConent()}"></span>
                             </div>
-                            <img class="img-fluid" src="/cloth_imgs/top_long.jpg">
-                        </a>
-                    </div>
-                    <div class="item s_pants col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
-                            <div class="work-info">
-                                <h3>반바지</h3>
-                                <span>반바지 입니다.</span>
-                            </div>
-                            <img class="img-fluid" src="/cloth_imgs/under_st.jpg">
-                        </a>
-                    </div>
-                    <div class="item l_pants col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
-                            <div class="work-info">
-                                <h3>긴바지</h3>
-                                <span>간바지 입니다.</span>
-                            </div>
-                            <img class="img-fluid" src="/cloth_imgs/under_long1.jpg">
-                        </a>
-                    </div>
-                    <div class="item skirt col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
-                            <div class="work-info">
-                                <h3>치마</h3>
-                                <span>치마 입니다.</span>
-                            </div>
-                            <img class="img-fluid" src="/cloth_imgs/under_sc.jpg">
+                            <img class="img-fluid" src="/cloth_imgs/skirt_short1.jpg">
                         </a>
                     </div>
                 </div>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- loop.count : List의 방번호를 1번 부터 출력 th:text=${loop.count}-->
+<tr th:each="question, loop : ${paging}">
+    <td
+            style="text-align: center;"
+            th:text="${paging.getTotalElements - (paging.Number * paging.Size) - loop.index}">번호
+    </td>
+    <td class="text-start">
+        <a
+                th:href="@{|/question/detail/${question.id}|}"
+                th:text="${question.subject}">제목</a>
+        <span
+                class="text-danger small ms-2"
+                th:if="${#lists.size(question.answerList) > 0}"
+                th:text="${#lists.size(question.answerList)}"> </span>
+    </td>
+    <!-- 글쓴이 블락 추가 -->
+    <td style="text-align: center;">
+					<span
+                            th:if="${question.author != null}"
+                            th:text="${question.author.username}"></span>
+    </td>
+    <td
+            style="text-align: center;"
+            th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}">작성일시
+    </td>
+</tr>
+</body>
+</html>
