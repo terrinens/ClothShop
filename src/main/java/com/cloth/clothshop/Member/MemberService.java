@@ -1,5 +1,6 @@
 package com.cloth.clothshop.Member;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,11 @@ public class MemberService {
         mRepository.save(member);
 
         return member;
+    }
+
+    public void allMember() {
+
+        mRepository.findAll(Sort.sort());
     }
 }
 
