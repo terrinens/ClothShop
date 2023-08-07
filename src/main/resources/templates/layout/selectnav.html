@@ -3,13 +3,13 @@
     <div class="btn-group" role="group" aria-label="Basic outlined example">
         <!--첫번째 버튼과 마지막버튼의 style을 건드리지 말것 : 부트스트랩 속성으로 인해 테두리 끝의 radius가 값이 있음.-->
         <button style="border-radius: 0em;" class="btn btn-outline-success me-2" type="button">
-            <a href="products/cloth/sleeve">상의</a>
+            <a th:href="@{/products/cloth/sleeve}">상의</a>
         </button>
         <button class="btn btn-outline-success me-2" type="button">
-            <a href="products/cloth/pants">하의</a>
+            <a th:href="@{/products/cloth/pants}">하의</a>
         </button>
         <button style="border-radius: 0em;" class="btn btn-outline-success me-2" type="button">
-            <a href="products/cloth/skirt">치마</a>
+            <a th:href="@{/products/cloth/skirt}">치마</a>
         </button>
     </div>
 </nav>

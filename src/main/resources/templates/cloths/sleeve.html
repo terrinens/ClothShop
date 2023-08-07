@@ -4,4 +4,41 @@
 
 <div layout:fragment="content">
     <nav th:replace="/layout/selectnav"></nav>
+    <main id="main">
+        
+        <!-- ======= Works Section ======= -->
+        <section class="section site-portfolio">
+            <div class="container">
+                <div class="row mb-5 align-items-center">
+                    <div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
+                        <h2>추천 상품</h2>
+                        <p class="mb-0">추천하는 상품이에요!</p>
+                    </div>
+                    <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
+                        <div id="filters" class="filters">
+                            <!--data-filter에서 필터링 할 목록들을 추가 시킬 수 있음 js에서 자동적으로 처리-->
+                            <a href="#" data-filter="*">전체 상의</a>
+                            <a href="#" data-filter=".c">반팔 상의</a>
+                            <a href="#" data-filter=".d">긴팔 상의</a>
+                        </div>
+                    </div>
+                </div>
+                <!--각 항목에 class 안에 필터링의 이름을 넣으면 필터링 가능함. -->
+                <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
+                    <div th:each="products, i : ${paging}"
+                         th:class="'item ' +${products.getKind()}+ ' col-sm-6 col-md-4 col-lg-4 mb-4'">
+                        <a href="#" class="item-wrap fancybox">
+                            <div class="work-info">
+                                <h3 th:text="${products.getName()}"></h3>
+                                <span th:text="${products.getConent()}"></span>
+                            </div>
+                            <img class="img-fluid" src="">
+                            <div th:class="'ard text-white bg-danger mb-3'" th:text="${products.getImage()}"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End  Works Section -->
+    
+    </main><!-- End #main -->
 </div>
