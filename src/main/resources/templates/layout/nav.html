@@ -12,13 +12,13 @@
         <div class="collapse navbar-collapse" id="navbarColor04">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a sec:authorize="isAnonymous()" class="nav-link active" href="/member/signin">
+                    <a sec:authorize="isAnonymous()" class="nav-link active" th:href="@{/member/signin}">
                         로그인
                         <span class="visually-hidden">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a sec:authorize="isAnonymous()" class="nav-link active" href="/member/signup">
+                    <a sec:authorize="isAnonymous()" class="nav-link active" th:href="@{/member/signup}">
                         회원가입
                         <span class="visually-hidden">(current)</span>
                     </a>
@@ -38,7 +38,7 @@
                         관리자 메뉴
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">회원 관리</a></li>
+                        <li><a class="dropdown-item" th:href="@{/management/member}">회원 관리</a></li>
                         <li><a class="dropdown-item" href="#">주문 내역 관리</a></li>
                         <li>
                             <hr class="dropdown-divider">

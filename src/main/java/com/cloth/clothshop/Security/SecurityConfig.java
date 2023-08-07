@@ -28,21 +28,25 @@ public class SecurityConfig {
 
 				.headers((headers) -> headers.addHeaderWriter(
 						new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-				
+
 				.formLogin((formLogin) -> formLogin.loginPage("/member/signin")
 
 						.usernameParameter("id")
 						.passwordParameter("pwd")
 						.defaultSuccessUrl("/"))
-				
+
 				.logout((logout) -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/member/signout"))
 						.logoutSuccessUrl("/")
 						.invalidateHttpSession(true))
-				; 
-		
+
+				/*.authorizeHttpRequests().requestMatchers("/management").hasRole("ROLE_ADMIN")*/
+		;
+
 		return http.build();
 	}
+
+
 	
 	@Bean
 	PasswordEncoder passwordEncoder() {
