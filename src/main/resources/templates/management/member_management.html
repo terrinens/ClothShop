@@ -16,7 +16,8 @@
         </thead>
         
         <tbody>
-        <tr th:each="member, i : ${memberList}" th:href="|/management/${}|" class="table-light">
+        <tr th:each="member, i : ${memberList}" th:onclick="|location.href='@{|/management/${member.getId()}|}'|"
+            class="table-light">
             <th th:text="${member.getId()}" scope="row">ID</th>
             <td th:text="${member.getName()}">멤버이름</td>
             <td th:text="${member.getTel()}">전화번호</td>
