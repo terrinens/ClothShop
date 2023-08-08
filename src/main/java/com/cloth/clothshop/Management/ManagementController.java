@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller @RequiredArgsConstructor
@@ -24,19 +25,18 @@ public class ManagementController {
     @GetMapping("/member")
     public String managementMember(Model model, ManagementMemberForm mmForm) {
 
-        List<Member> memberList = mService.memberList();
+        List managementMemberList = mService.managementMemberList();
 
-        model.addAttribute("memberList", memberList);
+        model.addAttribute("memberList", managementMemberList);
         model.addAttribute("mmForm", mmForm);
 
         return "management/member_management";
     }
 
     @PostMapping("/member/modify")
-    public String managementMemberModify(ManagementMemberForm mmForm, @ModelAttribute Member member) {
+    public String managementMemberModify(ManagementMemberForm mmForm, Principal principal) {
 
-        Member modifyMember = member;
-        mService.adminSignup(member.getId(), member.getPwd(), member.getName(), member.getAddress(), member.getTel(), member.getRole());
+        mService.ManagementMemberModify(mmForm);
 
         return "redirect:/management/member";
     }

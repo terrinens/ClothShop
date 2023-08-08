@@ -1,8 +1,10 @@
 package com.cloth.clothshop.Member;
 
+import com.cloth.clothshop.Management.ManagementMemberForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,18 +49,34 @@ public class MemberService {
         return member;
     }
 
-    public List memberList() {
+    @Transactional
+    public void ManagementMemberModify(ManagementMemberForm mmForm) {
+
+        mRepository.managementModify(mmForm.getId(), mmForm.getPwd(),
+                mmForm.getName(), mmForm.getRole(), mmForm.getAddress(),
+                mmForm.getTel());
+    }
+
+    public List managementMemberList() {
 
         List<Member> memberList = mRepository.findAll();
 
         return memberList;
     }
 
-    public Optional<Member> memberSearch(String id) {
+    public Member memberSearch(String id) {
 
-        Optional<Member> member = mRepository.findMemberById(id);
+        Optional<Member> optionalMember = mRepository.findMemberById(id);
 
-        return member;
+        if (optionalMember.isPresent()) {
+
+            Member member = optionalMember.get();
+
+            return member;
+        } else {
+
+            return null;
+        }
     }
 }
 

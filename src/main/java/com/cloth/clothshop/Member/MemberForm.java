@@ -10,7 +10,7 @@ public class MemberForm {
 	
 	@NotEmpty(message = "아이디는 필수 입력 사항 입니다.")
 	private String id;
-	
+
 	@NotEmpty(message = "비밀번호는 필수 입력 사항 입니다.")
 	private String pwd;
 	

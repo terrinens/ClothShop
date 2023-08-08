@@ -39,9 +39,11 @@
                     <form th:action="@{/management/member/modify}" th:object="${mmForm}" method="post">
                         <div th:replace="~{layout/formErrors::formErrorsFragment}"></div>
                         <div class="mb-3">
-                            <label for="recipient-id" class="col-form-label">ID 수정</label>
+                            <fieldset disabled="">
+                            <label for="recipient-id" class="col-form-label">ID(수정불가)</label>
                             <input th:name="id" type="text" class="form-control" id="recipient-id" th:default="${member.getId()}"
                                    th:value="${member.getId()}">
+                            </fieldset>
                         </div>
                         <div class="mb-3">
                             <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
