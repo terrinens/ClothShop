@@ -1,18 +1,12 @@
 package com.cloth.clothshop.Orders;
 
-import java.sql.Date;
-
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import lombok.Getter;
-import lombok.Setter;
+import java.sql.Date;
 
 @Entity @Getter @Setter
 public class Orders {

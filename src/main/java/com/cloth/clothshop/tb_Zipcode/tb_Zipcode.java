@@ -1,12 +1,8 @@
 package com.cloth.clothshop.tb_Zipcode;
 
-import java.util.List;
-
-import com.cloth.clothshop.Member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 

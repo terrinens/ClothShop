@@ -1,19 +1,17 @@
 package com.cloth.clothshop.Member;
 
-import java.sql.Date;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import lombok.Getter;
-import lombok.Setter;
+import java.sql.Date;
 
 @DynamicInsert @DynamicUpdate @Entity @Setter @Getter
 public class Member {

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller @RequiredArgsConstructor @RequestMapping("/products")
 public class ProductsController {
 
-    @Autowired
-    ProductsService pService;
+
+    private final ProductsService pService;
 
     @GetMapping("/cloth/sleeve")
     public String sleeveList(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {

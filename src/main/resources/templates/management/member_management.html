@@ -4,4 +4,25 @@
 
 <div layout:fragment="content">
     <nav th:replace="/layout/selectnav"></nav>
+    <table class="table table-hover">
+        <thead>
+        <tr class="table-info">
+            <th scope="row">ID</th>
+            <td>멤버이름</td>
+            <td>전화번호</td>
+            <td>등급</td>
+            <td>가입일자</td>
+        </tr>
+        </thead>
+        
+        <tbody>
+        <tr th:each="member, i : ${memberList}" th:href="|/management/${}|" class="table-light">
+            <th th:text="${member.getId()}" scope="row">ID</th>
+            <td th:text="${member.getName()}">멤버이름</td>
+            <td th:text="${member.getTel()}">전화번호</td>
+            <td th:text="${member.getRole()}">등급</td>
+            <td th:text="${member.getIndate()}">가입일자</td>
+        </tr>
+        </tbody>
+    </table>
 </div>

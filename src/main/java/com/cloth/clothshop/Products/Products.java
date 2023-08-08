@@ -1,17 +1,15 @@
 package com.cloth.clothshop.Products;
 
-import java.awt.Image;
-import java.sql.Date;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.sql.Date;
 
 @Entity @Getter @Setter
 public class Products {

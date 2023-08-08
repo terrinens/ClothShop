@@ -1,12 +1,10 @@
 package com.cloth.clothshop.Member;
 
-import org.springframework.data.domain.Sort;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,9 +46,11 @@ public class MemberService {
         return member;
     }
 
-    public void allMember() {
+    public List memberList() {
 
-        mRepository.findAll(Sort.sort());
+        List<Member> memberList = mRepository.findAll();
+
+        return memberList;
     }
 }
 
