@@ -23,7 +23,9 @@ public class ManagementController {
     }
 
     @GetMapping("/member")
-    public String managementMember(Model model, ManagementMemberForm mmForm) {
+    public String managementMember(Model model, ManagementMemberForm mmForm,
+                                   @RequestParam(value = "page", defaultValue = "0") int page,
+                                   @RequestParam(value = "keyword", defaultValue = " ") String keyword) {
 
         List managementMemberList = mService.managementMemberList();
 
@@ -32,6 +34,22 @@ public class ManagementController {
 
         return "management/member_management";
     }
+
+        /*public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "kw", defaultValue = "") String kw) {
+
+        //2. 비즈니스 로직처리
+        //List<Question> questionList = this.questionRepostiroy.findAll();
+        Page<Question> paging = questionService.getList(page, kw);
+
+        //3. 받아온 List를 client로 전송(Model 객체에 저장해서 Client로 전송)
+        model.addAttribute("paging", paging);
+
+        paging.getTotalPages();
+
+        return "question_list";
+    }*/
+
 
     @PostMapping("/member/modify")
     public String managementMemberModify(ManagementMemberForm mmForm, Principal principal) {
