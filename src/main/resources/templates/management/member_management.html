@@ -3,6 +3,17 @@
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content">
+    <form class="d-flex bg-light" role="search">
+        <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
+               aria-label="Search">
+        <select style="width: 10%" class="form-select form-select-sm" name="searchOption" id="searchOption">
+            <option value="memberId">ID로 찾기</option>
+            <option value="memberName">이름으로 찾기</option>
+            <option value="memberRole">권한으로 찾기</option>
+        </select>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+    
     <table class="table table-hover">
         <thead>
         <tr class="table-info">
@@ -40,24 +51,28 @@
                         <div th:replace="~{layout/formErrors::formErrorsFragment}"></div>
                         <div class="mb-3">
                             <fieldset disabled="">
-                            <label for="recipient-id" class="col-form-label">ID(수정불가)</label>
-                            <input th:name="id" type="text" class="form-control" id="recipient-id" th:default="${member.getId()}"
-                                   th:value="${member.getId()}">
+                                <label for="recipient-id" class="col-form-label">ID(수정불가)</label>
+                                <input th:name="id" type="text" class="form-control" id="recipient-id"
+                                       th:default="${member.getId()}"
+                                       th:value="${member.getId()}">
                             </fieldset>
                         </div>
                         <div class="mb-3">
                             <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
-                            <input th:name="pwd" type="text" class="form-control" id="recipient-pwd" th:default="${member.getPwd()}"
+                            <input th:name="pwd" type="text" class="form-control" id="recipient-pwd"
+                                   th:default="${member.getPwd()}"
                                    th:value="${member.getPwd()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">이름 수정</label>
-                            <input th:name="name" type="text" class="form-control" id="recipient-name" th:default="${member.getName()}"
+                            <input th:name="name" type="text" class="form-control" id="recipient-name"
+                                   th:default="${member.getName()}"
                                    th:value="${member.getName()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-tel" class="col-form-label">연락처 수정</label>
-                            <input th:name="tel" type="text" class="form-control" id="recipient-tel" th:default="${member.getTel()}"
+                            <input th:name="tel" type="text" class="form-control" id="recipient-tel"
+                                   th:default="${member.getTel()}"
                                    th:value="${member.getTel()}">
                         </div>
                         <div class="mb-3">
@@ -68,7 +83,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="recipient-role" class="col-form-label">권한 수정</label>
-                            <input th:name="role" type="text" class="form-control" id="recipient-role" th:default="${member.getRole()}"
+                            <input th:name="role" type="text" class="form-control" id="recipient-role"
+                                   th:default="${member.getRole()}"
                                    th:value="${member.getRole()}">
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -79,6 +95,4 @@
             </div>
         </div>
     </div>
-
-
 </div>
