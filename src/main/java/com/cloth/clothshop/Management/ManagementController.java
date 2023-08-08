@@ -1,17 +1,13 @@
-package com.cloth.clothshop.Controller;
+package com.cloth.clothshop.Management;
 
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller @RequiredArgsConstructor
 @RequestMapping("/management")
@@ -26,23 +22,23 @@ public class ManagementController {
     }
 
     @GetMapping("/member")
-    public String managementMember(Model model) {
+    public String managementMember(Model model, ManagementMemberForm mmForm) {
 
         List<Member> memberList = mService.memberList();
 
         model.addAttribute("memberList", memberList);
+        model.addAttribute("mmForm", mmForm);
 
         return "management/member_management";
     }
 
-    @GetMapping("/member/{id}")
-    public String memberDetail(@PathVariable String id, Model model) {
+    @PostMapping("/member/modify")
+    public String managementMemberModify(ManagementMemberForm mmForm, @ModelAttribute Member member) {
 
-        Optional<Member> mDetail = mService.memberSearch(id);
+        Member modifyMember = member;
+        mService.adminSignup(member.getId(), member.getPwd(), member.getName(), member.getAddress(), member.getTel(), member.getRole());
 
-        model.addAttribute("mDetail", mDetail);
-
-        return "";
+        return "redirect:/management/member";
     }
 
     @GetMapping("/order")

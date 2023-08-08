@@ -3,7 +3,6 @@
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content">
-    <nav th:replace="/layout/selectnav"></nav>
     <table class="table table-hover">
         <thead>
         <tr class="table-info">
@@ -37,47 +36,47 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="post">
+                    <form th:action="@{/management/member/modify}" th:object="${mmForm}" method="post">
+                        <div th:replace="~{layout/formErrors::formErrorsFragment}"></div>
                         <div class="mb-3">
                             <label for="recipient-id" class="col-form-label">ID 수정</label>
-                            <input type="text" class="form-control" id="recipient-id" th:default="${member.getId()}"
+                            <input th:name="id" type="text" class="form-control" id="recipient-id" th:default="${member.getId()}"
                                    th:value="${member.getId()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
-                            <input type="text" class="form-control" id="recipient-pwd" th:default="${member.getPwd()}"
+                            <input th:name="pwd" type="text" class="form-control" id="recipient-pwd" th:default="${member.getPwd()}"
                                    th:value="${member.getPwd()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">이름 수정</label>
-                            <input type="text" class="form-control" id="recipient-name" th:default="${member.getName()}"
+                            <input th:name="name" type="text" class="form-control" id="recipient-name" th:default="${member.getName()}"
                                    th:value="${member.getName()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-tel" class="col-form-label">연락처 수정</label>
-                            <input type="text" class="form-control" id="recipient-tel" th:default="${member.getTel()}"
+                            <input th:name="tel" type="text" class="form-control" id="recipient-tel" th:default="${member.getTel()}"
                                    th:value="${member.getTel()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-address" class="col-form-label">이메일 수정</label>
-                            <input type="text" class="form-control" id="recipient-address" th:default="${member.getAddress()}"
+                            <input th:name="address" type="text" class="form-control" id="recipient-address"
+                                   th:default="${member.getAddress()}"
                                    th:value="${member.getAddress()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-role" class="col-form-label">권한 수정</label>
-                            <input type="text" class="form-control" id="recipient-role" th:default="${member.getRole()}"
+                            <input th:name="role" type="text" class="form-control" id="recipient-role" th:default="${member.getRole()}"
                                    th:value="${member.getRole()}">
                         </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary">수정하기</button>
+                        <button type="reset" class="btn btn-outline-warning">값 되돌리기</button>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary">수정하기</button>
-                    <button type="reset" class="btn btn-outline-warning">값 되돌리기</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
 
 </div>
