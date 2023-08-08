@@ -6,9 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller @RequiredArgsConstructor
 @RequestMapping("/management")
@@ -30,6 +33,16 @@ public class ManagementController {
         model.addAttribute("memberList", memberList);
 
         return "management/member_management";
+    }
+
+    @GetMapping("/member/{id}")
+    public String memberDetail(@PathVariable String id, Model model) {
+
+        Optional<Member> mDetail = mService.memberSearch(id);
+
+        model.addAttribute("mDetail", mDetail);
+
+        return "";
     }
 
     @GetMapping("/order")

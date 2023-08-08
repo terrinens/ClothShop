@@ -15,9 +15,10 @@
         </tr>
         </thead>
         
+        <!--th:onclick="|location.href='@{|/management/member/${member.getId()}|}'|"-->
         <tbody>
-        <tr th:each="member, i : ${memberList}" th:onclick="|location.href='@{|/management/${member.getId()}|}'|"
-            class="table-light">
+        <tr th:each="member, i : ${memberList}"
+            class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#memberDetail_' + ${member.id}">
             <th th:text="${member.getId()}" scope="row">ID</th>
             <td th:text="${member.getName()}">멤버이름</td>
             <td th:text="${member.getTel()}">전화번호</td>
@@ -26,4 +27,57 @@
         </tr>
         </tbody>
     </table>
+    
+    <div th:each="member, i : ${memberList}" class="modal fade" th:id="'memberDetail_' + ${member.id}"
+         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" th:text="|${member.getId()}님의 정보 수정|"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="recipient-id" class="col-form-label">ID 수정</label>
+                            <input type="text" class="form-control" id="recipient-id" th:default="${member.getId()}"
+                                   th:value="${member.getId()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
+                            <input type="text" class="form-control" id="recipient-pwd" th:default="${member.getPwd()}"
+                                   th:value="${member.getPwd()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">이름 수정</label>
+                            <input type="text" class="form-control" id="recipient-name" th:default="${member.getName()}"
+                                   th:value="${member.getName()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-tel" class="col-form-label">연락처 수정</label>
+                            <input type="text" class="form-control" id="recipient-tel" th:default="${member.getTel()}"
+                                   th:value="${member.getTel()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-address" class="col-form-label">이메일 수정</label>
+                            <input type="text" class="form-control" id="recipient-address" th:default="${member.getAddress()}"
+                                   th:value="${member.getAddress()}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-role" class="col-form-label">권한 수정</label>
+                            <input type="text" class="form-control" id="recipient-role" th:default="${member.getRole()}"
+                                   th:value="${member.getRole()}">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary">수정하기</button>
+                    <button type="reset" class="btn btn-outline-warning">값 되돌리기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
 </div>

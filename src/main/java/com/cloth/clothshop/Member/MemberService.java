@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +52,13 @@ public class MemberService {
         List<Member> memberList = mRepository.findAll();
 
         return memberList;
+    }
+
+    public Optional<Member> memberSearch(String id) {
+
+        Optional<Member> member = mRepository.findMemberById(id);
+
+        return member;
     }
 }
 
