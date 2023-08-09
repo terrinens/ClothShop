@@ -6,15 +6,20 @@
     <!--<form class="d-flex bg-light" role="search" method="get">-->
     <div class="input-group">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
-               aria-label="Search" name="keyword">
+               aria-label="Search" name="SearchKeyword" id="SearchKeyword" th:value="${keyword}">
         <select style="width: 10%" class="form-select form-select-sm" name="searchOption">
             <option value="memberAll"></option>
             <option value="memberId">ID로 찾기</option>
             <option value="memberName">이름으로 찾기</option>
             <option value="memberRole">권한으로 찾기</option>
         </select>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-outline-success" type="submit" id="button_search">검색</button>
     </div>
+    
+    <form th:action="@{/management/member}" method="get" id="searchForm">
+        <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
+        <input type="hidden" id="page" name="page" th:value="${memberList.number}">
+    </form>
     <!--</form>-->
     
     <table class="table table-hover">
@@ -40,6 +45,45 @@
         </tr>
         </tbody>
     </table>
+    <div th:if="${!memberList.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li th:classappend="${!memberList.hasPrevious()} ? 'disabled'" class="page-item">
+                <a class="page-link" href="javascript:void(0)"
+                   th:data-page="${(memberList.number) - 1}">&laquo;</a>
+            </li>
+            <li th:each="page : ${#numbers.sequence(0, (memberList.totalPages) - 1)}"
+                th:if="${page >= memberList.number - 10 and page <= memberList.number + 10}"
+                th:classappend="${page == memberList.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" href="javascript:void(0)" th:data-page="${page}"
+                   class="page-link"></a>
+            </li>
+            <li th:classappend="${!memberList.hasNext()} ? 'disabled'" class="page-item">
+                <a class="page-link" href="javascript:void(0)"
+                   th:data-page="${(memberList.number) + 1}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+    
+    <script type="text/javascript">
+
+        const button_search = document.getElementById("button_search");
+        button_search.addEventListener('click', function () {
+            document.getElementById('keyword').value = document.getElementById('SearchKeyword').value;
+            /*document.getElementById('page').value = 0;*/
+            console.log(document.getElementById('keyword').value);
+
+            document.getElementById('searchForm').submit();
+        });
+
+        const page_elements = document.getElementsByClassName("page-link");
+        Array.from(page_elements).forEach(function (element) {
+            element.addEventListener('click', function () {
+                document.getElementById('page').value = this.dataset.page;
+                document.getElementById('searchForm').submit();
+            });
+        });
+    </script>
     
     <div th:each="member, i : ${memberList}" class="modal fade" th:id="'memberDetail_' + ${member.id}"
          tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -93,9 +137,11 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                         <button type="submit" class="btn btn-primary">수정하기</button>
                         <button type="reset" class="btn btn-outline-warning">값 되돌리기</button>
+                        <button type="button" class="btn btn-outline-danger">해당 유저 삭제</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
