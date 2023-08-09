@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.Optional;
 
 @Service
@@ -63,7 +64,10 @@ public class MemberService {
 
     public Page<Member> managementGetMemberList(int page, String searchOption, String keyword) {
 
-        Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending().ascending());
+        Sort nSort = Sort.by("id");
+
+
+        Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
         Page<Member> memberList = mRepository.managementMemberList(pageable, searchOption, keyword);
 
         return memberList;

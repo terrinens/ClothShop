@@ -99,14 +99,15 @@
                         <div class="mb-3">
                             <fieldset disabled="">
                                 <label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>
-                                <input th:name="id_view" type="text" class="form-control" id="recipient-id_view" th:value="${member.getId()}">
+                                <input th:name="id_view" type="text" class="form-control" id="recipient-id_view"
+                                       th:value="${member.getId()}">
                             </fieldset>
                             <input th:name="id" type="hidden" th:value="${member.getId()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
                             <input th:name="pwdModify" type="text" class="form-control"
-                                   id="recipient-pwdModify" placeholder="빈값으로 설정시 기존 비밀번호로 유지됩니다.">
+                                   id="recipient-pwdModify" placeholder="공백으로 설정시 기존 비밀번호로 유지됩니다.">
                             <input type="hidden" th:name="pwd" id="recipient-pwd" th:value="${member.getPwd()}">
                         </div>
                         <div class="mb-3">
@@ -130,36 +131,82 @@
                         <div class="mb-3">
                             <label for="recipient-role" class="col-form-label">권한 수정</label>
                             <select th:name="role" type="text" class="form-control" id="recipient-role">
-                                <option name="admin" value="Admin" th:selected="${member.getRole() == 'Admin'}">Admin</option>
-                                <option name="user" value="User" th:selected="${member.getRole() == 'User' || member.getRole() == null}">User</option>
+                                <option name="admin" value="Admin" th:selected="${member.getRole() == 'Admin'}">Admin
+                                </option>
+                                <option name="user" value="User"
+                                        th:selected="${member.getRole() == 'User' || member.getRole() == null}">User
+                                </option>
                             </select>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary" id="btn_modify">수정하기</button>
-                        <button type="reset" class="btn btn-outline-warning" id="btn_reset">값 되돌리기</button>
-                        <button type="button" class="btn btn-outline-danger" id="btn_delete">해당 유저 삭제</button>
+                        <button type="submit" class="btn btn-primary" id="button_modify">수정하기</button>
+                        <button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>
+                        <button th:data-uri="@{|/management/member/delete/${member.getId}|}"
+                                type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal"
+                                data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제
+                        </button>
                     </form>
-                    <script>
-                        let pwd = document.getElementById('recipient-pwd');
-                        let pwd_modfiy = document.getElementById('recipient-pwdModify');
-                        const btn_modify = document.getElementById('btn_modify');
-                        
-                        btn_modify.addEventListener('click', function() {
-                            
-                            if (pwd_modfiy == null) {
-                            
-                            } else {
-                            
-                                pwd.value = pwd_modfiy.value;
-                                document.getElementById('modifyForm').submit();
-                            }
-                        });
-                        
-                        
-                    </script>
                 </div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="delete_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">정말로 삭제하시겠습니까?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="alert alert-dismissible alert-danger">
+                    <strong>정말로 삭제하시겠습니까?</strong> 한번 더 다시 확인 해주세요!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                    <button type="button" class="button_delete btn btn-danger" data-uri="">네. 삭제하겠습니다.</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--modifyForm을 위한 js-->
+    <script>
+        let pwd = document.getElementById('recipient-pwd');
+        let pwd_modfiy = document.getElementById('recipient-pwdModify');
+        const btn_modify = document.getElementById('button_modify');
+        btn_modify.addEventListener('click', function () {
+
+            if (pwd_modfiy == null) {
+
+                alert("비밀번호를 정확히 입력해주세요.");
+            } else {
+
+                pwd.value = pwd_modfiy.value;
+                document.getElementById('modifyForm').submit();
+            }
+        });
+
+        const btn_reset = document.getElementById('button_reset');
+        btn_reset.addEventListener('click', function () {
+
+            document.getElementById('modifyForm').reset();
+        });
+
+        const call_delete_modal = document.getElementsByClassName('call_delete_modal');
+        Array.from(call_delete_modal).forEach(function (modal) {
+            modal.addEventListener('click', function () {
+                const uri = this.dataset.uri;
+
+                // 현재 모달에서 버튼 찾기
+                const btn_delete = document.getElementsByClassName('button_delete');
+                Array.from(btn_delete).forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        location.href = uri;
+                    });
+                });
+            });
+        });
+    </script>
 </div>
 
