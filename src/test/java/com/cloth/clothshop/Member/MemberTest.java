@@ -71,10 +71,13 @@ class MemberTest {
 
         memberService.adminSignup(m1.getId(), m1.getPwd(), m1.getName(), m1.getAddress(), m1.getTel(), m1.getRole());
 
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 100; i++) {
 
             Member m2 = new Member();
-            String num4 = i + String.valueOf(i) + i + i;
+
+            char num = Integer.toString(i).charAt(0);
+
+            String num4 = Character.toString(num) + Character.toString(num) + Character.toString(num) + Character.toString(num);
 
             m2.setId("user" + i);
             m2.setPwd("1234");

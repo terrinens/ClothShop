@@ -5,10 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Date;
@@ -38,6 +35,6 @@ public class Member {
 	@Column (length = 13)
 	private String tel;
 
-	@Column @CreatedDate @CreationTimestamp
+	@Column @CreatedDate @UpdateTimestamp
 	private Date indate;
 }
