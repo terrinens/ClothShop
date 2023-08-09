@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -60,25 +61,13 @@ public class MemberService {
                 mmForm.getTel());
     }
 
-    public Page<Member> managementGetMemberList(int page,String searchOption , String keyword) {
+    public Page<Member> managementGetMemberList(int page, String searchOption, String keyword) {
 
-        Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
+        Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending().ascending());
         Page<Member> memberList = mRepository.managementMemberList(pageable, searchOption, keyword);
 
         return memberList;
     }
-
-/*    public Page<Question> getList(int page, String kw) {
-
-        //page : 클라이언트에서 파라메터로 요청한 페이지 번호
-        //10 : 한 페이지에서 출력할 레코드 수
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
-
-        Page<Question> pageQuestion = questionRepostiroy.findAllByKeyword(kw, pageable);
-
-        return pageQuestion;
-    }*/
-
 
     public Member memberSearch(String id) {
 

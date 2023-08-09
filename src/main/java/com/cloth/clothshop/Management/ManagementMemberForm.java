@@ -3,12 +3,17 @@ package com.cloth.clothshop.Management;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
-@Setter
+@Setter @RequiredArgsConstructor
 public class ManagementMemberForm {
 
+    PasswordEncoder pEncoder;
 
     @NotEmpty(message = "아이디는 필수 입력 사항 입니다.")
     private String id;

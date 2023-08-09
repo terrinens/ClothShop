@@ -94,21 +94,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/management/member/modify}" th:object="${mmForm}" method="post">
+                    <form th:action="@{/management/member/modify}" th:object="${mmForm}" id="modifyForm" method="post">
                         <div th:replace="~{layout/formErrors::formErrorsFragment}"></div>
                         <div class="mb-3">
                             <fieldset disabled="">
-                                <label for="recipient-id" class="col-form-label">ID(수정불가)</label>
-                                <input th:name="id" type="text" class="form-control" id="recipient-id"
-                                       th:default="${member.getId()}"
-                                       th:value="${member.getId()}">
+                                <label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>
+                                <input th:name="id_view" type="text" class="form-control" id="recipient-id_view" th:value="${member.getId()}">
                             </fieldset>
+                            <input th:name="id" type="hidden" th:value="${member.getId()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
-                            <input th:name="pwd" type="text" class="form-control" id="recipient-pwd"
-                                   th:default="${member.getPwd()}"
-                                   th:value="${member.getPwd()}">
+                            <input th:name="pwdModify" type="text" class="form-control"
+                                   id="recipient-pwdModify" placeholder="빈값으로 설정시 기존 비밀번호로 유지됩니다.">
+                            <input type="hidden" th:name="pwd" id="recipient-pwd" th:value="${member.getPwd()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">이름 수정</label>
@@ -135,10 +134,28 @@
                                    th:value="${member.getRole()}">
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary">수정하기</button>
-                        <button type="reset" class="btn btn-outline-warning">값 되돌리기</button>
-                        <button type="button" class="btn btn-outline-danger">해당 유저 삭제</button>
+                        <button type="submit" class="btn btn-primary" id="btn_modify">수정하기</button>
+                        <button type="reset" class="btn btn-outline-warning" id="btn_reset">값 되돌리기</button>
+                        <button type="button" class="btn btn-outline-danger" id="btn_delete">해당 유저 삭제</button>
                     </form>
+                    <script>
+                        let pwd = document.getElementById('recipient-pwd');
+                        let pwd_modfiy = document.getElementById('recipient-pwdModify');
+                        const btn_modify = document.getElementById('btn_modify');
+                        
+                        btn_modify.addEventListener('click', function() {
+                            
+                            if (pwd_modfiy == null) {
+                            
+                            } else {
+                            
+                                pwd.value = pwd_modfiy.value;
+                                document.getElementById('modifyForm').submit();
+                            }
+                        });
+                        
+                        
+                    </script>
                 </div>
             </div>
         </div>

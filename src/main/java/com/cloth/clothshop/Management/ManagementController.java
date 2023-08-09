@@ -45,6 +45,11 @@ public class ManagementController {
 
         mService.ManagementMemberModify(mmForm);
 
+        System.out.println("아이디" + mmForm.getId());
+        System.out.println("이름" + mmForm.getName());
+        System.out.println("권한" + mmForm.getRole());
+        System.out.println("연락처" + mmForm.getTel());
+
         return "redirect:/management/member";
     }
 
