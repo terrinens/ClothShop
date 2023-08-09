@@ -195,10 +195,10 @@
 
         const call_delete_modal = document.getElementsByClassName('call_delete_modal');
         Array.from(call_delete_modal).forEach(function (modal) {
+            
             modal.addEventListener('click', function () {
+                
                 const uri = this.dataset.uri;
-
-                // 현재 모달에서 버튼 찾기
                 const btn_delete = document.getElementsByClassName('button_delete');
                 Array.from(btn_delete).forEach(function (button) {
                     button.addEventListener('click', function () {

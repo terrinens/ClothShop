@@ -87,6 +87,11 @@ public class MemberService {
             return null;
         }
     }
+
+    public  void memberDelete(String id) {
+
+        mRepository.delete(memberSearch(id));
+    }
 }
 
 
