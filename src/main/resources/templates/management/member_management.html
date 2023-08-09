@@ -129,9 +129,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="recipient-role" class="col-form-label">권한 수정</label>
-                            <input th:name="role" type="text" class="form-control" id="recipient-role"
-                                   th:default="${member.getRole()}"
-                                   th:value="${member.getRole()}">
+                            <select th:name="role" type="text" class="form-control" id="recipient-role">
+                                <option name="admin" value="Admin" th:selected="${member.getRole() == 'Admin'}">Admin</option>
+                                <option name="user" value="User" th:selected="${member.getRole() == 'User' || member.getRole() == null}">User</option>
+                            </select>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                         <button type="submit" class="btn btn-primary" id="btn_modify">수정하기</button>
