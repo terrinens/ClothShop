@@ -1,4 +1,4 @@
-package com.cloth.clothshop.Security;
+package com.cloth.clothshop.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
+import java.util.Optional;
 
 @Controller @RequiredArgsConstructor
 @RequestMapping("/management")
@@ -40,11 +40,13 @@ public class ManagementController {
     @PostMapping("/member/modify")
     public String managementMemberModify(ManagementMemberForm mmForm, Principal principal) {
 
-        mService.ManagementMemberModify(mmForm);
+        String memberId = principal.getName();
+        Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
 
-        System.out.println("아이디" + mmForm.getId());
-        System.out.println("비번" + mmForm.getPwd());
-        System.out.println("권한" + mmForm.getRole());
+        if (optionalMember.isPresent()) {
+
+            mService.ManagementMemberModify(mmForm);
+        }
 
         return "redirect:/management/member";
     }

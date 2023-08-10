@@ -1,8 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security"
       layout:decorate="~{/layout/layout}">
 
-<div layout:fragment="content">
+<div layout:fragment="content" sec:authorize ="hasRole('ROLE_ADMIN')">
     <!--<form class="d-flex bg-light" role="search" method="get">-->
     <div class="input-group">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
@@ -51,11 +52,12 @@
                 <a class="page-link" href="javascript:void(0)"
                    th:data-page="${(memberList.number) - 1}">&laquo;</a>
             </li>
-            <li th:each="page : ${#numbers.sequence(0, (memberList.totalPages) - 1)}"
+            <li th:each="page : ${#numbers.sequence(0, (memberList.totalPages))}"
                 th:if="${page >= memberList.number - 10 and page <= memberList.number + 10}"
                 th:classappend="${page == memberList.number} ? 'active'"
                 class="page-item">
-                <a th:text="${page}" href="javascript:void(0)" th:data-page="${page}"
+                <!--실제로는 0부터 시작하니 참고할것. 가독성을 위해 text만 1부터 시작함-->
+                <a th:text="${page + 1}" href="javascript:void(0)" th:data-page="${page}"
                    class="page-link"></a>
             </li>
             <li th:classappend="${!memberList.hasNext()} ? 'disabled'" class="page-item">
