@@ -1,15 +1,18 @@
 package com.cloth.clothshop.Member;
 
+import com.cloth.clothshop.Member.MemberQueryDSL.MemberRepostitoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, String> {
+public interface MemberRepository extends JpaRepository<Member, String>,
+        MemberRepostitoryCustom {
 
     @Query("SELECT m FROM Member m")
     Page<Member> managementMemberList(Pageable pageable,String searchOption ,String keyword);

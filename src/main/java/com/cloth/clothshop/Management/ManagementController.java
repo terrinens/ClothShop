@@ -54,7 +54,6 @@ public class ManagementController {
     @GetMapping("/member/delete/{id}")
     public String managementMemberDelete(@PathVariable String id) {
 
-
         mService.memberDelete(id);
 
         return "redirect:/management/member";
