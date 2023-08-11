@@ -31,7 +31,6 @@
         </tr>
         </thead>
         
-        <!--th:onclick="|location.href='@{|/management/member/${member.getId()}|}'|"-->
         <tbody>
         <tr th:each="member, i : ${memberList}"
             class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#memberDetail_' + ${member.id}">
@@ -64,8 +63,8 @@
         </ul>
     </div>
     
+    <!--페이지이동을 위한 js-->
     <script type="text/javascript">
-
         const button_search = document.getElementById("button_search");
         const page_elements = document.getElementsByClassName("page-link");
         Array.from(page_elements).forEach(function (element) {
