@@ -31,8 +31,6 @@ public class ManagementController {
 
         Page<Member> paging = mService.managementGetMemberList(page, option, keyword);
 
-        System.out.println(option + "::::" + keyword);
-
         model.addAttribute("memberList", paging);
         model.addAttribute("mmForm", mmForm);
 

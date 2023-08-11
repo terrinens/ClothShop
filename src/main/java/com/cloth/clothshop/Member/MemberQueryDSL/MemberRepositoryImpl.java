@@ -25,18 +25,23 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
         if ("id".equals(searchOption)) {
 
-            condition = member.id.like(keyword);
+            condition = member.id.like("%" + keyword + "%");
         } else if ("name".equals(searchOption)) {
 
-            condition = member.name.like(keyword);
+            condition = member.name.like("%" + keyword + "%");
         } else if ("role".equals(searchOption)) {
 
-            condition = member.role.like(keyword);
+            condition = member.role.like("%" + keyword + "%");
         } else if ("all".equals(searchOption)) {
 
-            condition = member.id.like(keyword)
-                    .or(member.name.like(keyword))
-                    .or(member.role.like(keyword));
+            condition = member.id.like("%" + keyword + "%")
+                    .or(member.name.like("%" + keyword + "%"))
+                    .or(member.role.like("%" + keyword + "%"))
+                    .or(member.tel.like("%" + keyword + "%"))
+            ;
+        } else if ("tel".equals(searchOption)) {
+
+            condition = member.address.like("%" + keyword + "%");
         }
 
         List<Member> memberPage;
