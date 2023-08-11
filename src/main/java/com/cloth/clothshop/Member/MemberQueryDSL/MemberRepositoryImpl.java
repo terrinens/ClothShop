@@ -41,7 +41,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
             ;
         } else if ("tel".equals(searchOption)) {
 
-            condition = member.address.like("%" + keyword + "%");
+            condition = member.tel.like("%" + keyword + "%");
         }
 
         List<Member> memberPage;
