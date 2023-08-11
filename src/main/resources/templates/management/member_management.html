@@ -49,7 +49,7 @@
                 <a class="page-link" href="javascript:void(0)"
                    th:data-page="${(memberList.number) - 1}">&laquo;</a>
             </li>
-            <li th:each="page : ${#numbers.sequence(0, memberList.getTotalPages())}"
+            <li th:each="page : ${#numbers.sequence(0, memberList.getTotalPages() - 1)}"
                 th:if="${page >= memberList.number - 10 and page <= memberList.number + 10}"
                 th:classappend="${page == memberList.number} ? 'active'"
                 class="page-item">
@@ -67,14 +67,6 @@
     <script type="text/javascript">
 
         const button_search = document.getElementById("button_search");
-        button_search.addEventListener('click', function () {
-            document.getElementById('keyword').value = document.getElementById('SearchKeyword').value;
-            /*document.getElementById('page').value = 0;*/
-            console.log(document.getElementById('keyword').value);
-
-            document.getElementById('searchForm').submit();
-        });
-
         const page_elements = document.getElementsByClassName("page-link");
         Array.from(page_elements).forEach(function (element) {
             element.addEventListener('click', function () {

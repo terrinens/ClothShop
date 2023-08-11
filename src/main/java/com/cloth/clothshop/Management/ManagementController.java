@@ -31,8 +31,6 @@ public class ManagementController {
 
         Page<Member> paging = mService.managementGetMemberList(page, Option, keyword);
 
-        System.out.println("컨트롤 ::: 총 페이지 수" + paging.getSize());
-
         model.addAttribute("memberList", paging);
         model.addAttribute("mmForm", mmForm);
 
