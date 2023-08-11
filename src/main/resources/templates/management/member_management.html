@@ -31,9 +31,9 @@
         const searchKeyword = document.getElementById('searchKeyword');
         const searchOption = document.getElementById('searchOption');
         const searchForm = document.getElementById('searchForm');
-        
-        button_search.addEventListener('click', function() {
-            
+
+        button_search.addEventListener('click', function () {
+
             keyword.value = searchKeyword.value;
             option.value = searchOption.value;
             searchForm.submit();
@@ -152,13 +152,14 @@
                         <button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>
                         <button th:data-uri="@{|/management/member/delete/${member.getId}|}"
                                 type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal"
-                                data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제
+                                data-bs-toggle="modal" data-bs-target="#delete_modal">상품 삭제
                         </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    
     <div class="modal fade" id="delete_modal">
         <div class="modal-dialog">
             <div class="modal-content">

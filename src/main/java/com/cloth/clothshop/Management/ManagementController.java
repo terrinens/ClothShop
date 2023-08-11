@@ -2,6 +2,8 @@ package com.cloth.clothshop.Management;
 
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
+import com.cloth.clothshop.Products.Products;
+import com.cloth.clothshop.Products.ProductsService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,9 +19,27 @@ import java.util.Optional;
 public class ManagementController {
 
     private final MemberService mService;
+    private final ProductsService pService;
 
     @GetMapping("/allitem")
     public String managementAllitem(Model model, ManagementNewItemForm mnewItemForm, HttpServletRequest request) {
+
+        int page;
+        if (request.getParameter("page") == null) {
+
+            page = 0;
+        } else {
+
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        String option = request.getParameter("option");
+        String keyword = request.getParameter("keyword");
+
+        Page<Products> paging = pService.managementGetProductsPage(page, option, keyword);
+
+        model.addAttribute("itemPaging", paging);
+        model.addAttribute("mnewItemForm", mnewItemForm);
 
         return "management/allitem_management";
     }

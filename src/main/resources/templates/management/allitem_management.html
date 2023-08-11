@@ -1,7 +1,204 @@
+<!--suppress ALL -->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/layout}">
 
-<div layout:fragment="content">
-    <nav th:replace="/layout/selectnav"></nav>
+<div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
+    <main id="main">
+        <nav class="navbar bg-light justify-content-center">
+            <div class="btn-group filters" id="filters" role="group" aria-label="Basic outlined example">
+                <!--첫번째 버튼과 마지막버튼의 style을 건드리지 말것 : 부트스트랩 속성으로 인해 테두리 끝의 radius가 값이 있음.-->
+                <button style="border-radius: 0em;" class="btn btn-outline-success me-2" type="button">
+                    <a data-filter="*">모두</a>
+                </button>
+                <button class="btn btn-outline-success me-2" type="button">
+                    <a data-filter=".a, .b">상의</a>
+                </button>
+                <button class="btn btn-outline-success me-2" type="button">
+                    <a data-filter=".c, .d">하의</a>
+                </button>
+                <button style="border-radius: 0em;" class="btn btn-outline-success me-2" type="button">
+                    <a data-filter=".e, .f">치마</a>
+                </button>
+            </div>
+        </nav>
+    </main>
+    
+    <div class="input-group">
+        <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
+               aria-label="Search" name="searchKeyword" id="searchKeyword">
+        <select style="width: 10%" class="form-select form-select-sm" name="searchOption" id="searchOption">
+            <option value="all">전체 찾기</option>
+            <option value="id">ID로 찾기</option>
+            <option value="name">이름으로 찾기</option>
+            <option value="tel">연락처로 찾기</option>
+            <option value="role">권한으로 찾기</option>
+        </select>
+        <button class="btn btn-outline-success" type="submit" id="button_search">검색</button>
+    </div>
+    
+    <form th:action="@{/management/allitem}" method="get" id="searchForm">
+        <input type="hidden" id="page" name="page" th:value="${itemPaging.number}">
+        <input type="hidden" id="keyword" name="keyword" th:value="keyword">
+        <input type="hidden" id="option" name="option" th:value="option">
+    </form>
+    
+    <script>
+        const button_search = document.getElementById('button_search');
+        const keyword = document.getElementById('keyword');
+        const option = document.getElementById('option');
+        const searchKeyword = document.getElementById('searchKeyword');
+        const searchOption = document.getElementById('searchOption');
+        const searchForm = document.getElementById('searchForm');
+
+        button_search.addEventListener('click', function () {
+
+            keyword.value = searchKeyword.value;
+            option.value = searchOption.value;
+            searchForm.submit();
+        })
+    </script>
+    
+    <table class="table table-hover">
+        <thead>
+        <tr class="table-info">
+            <th scope="row">상품코드</th>
+            <td>상품이름</td>
+            <td>최소사이즈</td>
+            <td>최대사이즈</td>
+            <td>상품재고</td>
+            <td>판매여부</td>
+        </tr>
+        </thead>
+        
+        <tbody>
+        <tr th:each="item, i : ${itemPaging}"
+            class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#itemDetail_' + ${item.getCode()}">
+            <th th:text="${item.getCode()}" scope="row">상품코드</th>
+            <th th:text="${item.getName()}" scope="row">상품이름</th>
+            <th th:text="${item.getSizeSt()}" scope="row">상품최소사이즈</th>
+            <th th:text="${item.getSizeEt()}" scope="row">상품최대사이즈</th>
+            <th th:text="${item.getQuantity()}" scope="row">상품재고</th>
+            <th th:text="${item.getUseyn()}" scope="row">판매여부</th>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${!itemPaging.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li th:classappend="${!itemPaging.hasPrevious()} ? 'disabled'" class="page-item">
+                <a class="page-link" href="javascript:void(0)"
+                   th:data-page="${(itemPaging.number) - 1}">&laquo;</a>
+            </li>
+            <li th:each="page : ${#numbers.sequence(0, itemPaging.getTotalPages() - 1)}"
+                th:if="${page >= itemPaging.number - 10 and page <= itemPaging.number + 10}"
+                th:classappend="${page == itemPaging.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page + 1}" href="javascript:void(0)" th:data-page="${page}"
+                   class="page-link"></a>
+            </li>
+            <li th:classappend="${!itemPaging.hasNext()} ? 'disabled'" class="page-item">
+                <a class="page-link" href="javascript:void(0)"
+                   th:data-page="${(itemPaging.number) + 1}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+    
+    <!--페이지이동을 위한 js-->
+    <script type="text/javascript">
+        const page_elements = document.getElementsByClassName("page-link");
+        Array.from(page_elements).forEach(function (element) {
+            element.addEventListener('click', function () {
+                document.getElementById('page').value = this.dataset.page;
+                document.getElementById('searchForm').submit();
+            });
+        });
+    </script>
+    
+    <div th:each="item, i : ${itemPaging}" class="modal fade" th:id="'itemDetail_' + ${item.code}"
+         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" th:text="|${item.getCode()} 상세 정보 수정|"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/management/item/modify}" th:object="${Form}" id="modifyForm" method="post">
+                        <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
+                        <div class="mb-3">
+                            <fieldset disabled="">
+                                <label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>
+                                <input th:name="id_view" type="text" class="form-control" id="recipient-id_view"
+                                       th:value="${item.getCode()}">
+                            </fieldset>
+                            <input th:name="id" type="hidden" th:value="${item.getCode()}">
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary" id="button_modify">수정하기</button>
+                        <button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>
+                        <button th:data-uri="@{|/management/item/delete/${item.getCode}|}"
+                                type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal"
+                                data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">정말로 삭제하시겠습니까?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="alert alert-dismissible alert-danger">
+                    <strong>정말로 삭제하시겠습니까?</strong> 한번 더 다시 확인 해주세요!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                    <button type="button" class="button_delete btn btn-danger" data-uri="">네. 삭제하겠습니다.</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modifyForm을 위한 js-->
+    <script>
+        let pwd = document.getElementById('recipient-pwd');
+        let pwd_modfiy = document.getElementById('recipient-pwdModify');
+        const btn_modify = document.getElementById('button_modify');
+        btn_modify.addEventListener('click', function () {
+
+            if (pwd_modfiy == null) {
+
+                alert("비밀번호를 정확히 입력해주세요.");
+            } else {
+
+                pwd.value = pwd_modfiy.value;
+                document.getElementById('modifyForm').submit();
+            }
+        });
+
+        const btn_reset = document.getElementById('button_reset');
+        btn_reset.addEventListener('click', function () {
+
+            document.getElementById('modifyForm').reset();
+        });
+
+        const call_delete_modal = document.getElementsByClassName('call_delete_modal');
+        Array.from(call_delete_modal).forEach(function (modal) {
+
+            modal.addEventListener('click', function () {
+
+                const uri = this.dataset.uri;
+                const btn_delete = document.getElementsByClassName('button_delete');
+                Array.from(btn_delete).forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        location.href = uri;
+                    });
+                });
+            });
+        });
+    </script>
 </div>

@@ -3,12 +3,11 @@ package com.cloth.clothshop.Management;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
-@Setter @RequiredArgsConstructor
+@Setter
 public class ManagementMemberForm {
 
     PasswordEncoder pEncoder;
