@@ -49,7 +49,7 @@
                 <a class="page-link" href="javascript:void(0)"
                    th:data-page="${(memberList.number) - 1}">&laquo;</a>
             </li>
-            <li th:each="page : ${#numbers.sequence(0, (memberList.totalPages))}"
+            <li th:each="page : ${#numbers.sequence(0, memberList.getTotalPages())}"
                 th:if="${page >= memberList.number - 10 and page <= memberList.number + 10}"
                 th:classappend="${page == memberList.number} ? 'active'"
                 class="page-item">

@@ -62,8 +62,6 @@ public class MemberService {
 
     public Page<Member> managementGetMemberList(int page, String searchOption, String keyword) {
 
-        Sort nSort = Sort.by("id");
-
         Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
 
         Page<Member> memberPage = mRepository.findByOptionAndKeyword(searchOption, keyword, pageable);

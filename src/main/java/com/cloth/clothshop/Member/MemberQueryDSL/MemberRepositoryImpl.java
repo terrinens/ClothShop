@@ -8,12 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import static com.cloth.clothshop.Member.QMember.member;
-
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -59,6 +56,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                     .limit(pageable.getPageSize())
                     .fetch();
         }
-        return new PageImpl<>(memberPage, pageable, memberPage.size());
+
+        long total = queryFactory.selectFrom(member).fetch().size();
+
+        return new PageImpl<>(memberPage, pageable, total);
     }
 }
