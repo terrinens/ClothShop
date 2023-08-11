@@ -3,22 +3,19 @@
       xmlns:sec="http://thymeleaf.org/extras/spring-security"
       layout:decorate="~{/layout/layout}">
 
-<div layout:fragment="content" sec:authorize ="hasRole('ROLE_ADMIN')">
-    <!--<form class="d-flex bg-light" role="search" method="get">-->
-    <div class="input-group">
-        <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
-               aria-label="Search" name="SearchKeyword" id="SearchKeyword" th:value="${keyword}">
-        <select style="width: 10%" class="form-select form-select-sm" name="searchOption">
-            <option value="all"></option>
-            <option value="id">ID로 찾기</option>
-            <option value="name">이름으로 찾기</option>
-            <option value="role">권한으로 찾기</option>
-        </select>
-        <button class="btn btn-outline-success" type="submit" id="button_search">검색</button>
-    </div>
-    
+<div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
     <form th:action="@{/management/member}" method="get" id="searchForm">
-        <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
+        <div class="input-group">
+            <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
+                   aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
+            <select style="width: 10%" class="form-select form-select-sm" name="searchOption" th:value="sOption">
+                <option value="all">전체 보기</option>
+                <option value="id">ID로 찾기</option>
+                <option value="name">이름으로 찾기</option>
+                <option value="role">권한으로 찾기</option>
+            </select>
+            <button class="btn btn-outline-success" type="submit" id="button_search">검색</button>
+        </div>
         <input type="hidden" id="page" name="page" th:value="${memberList.number}">
     </form>
     <!--</form>-->
@@ -196,9 +193,9 @@
 
         const call_delete_modal = document.getElementsByClassName('call_delete_modal');
         Array.from(call_delete_modal).forEach(function (modal) {
-            
+
             modal.addEventListener('click', function () {
-                
+
                 const uri = this.dataset.uri;
                 const btn_delete = document.getElementsByClassName('button_delete');
                 Array.from(btn_delete).forEach(function (button) {

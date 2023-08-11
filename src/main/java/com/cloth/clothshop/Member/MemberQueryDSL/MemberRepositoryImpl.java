@@ -8,10 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
 import static com.cloth.clothshop.Member.QMember.member;
 
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
@@ -23,24 +26,39 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
         BooleanExpression condition = null;
 
-        if("id".equals(searchOption)) {
+        if ("id".equals(searchOption)) {
 
             condition = member.id.like(keyword);
-        } else if("name".equals(searchOption)) {
+        } else if ("name".equals(searchOption)) {
 
             condition = member.name.like(keyword);
-        } else if("role".equals(searchOption)) {
+        } else if ("role".equals(searchOption)) {
 
             condition = member.role.like(keyword);
+        } else if ("all".equals(searchOption)) {
+
+            condition = member.id.like(keyword)
+                    .or(member.name.like(keyword))
+                    .or(member.role.like(keyword));
         }
 
-        List<Member> memberPage = queryFactory
-                .selectFrom(member)
-                .where(condition)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        List<Member> memberPage;
+        if (condition != null && !keyword.isEmpty()) {
 
+            memberPage = queryFactory
+                    .selectFrom(member)
+                    .where(condition)
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
+        } else {
+
+            memberPage = queryFactory
+                    .selectFrom(member)
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
+        }
         return new PageImpl<>(memberPage, pageable, memberPage.size());
     }
 }
