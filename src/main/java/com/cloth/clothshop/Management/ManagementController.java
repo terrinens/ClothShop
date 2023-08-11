@@ -26,10 +26,12 @@ public class ManagementController {
     @GetMapping("/member")
     public String managementMember(Model model, ManagementMemberForm mmForm,
                                    @RequestParam(value = "page", defaultValue = "0") int page,
-                                   @RequestParam(value = "searchOption", defaultValue = "") String option,
-                                   @RequestParam(value = "searchKeyword", defaultValue = "") String keyword) {
+                                   @RequestParam(value = "option", defaultValue = "") String option,
+                                   @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
         Page<Member> paging = mService.managementGetMemberList(page, option, keyword);
+
+        System.out.println(option + "::::" + keyword);
 
         model.addAttribute("memberList", paging);
         model.addAttribute("mmForm", mmForm);
