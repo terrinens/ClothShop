@@ -9,17 +9,13 @@ import java.sql.Date;
 @Getter @Setter
 public class ManagementNewItemForm {
 
-    private String code;
-
     @NotEmpty(message = "상품 이름은 필수 입력 사항 입니다.")
     private String name;
 
     @NotEmpty(message = "상품 분류는 필수 선택 사항 입니다.")
     private char kind;
 
-    private String price1;
-
-    private String price2;
+    private String price;
 
     private String conent;
 

@@ -1,9 +1,6 @@
 package com.cloth.clothshop.Products;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,7 +13,7 @@ public class Products {
 	
 	@Id @Column(name = "PK_products_products_code", length = 20)
 	private String code;
-	
+
 	@Column(name = "products_name", length = 100)
 	private String name;
 	
@@ -24,10 +21,7 @@ public class Products {
 	private char kind;
 	
 	@Column(name = "products_price1", length = 10)
-	private String price1;
-	
-	@Column(name = "products_price2", length = 10)
-	private String price2;
+	private String price;
 	
 	@Column(name = "products_conent", length = 1000)
 	private String conent;
