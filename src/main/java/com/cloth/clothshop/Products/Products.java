@@ -24,7 +24,7 @@ public class Products {
 	private String price;
 	
 	@Column(name = "products_conent", length = 1000)
-	private String conent;
+	private String contents;
 	
 	@Lob
 	@Column(name = "products_image", length = 50)

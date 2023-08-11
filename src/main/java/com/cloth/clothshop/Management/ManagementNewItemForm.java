@@ -17,7 +17,7 @@ public class ManagementNewItemForm {
 
     private String price;
 
-    private String conent;
+    private String contents;
 
     private String image;
 

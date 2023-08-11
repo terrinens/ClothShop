@@ -214,26 +214,70 @@
         });
     </script>
     
-    <div class="modal fade" id="newItemBox"
+    <div class="modal fade modal-xl" id="newItemBox"
          tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">상품 추가</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form th:action="@{/management/item/new}" th:object="${Form}" id="newItemForm" method="post">
                         <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
                         <div class="mb-3">
                             <div class="mb-3">
-                                <label for="recipient-pwd" class="col-form-label">상품 이름</label>
-                                <input name="newItemName" type="text" class="form-control">
-                            </div>
+                                <label for="newItemName" class="col-form-label">상품 이름</label>
+                                <input name="newItemName" id="newItemName" type="text" class="form-control-lg">
+                                <div class="mb-2"></div>
+                                <label for="newItemKind" class="col-form-label">상품 분류</label>
+                                <select name="newItemKind" id="newItemKind" class="form-control-lg">
+                                    <option value="a">반팔</option>
+                                    <option value="b">긴팔</option>
+                                    <option value="c">반바지</option>
+                                    <option value="d">긴바지</option>
+                                    <option value="e">짧은치마</option>
+                                    <option value="f">긴치마</option>
+                                </select>
                             
+                            </div>
+                            <div class="mb-3">
+                                <label for="newItemContents" class="col-form-label">상품 설명</label>
+                                <textarea name="newItemContents" class="form-control" rows="4"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-pwd" class="col-form-label">상품 최소 사이즈</label>
+                                <select name="newItemSizeSt" id="newItemSizeSt" class="form-control-lg">
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="XXL">XXL</option>
+                                </select>
+                                <div class="mb-2"></div>
+                                <label for="recipient-pwd" class="col-form-label">상품 최대 사이즈</label>
+                                <select name="newItemSizeEt" id="newItemSizeEt" class="form-control-lg">
+                                    <option value="XXL">XXL</option>
+                                    <option value="XL">XL</option>
+                                    <option value="L">L</option>
+                                    <option value="M">M</option>
+                                    <option value="S">S</option>
+                                    <option value="XS">XS</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newItemQuantity" class="col-form-label">상품 최초 등록 수량</label>
+                                <input name="newItemQuantity" id="newItemQuantity" type="number" class="form-control-lg">
+                                <div class="mb-2"></div>
+                                <label for="newItemUseyn" class="col-form-label">상품 최초 판매 여부</label>
+                                <select name="newItemUseyn" id="newItemUseyn" class="form-control-lg">
+                                    <option value="Y">Y</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </div>
                             <fieldset disabled="">
-                                <label for="recipient-id_view" class="col-form-label">상품 이미지 추가</label>
-                                <input th:name="id_view" type="text" class="form-control" id="newItemImg" value="준비중">
+                                <label for="newItemImg" class="col-form-label">상품 이미지 추가(구현중)</label>
+                                <input name="newItemImg" type="file" class="form-control" id="newItemImg">
                             </fieldset>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>

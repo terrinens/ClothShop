@@ -27,7 +27,7 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
 
         if ("id".equals(searchOption)) {
 
-            condition = products.price1.like("%" + keyword + "%");
+            condition = products.price.like("%" + keyword + "%");
         }
 
         List<Products> productsPage;
