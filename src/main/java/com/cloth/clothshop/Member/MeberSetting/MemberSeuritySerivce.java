@@ -1,5 +1,8 @@
-package com.cloth.clothshop.Member;
+package com.cloth.clothshop.Member.MeberSetting;
 
+import com.cloth.clothshop.Member.MeberSetting.MemberRole;
+import com.cloth.clothshop.Member.Member;
+import com.cloth.clothshop.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

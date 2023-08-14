@@ -1,4 +1,4 @@
-package com.cloth.clothshop.Member;
+package com.cloth.clothshop.Member.MeberSetting;
 
 import lombok.Getter;
 
