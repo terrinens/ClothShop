@@ -19,7 +19,7 @@ public enum ProductsKind {
 
         for (ProductsKind productsKind : ProductsKind.values()) {
 
-            if (productsKind.getKind() == kind) {
+            if (Character.toUpperCase(productsKind.getKind()) == kind) {
 
                 return this.kind;
             }

@@ -41,7 +41,7 @@ public class ProductsService {
         Products products = new Products();
         products.setName(newItemForm.getName());
 
-        products.setKind(ProductsKind.valueOf(String.valueOf(newItemForm.getKind())));
+        products.setKind(newItemForm.getKind());
         products.setPrice(newItemForm.getPrice());
         products.setContents(newItemForm.getContents());
         products.setImage(newItemForm.getImage());

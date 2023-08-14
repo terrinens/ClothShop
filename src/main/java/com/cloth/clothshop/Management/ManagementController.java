@@ -48,6 +48,7 @@ public class ManagementController {
     public String managementNewItem(@ModelAttribute ManagementNewItemForm mnewItemForm) {
 
         pService.managementNewProductsItem(mnewItemForm);
+        System.out.println(mnewItemForm.getKind());
 
         return "redirect:/management/allitem";
     }

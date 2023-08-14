@@ -18,7 +18,7 @@ class ProductsTest {
 		Products pro3 = new Products();
 		Products pro4 = new Products();
 		Products pro5 = new Products();
-		
+
 		pro1.setName("반팔");
 		pro1.setKind('a');
 		pro1.setPrice("10000");

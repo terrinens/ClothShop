@@ -24,6 +24,12 @@ public class Products {
 	@Enumerated(EnumType.ORDINAL)
 	private ProductsKind kind;
 
+	public void setKind(char kind) {
+
+		this.kind = ProductsKind.valueOf(String.valueOf(kind).toUpperCase());
+	}
+
+
 	@Column(name = "products_price1", length = 10)
 	private String price;
 
