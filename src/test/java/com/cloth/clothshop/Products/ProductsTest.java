@@ -45,17 +45,4 @@ class ProductsTest {
 		}
 	}
 
-	/*void gettest() {
-
-		Optional<Products> products = productsRepository.findById("63301b0d-ab26-4594-8621-7030f063fa93");
-
-		if (products.isPresent()) {
-
-			System.out.println("getKindValue ::::: " + products.get().getKind());
-
-			ProductsKind kind = products.get().getKind();
-
-			System.out.println("kindValue ::::: " + ProductsKind.getKind(kind.getKind()));
-		}
-	}*/
 }
