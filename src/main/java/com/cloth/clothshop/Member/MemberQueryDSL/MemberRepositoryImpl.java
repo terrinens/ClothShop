@@ -3,12 +3,10 @@ package com.cloth.clothshop.Member.MemberQueryDSL;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.RepeatCode.QueryDSL_RepeatCode;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
 
 import static com.cloth.clothshop.Member.QMember.member;
 
@@ -16,8 +14,7 @@ import static com.cloth.clothshop.Member.QMember.member;
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
-    private final JPAQueryFactory queryFactory;
-    private final QueryDSL_RepeatCode queryDSLRepeatCode = new QueryDSL_RepeatCode();
+    private final QueryDSL_RepeatCode queryDSLRepeatCode;
 
     @Override
     public Page<Member> findByOptionAndKeyword(String searchOption, String keyword, Pageable pageable) {

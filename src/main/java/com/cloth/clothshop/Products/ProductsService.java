@@ -1,6 +1,5 @@
 package com.cloth.clothshop.Products;
 
-import com.cloth.clothshop.Member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
