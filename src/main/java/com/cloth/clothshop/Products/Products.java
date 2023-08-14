@@ -1,5 +1,6 @@
 package com.cloth.clothshop.Products;
 
+import com.cloth.clothshop.Products.ProductsSetting.ProductsKindConverter;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +11,8 @@ import org.springframework.data.annotation.CreatedDate;
 import java.sql.Date;
 
 @Entity
-@Setter @Getter
+@Setter
+@Getter
 public class Products {
 
 /*	@Id
@@ -27,46 +29,50 @@ public class Products {
 	)
 	private String code;*/
 
-	@Id @Column(name = "PK_products_products_code")
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private String code;
+    @Id
+    @Column(name = "PK_products_products_code")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String code;
 
-	@Column(name = "products_name", length = 100)
-	private String name;
+    @Column(name = "products_name", length = 100)
+    private String name;
 
-	@Column(name = "products_kind", length = 1)
-	@Enumerated(EnumType.ORDINAL)
-	private ProductsKind kind;
+    @Column(name = "products_kind")
+    @Convert(converter = ProductsKindConverter.class)
+    @Enumerated(EnumType.STRING)
+    private ProductsKind kind;
 
-	public void setKind(char kind) {
+    public void setKind(char kind) {
 
-		this.kind = ProductsKind.valueOf(String.valueOf(kind).toUpperCase());
-	}
+        ProductsKind productsKind = ProductsKind.fromChar(kind);
 
-	@Column(name = "products_price", length = 10)
-	private String price;
+        this.kind = productsKind;
+    }
 
-	@Column(name = "products_conent", length = 1000)
-	private String contents;
+    @Column(name = "products_price", length = 10)
+    private String price;
 
-	@Lob
-	@Column(name = "products_image", length = 50)
-	private String image;
+    @Column(name = "products_conent", length = 1000)
+    private String contents;
 
-	@Column(length = 5)
-	private String sizeSt;
+    @Lob
+    @Column(name = "products_image", length = 50)
+    private String image;
 
-	@Column(length = 5)
-	private String sizeEt;
+    @Column(length = 5)
+    private String sizeSt;
 
-	@Column(name = "products_quantity", length = 5)
-	private int quantity;
+    @Column(length = 5)
+    private String sizeEt;
 
-	@Column(length = 1)
-	private char useyn;
+    @Column(name = "products_quantity", length = 5)
+    private int quantity;
 
-	@Column
-	@CreatedDate
-	@CreationTimestamp
-	private Date indate;
+    @Column(length = 1)
+    private char useyn;
+
+    @Column
+    @CreatedDate
+    @CreationTimestamp
+    private Date indate;
 }

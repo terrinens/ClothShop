@@ -15,16 +15,27 @@ public enum ProductsKind {
         this.kind = kind;
     }
 
-    public char getKind() {
+    public static ProductsKind getKind(char kind) {
 
         for (ProductsKind productsKind : ProductsKind.values()) {
 
-            if (Character.toUpperCase(productsKind.getKind()) == kind) {
+            if (Character.toUpperCase(productsKind.getKind()) == Character.toUpperCase(kind)) {
 
-                return this.kind;
+                return productsKind;
             }
         }
-
         throw new DataNotFoundException("찾는 kind값 없음");
+    }
+
+    public static ProductsKind fromChar(char kind) {
+        switch (Character.toUpperCase(kind)) {
+            case 'A': return A;
+            case 'B': return B;
+            case 'C': return C;
+            case 'D': return D;
+            case 'E': return E;
+            case 'F': return F;
+            default: throw new DataNotFoundException("찾는 kind값 없음");
+        }
     }
 }

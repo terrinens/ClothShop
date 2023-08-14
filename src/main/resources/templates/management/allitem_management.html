@@ -61,6 +61,7 @@
     <table class="table table-hover">
         <thead>
         <tr class="table-info">
+            <td>상품분류</td>
             <th scope="row">상품코드</th>
             <td>상품이름</td>
             <td>최소사이즈</td>
@@ -73,6 +74,7 @@
         <tbody>
         <tr th:each="item, i : ${itemPaging}"
             class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#itemDetail_' + ${item.getCode()}">
+            <th th:text="${item.getKind()}" scope="row">상품분류</th>
             <th th:text="${item.getCode()}" scope="row">상품코드</th>
             <th th:text="${item.getName()}" scope="row">상품이름</th>
             <th th:text="${item.getSizeSt()}" scope="row">상품최소사이즈</th>
