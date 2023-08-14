@@ -1,15 +1,14 @@
 package com.cloth.clothshop.Member.MemberQueryDSL;
 
 import com.cloth.clothshop.Member.Member;
+import com.cloth.clothshop.RepeatCode.QueryDSL_RepeatCode;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 import static com.cloth.clothshop.Member.QMember.member;
 
@@ -18,6 +17,7 @@ import static com.cloth.clothshop.Member.QMember.member;
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final QueryDSL_RepeatCode queryDSLRepeatCode = new QueryDSL_RepeatCode();
 
     @Override
     public Page<Member> findByOptionAndKeyword(String searchOption, String keyword, Pageable pageable) {
@@ -45,26 +45,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
             condition = member.tel.like("%" + keyword + "%");
         }
 
-        List<Member> memberPage;
-        if (condition != null && !keyword.isEmpty()) {
-
-            memberPage = queryFactory
-                    .selectFrom(member)
-                    .where(condition)
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .fetch();
-        } else {
-
-            memberPage = queryFactory
-                    .selectFrom(member)
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .fetch();
-        }
-
-        long total = queryFactory.selectFrom(member).fetch().size();
-
-        return new PageImpl<>(memberPage, pageable, total);
+        return queryDSLRepeatCode.keywordIsEmpty(member, condition, keyword, pageable);
     }
 }

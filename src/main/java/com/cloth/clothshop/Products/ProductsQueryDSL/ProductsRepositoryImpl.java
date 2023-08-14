@@ -2,7 +2,9 @@ package com.cloth.clothshop.Products.ProductsQueryDSL;
 
 
 import com.cloth.clothshop.Products.Products;
+import com.cloth.clothshop.RepeatCode.QueryDSL_RepeatCode;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,37 +21,24 @@ import static com.cloth.clothshop.Products.QProducts.products;
 public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final QueryDSL_RepeatCode queryDSLRepeatCode = new QueryDSL_RepeatCode();
 
     @Override
     public Page<Products> findByOptionAndKeyword(String searchOption, String keyword, Pageable pageable) {
 
         BooleanExpression condition = null;
 
-        if ("id".equals(searchOption)) {
+        if ("code".equals(searchOption)) {
 
-            condition = products.price.like("%" + keyword + "%");
+            condition = products.code.like("%" + keyword + "%");
+        } else if ("name".equals(searchOption)) {
+
+            condition = products.name.like("%" + keyword + "%");
+        } else if ("kind".equals(searchOption)) {
+
+            condition = products.kind.eq(keyword.toUpperCase().charAt(0));
         }
 
-        List<Products> productsPage;
-        if (condition != null && !keyword.isEmpty()) {
-
-            productsPage = queryFactory
-                    .selectFrom(products)
-                    .where(condition)
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .fetch();
-        } else {
-
-            productsPage = queryFactory
-                    .selectFrom(products)
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize())
-                    .fetch();
-        }
-
-        long total = queryFactory.selectFrom(products).fetch().size();
-
-        return new PageImpl<>(productsPage, pageable, total);
+        return queryDSLRepeatCode.keywordIsEmpty(products, condition, keyword, pageable);
     }
 }
