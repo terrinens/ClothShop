@@ -2,6 +2,7 @@ package com.cloth.clothshop.Products;
 
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,12 +10,25 @@ import org.springframework.data.annotation.CreatedDate;
 import java.sql.Date;
 
 @Entity
-@Setter
+@Setter @Getter
 public class Products {
 
-	@Id
-	@Column(name = "PK_products_products_code", length = 20)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+/*	@Id
+	@Column(name = "PK_products_products_code")
+	@GeneratedValue(generator = "ProudctsCodeGenerator")
+	@GenericGenerator(
+			name = "ProudctsCodeGenerator",
+			strategy = "ProudctsCodeGenerator",
+			parameters = {
+					@Parameter(name = "kind_value", value = "kind"),
+					@Parameter(name = "auto_int_value", value = "1000"),
+					@Parameter(name = "incr_value", value = "1")
+			}
+	)
+	private String code;*/
+
+	@Id @Column(name = "PK_products_products_code")
+	@GeneratedValue(strategy = GenerationType.UUID)
 	private String code;
 
 	@Column(name = "products_name", length = 100)
@@ -29,8 +43,7 @@ public class Products {
 		this.kind = ProductsKind.valueOf(String.valueOf(kind).toUpperCase());
 	}
 
-
-	@Column(name = "products_price1", length = 10)
+	@Column(name = "products_price", length = 10)
 	private String price;
 
 	@Column(name = "products_conent", length = 1000)
@@ -56,5 +69,4 @@ public class Products {
 	@CreatedDate
 	@CreationTimestamp
 	private Date indate;
-
 }
