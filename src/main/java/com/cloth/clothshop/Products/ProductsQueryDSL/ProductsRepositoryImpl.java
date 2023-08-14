@@ -2,6 +2,7 @@ package com.cloth.clothshop.Products.ProductsQueryDSL;
 
 
 import com.cloth.clothshop.Products.Products;
+import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
 import com.cloth.clothshop.RepeatCode.QueryDSL_RepeatCode;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
             condition = products.name.like("%" + keyword + "%");
         } else if ("kind".equals(searchOption)) {
 
-            condition = products.kind.eq(keyword.toUpperCase().charAt(0));
+            condition = products.kind.eq(ProductsKind.valueOf(keyword));
         }
 
         return queryDSLRepeatCode.keywordIsEmpty(products, condition, keyword, pageable);

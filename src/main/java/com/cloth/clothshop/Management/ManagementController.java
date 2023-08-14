@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -25,7 +22,7 @@ public class ManagementController {
     private final ProductsService pService;
 
     @GetMapping("/allitem")
-    public String managementAllitem(Model model, ManagementNewItemForm mnewItemForm, HttpServletRequest request) {
+    public String managementAllItem(Model model, ManagementNewItemForm mnewItemForm, HttpServletRequest request) {
 
         int page;
         if (request.getParameter("page") == null) {
@@ -45,6 +42,14 @@ public class ManagementController {
         model.addAttribute("mnewItemForm", mnewItemForm);
 
         return "management/allitem_management";
+    }
+
+    @PostMapping("/item/new")
+    public String managementNewItem(@ModelAttribute ManagementNewItemForm mnewItemForm) {
+
+        pService.managementNewProductsItem(mnewItemForm);
+
+        return "redirect:/management/allitem";
     }
 
     @GetMapping("/member")

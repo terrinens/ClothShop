@@ -1,6 +1,5 @@
 package com.cloth.clothshop.Member.MeberSetting;
 
-import com.cloth.clothshop.Member.MeberSetting.MemberRole;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberSeuritySerivce implements UserDetailsService {
+public class MemberSecuritySerivce implements UserDetailsService {
 
 	//Spring Security에서 인증을 담당하는 서비스
 	//UserDetailsService 인터페이스의 정의된 메소드를 오버라이딩해서 구현
