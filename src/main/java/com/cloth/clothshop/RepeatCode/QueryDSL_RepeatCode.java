@@ -19,8 +19,8 @@ public class QueryDSL_RepeatCode {
     public <T> PageImpl<T> keywordIsEmpty(EntityPath<T> table, BooleanExpression condition, String keyword, Pageable pageable) {
 
         JPAQuery<T> query = queryFactory.selectFrom(table);
+        long total = query.fetch().size();
         List<T> page;
-
         if (condition != null && !keyword.isEmpty()) {
 
             page = query
@@ -36,7 +36,11 @@ public class QueryDSL_RepeatCode {
                     .fetch();
         }
 
-        long total = query.fetch().size();
+
+        System.out.println("리펙트 코드로부터 total value::::: " + total);
+        System.out.println("리펙트 코드로부터 리스트 개수 ::::: " + page.size());
+        System.out.println("리펙트 코드로부터 출력됨 페이져블 사이즈 ::::: " + pageable.getPageSize());
+        System.out.println("리펙트 코드로부터 출력됨 페이져블 오프셋::::: " + pageable.getOffset());
 
         return new PageImpl<>(page, pageable, total);
     }
