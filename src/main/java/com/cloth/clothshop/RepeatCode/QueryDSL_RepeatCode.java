@@ -36,12 +36,6 @@ public class QueryDSL_RepeatCode {
                     .fetch();
         }
 
-
-        System.out.println("리펙트 코드로부터 total value::::: " + total);
-        System.out.println("리펙트 코드로부터 리스트 개수 ::::: " + page.size());
-        System.out.println("리펙트 코드로부터 출력됨 페이져블 사이즈 ::::: " + pageable.getPageSize());
-        System.out.println("리펙트 코드로부터 출력됨 페이져블 오프셋::::: " + pageable.getOffset());
-
         return new PageImpl<>(page, pageable, total);
     }
 }

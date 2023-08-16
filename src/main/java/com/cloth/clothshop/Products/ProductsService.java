@@ -37,10 +37,6 @@ public class ProductsService {
 
         Products products = new Products().managementItemSave(newItemForm);
 
-        System.out.println("저장중인 kind :::: " + products.getKind());
-        System.out.println("저장중인 price :::: " + products.getPrice());
-        System.out.println("저장중인 quantity :::: " + products.getQuantity());
-
         pRepository.save(products);
     }
 }

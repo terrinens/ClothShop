@@ -20,6 +20,7 @@ public class ManagementController {
 
     private final MemberService mService;
     private final ProductsService pService;
+    private final Management_RepeatCode managementRepeatCode;
 
     @GetMapping("/allitem")
     public String managementAllItem(Model model, ManagementNewItemForm mnewItemForm, HttpServletRequest request) {
@@ -48,13 +49,11 @@ public class ManagementController {
     public String managementNewItem(@ModelAttribute ManagementNewItemForm mnewItemForm) {
 
         pService.managementNewProductsItem(mnewItemForm);
-        System.out.println("폼에서 넘어온 price :::: " + mnewItemForm.getPrice());
-        System.out.println("폼에서 넘어온 quantity :::: " + mnewItemForm.getQuantity());
 
         return "redirect:/management/allitem";
     }
 
-    @GetMapping("/member")
+/*    @GetMapping("/member")
     public String managementMember(Model model, ManagementMemberForm mmForm, HttpServletRequest request) {
 
         int page;
@@ -73,6 +72,18 @@ public class ManagementController {
 
         model.addAttribute("memberList", paging);
         model.addAttribute("mmForm", mmForm);
+
+        return "management/member_management";
+    }*/
+
+    @GetMapping("/member")
+    public String managementMember(Model model, ManagementMemberForm mmForm, HttpServletRequest request) {
+
+        Page<Member> memberPage = null;
+        String tagetServiceClass = mService.getClass().getName();
+        String tagetServiceClassMethod = "managementGetMemberList";
+
+        managementRepeatCode.managementPaging(mmForm.getClass(), memberPage, model, request, tagetServiceClass, tagetServiceClassMethod);
 
         return "management/member_management";
     }
