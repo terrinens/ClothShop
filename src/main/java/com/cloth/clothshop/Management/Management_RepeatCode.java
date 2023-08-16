@@ -60,10 +60,6 @@ public class Management_RepeatCode {
             model.addAttribute("paging", customPage);
             model.addAttribute("tagetForm", form);
 
-            System.out.println("리펙트코드로부터 넘어온 값 ::::: " + customPage.getNumber());
-            System.out.println("리펙트코드로부터 넘어온 값 ::::: " + customPage.getTotalPages());
-            System.out.println("리펙트코드로부터 넘어온 값 ::::: " + customPage.getSize());
-
         } catch (ClassNotFoundException | NoSuchMethodError | IllegalAccessError | InvocationTargetException |
                  NoSuchMethodException | IllegalAccessException e) {
 

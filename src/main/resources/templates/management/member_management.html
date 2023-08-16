@@ -5,7 +5,7 @@
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
     
-    <!--<div class="input-group">
+   <div class="input-group">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword">
         <select style="width: 10%" class="form-select form-select-sm" name="searchOption" id="searchOption">
@@ -19,7 +19,7 @@
     </div>
     
     <form th:action="@{/management/member}" method="get" id="searchForm">
-        <input type="hidden" id="page" name="page" th:value="${memberList.number}">
+        <input type="hidden" id="page" name="page" th:value="${paging.number}">
         <input type="hidden" id="keyword" name="keyword" th:value="keyword">
         <input type="hidden" id="option" name="option" th:value="option">
     </form>
@@ -52,7 +52,7 @@
         </thead>
         
         <tbody>
-        <tr th:each="member, i : ${memberList}"
+        <tr th:each="member, i : ${paging}"
             class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#memberDetail_' + ${member.id}">
             <th th:text="${member.getId()}" scope="row">ID</th>
             <td th:text="${member.getName()}">멤버이름</td>
@@ -62,28 +62,28 @@
         </tr>
         </tbody>
     </table>
-    <div th:if="${!memberList.isEmpty()}">
+    <div th:if="${!paging.isEmpty()}">
         <ul class="pagination justify-content-center">
-            <li th:classappend="${!memberList.hasPrevious()} ? 'disabled'" class="page-item">
+            <li th:classappend="${!paging.hasPrevious()} ? 'disabled'" class="page-item">
                 <a class="page-link" href="javascript:void(0)"
-                   th:data-page="${(memberList.number) - 1}">&laquo;</a>
+                   th:data-page="${(paging.number) - 1}">&laquo;</a>
             </li>
-            <li th:each="page : ${#numbers.sequence(0, memberList.getTotalPages() - 1)}"
-                th:if="${page >= memberList.number - 10 and page <= memberList.number + 10}"
-                th:classappend="${page == memberList.number} ? 'active'"
+            <li th:each="page : ${#numbers.sequence(0, paging.getTotalPages() - 1)}"
+                th:if="${page >= paging.number - 10 and page <= paging.number + 10}"
+                th:classappend="${page == paging.number} ? 'active'"
                 class="page-item">
-                &lt;!&ndash;실제로는 0부터 시작하니 참고할것. 가독성을 위해 text만 1부터 시작함&ndash;&gt;
+                <!--&lt;!&ndash;실제로는 0부터 시작하니 참고할것. 가독성을 위해 text만 1부터 시작함&ndash;&gt;-->
                 <a th:text="${page + 1}" href="javascript:void(0)" th:data-page="${page}"
                    class="page-link"></a>
             </li>
-            <li th:classappend="${!memberList.hasNext()} ? 'disabled'" class="page-item">
+            <li th:classappend="${!paging.hasNext()} ? 'disabled'" class="page-item">
                 <a class="page-link" href="javascript:void(0)"
-                   th:data-page="${(memberList.number) + 1}">&raquo;</a>
+                   th:data-page="${(paging.number) + 1}">&raquo;</a>
             </li>
         </ul>
     </div>
     
-    &lt;!&ndash;페이지이동을 위한 js&ndash;&gt;
+    <!--&lt;!&ndash;페이지이동을 위한 js&ndash;&gt;-->
     <script type="text/javascript">
         const page_elements = document.getElementsByClassName("page-link");
         Array.from(page_elements).forEach(function (element) {
@@ -94,7 +94,7 @@
         });
     </script>
     
-    <div th:each="member, i : ${memberList}" class="modal fade" th:id="'memberDetail_' + ${member.id}"
+    <div th:each="member, i : ${paging}" class="modal fade" th:id="'memberDetail_' + ${member.id}"
          tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -103,7 +103,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/management/member/modify}" th:object="${mmForm}" id="modifyForm" method="post">
+                    <form th:action="@{/management/member/modify}" th:object="${tagetForm}" id="modifyForm" method="post">
                         <div th:replace="~{layout/formErrors::formErrorsFragment}"></div>
                         <div class="mb-3">
                             <fieldset disabled="">
@@ -179,7 +179,7 @@
         </div>
     </div>
     
-    &lt;!&ndash;modifyForm을 위한 js&ndash;&gt;
+    <!--&lt;!&ndash;modifyForm을 위한 js&ndash;&gt;-->
     <script>
         let pwd = document.getElementById('recipient-pwd');
         let pwd_modfiy = document.getElementById('recipient-pwdModify');
@@ -216,6 +216,6 @@
                 });
             });
         });
-    </script>-->
+    </script>
 </div>
 
