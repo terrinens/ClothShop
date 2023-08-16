@@ -50,8 +50,8 @@ public class Management_RepeatCode {
 
             Class<?> serviceClass = Class.forName(tagetServiceClass);
             Object serviceInstance = applicationContext.getBean(serviceClass);
-            Class<?>[] paramterType = new Class<?>[]{int.class, String.class, String.class};
-            Method method = serviceClass.getDeclaredMethod(tagetServiceClassMethod, paramterType);
+            Class<?>[] parameterType = new Class<?>[]{int.class, String.class, String.class};
+            Method method = serviceClass.getDeclaredMethod(tagetServiceClassMethod, parameterType);
             Object[] arguments = new Object[]{page, option, keyword};
             Page<?> paging = (Page<?>) method.invoke(serviceInstance, arguments);
 
