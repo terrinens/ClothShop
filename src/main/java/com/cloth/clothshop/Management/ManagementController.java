@@ -79,11 +79,10 @@ public class ManagementController {
     @GetMapping("/member")
     public String managementMember(Model model, ManagementMemberForm mmForm, HttpServletRequest request) {
 
-        Page<Member> memberPage = null;
         String tagetServiceClass = mService.getClass().getName();
         String tagetServiceClassMethod = "managementGetMemberList";
 
-        managementRepeatCode.managementPaging(mmForm.getClass(), memberPage, model, request, tagetServiceClass, tagetServiceClassMethod);
+        managementRepeatCode.managementPaging(model, mmForm.getClass(), Member.class, request, tagetServiceClass, tagetServiceClassMethod);
 
         return "management/member_management";
     }

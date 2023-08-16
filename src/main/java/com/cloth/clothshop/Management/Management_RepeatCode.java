@@ -1,19 +1,39 @@
 package com.cloth.clothshop.Management;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
-@RequiredArgsConstructor @Configuration
+@RequiredArgsConstructor
+@Configuration
 public class Management_RepeatCode {
 
-    public void managementPaging(Class form, Page paging, Model model ,HttpServletRequest request,
+    @Getter
+    public static class CustomPage<T> extends PageImpl<T> {
+
+        private final Class<?> entityClass; // 추가된 부분
+
+        public CustomPage(List<T> content, Pageable pageable, long total, Class<?> entityClass) {
+            super(content, pageable, total);
+            this.entityClass = entityClass;
+        }
+    }
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    public void managementPaging(Model model ,Class form, Class<?> tableEntityClass, HttpServletRequest request,
                                  String tagetServiceClass, String tagetServiceClassMethod) {
 
         int page = 0;
@@ -29,26 +49,25 @@ public class Management_RepeatCode {
         try {
 
             Class<?> serviceClass = Class.forName(tagetServiceClass);
-            Constructor<?> constructor = serviceClass.getConstructor();
-            Object serviceInstance = constructor.newInstance();
-
+            Object serviceInstance = applicationContext.getBean(serviceClass);
             Class<?>[] paramterType = new Class<?>[]{int.class, String.class, String.class};
             Method method = serviceClass.getDeclaredMethod(tagetServiceClassMethod, paramterType);
-
             Object[] arguments = new Object[]{page, option, keyword};
-            paging = (Page<?>) method.invoke(serviceInstance, arguments);
+            Page<?> paging = (Page<?>) method.invoke(serviceInstance, arguments);
 
-            model.addAttribute("paging", paging);
+            CustomPage<?> customPage = new CustomPage<>(paging.getContent(), paging.getPageable(), paging.getTotalElements(), tableEntityClass);
+
+            model.addAttribute("paging", customPage);
             model.addAttribute("tagetForm", form);
 
-            System.out.println("리팩트 코드로부터 넘어옴 페이징 토탈 페이지 ::::: " + paging.getTotalPages());
-            System.out.println("리팩트 코드로부터 넘어옴 페이징 사이즈 ::::: " + paging.getSize());
+            System.out.println("리펙트코드로부터 넘어온 값 ::::: " + customPage.getNumber());
+            System.out.println("리펙트코드로부터 넘어온 값 ::::: " + customPage.getTotalPages());
+            System.out.println("리펙트코드로부터 넘어온 값 ::::: " + customPage.getSize());
 
         } catch (ClassNotFoundException | NoSuchMethodError | IllegalAccessError | InvocationTargetException |
-                 NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+                 NoSuchMethodException | IllegalAccessException e) {
 
             e.printStackTrace();
         }
-
     }
 }
