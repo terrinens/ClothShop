@@ -1,5 +1,6 @@
 package com.cloth.clothshop.Products;
 
+import com.cloth.clothshop.Management.ManagementNewItemForm;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKindConverter;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
 import jakarta.persistence.*;
@@ -75,4 +76,19 @@ public class Products {
     @CreatedDate
     @CreationTimestamp
     private Date indate;
+
+    public Products managementItemSave(ManagementNewItemForm newItemForm) {
+
+        this.name = newItemForm.getName();
+        this.kind = ProductsKind.fromChar(newItemForm.getKind());
+        this.price = newItemForm.getPrice();
+        this.contents = newItemForm.getContents();
+        this.image = newItemForm.getImage();
+        this.sizeSt = newItemForm.getSizeSt();
+        this.sizeEt = newItemForm.getSizeEt();
+        this.quantity = newItemForm.getQuantity();
+        this.useyn = newItemForm.getUseyn();
+
+        return this;
+    }
 }

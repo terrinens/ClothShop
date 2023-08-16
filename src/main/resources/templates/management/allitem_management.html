@@ -267,7 +267,10 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="newItemQuantity" class="col-form-label">상품 최초 등록 수량</label>
+                                <label for="newItemQuantity" class="col-form-label">상품 가격</label>
+                                <input name="price" id="newItemPrice" type="number" class="form-control-lg">
+                                <div class="mb-2"></div>
+                                <label for="newItemQuantity" class="col-form-label">재고 최초 등록 수량</label>
                                 <input name="quantity" id="newItemQuantity" type="number" class="form-control-lg">
                                 <div class="mb-2"></div>
                                 <label for="newItemUseyn" class="col-form-label">상품 최초 판매 여부</label>
@@ -283,6 +286,7 @@
                             <input type="hidden" name="image" value="이미지 준비중!">
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="reset" class="btn btn-warning">리셋</button>
                         <button type="submit" class="btn btn-outline-success">상품 등록</button>
                     </form>
                 </div>

@@ -48,7 +48,8 @@ public class ManagementController {
     public String managementNewItem(@ModelAttribute ManagementNewItemForm mnewItemForm) {
 
         pService.managementNewProductsItem(mnewItemForm);
-        System.out.println(mnewItemForm.getKind());
+        System.out.println("폼에서 넘어온 price :::: " + mnewItemForm.getPrice());
+        System.out.println("폼에서 넘어온 quantity :::: " + mnewItemForm.getQuantity());
 
         return "redirect:/management/allitem";
     }

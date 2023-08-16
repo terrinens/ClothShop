@@ -35,16 +35,11 @@ public class ProductsService {
 
     public void managementNewProductsItem(ManagementNewItemForm newItemForm) {
 
-        Products products = new Products();
-        products.setName(newItemForm.getName());
+        Products products = new Products().managementItemSave(newItemForm);
 
-        /*products.setKind(newItemForm.getKind());*/
-        products.setPrice(newItemForm.getPrice());
-        products.setContents(newItemForm.getContents());
-        products.setImage(newItemForm.getImage());
-        products.setSizeSt(newItemForm.getSizeSt());
-        products.setSizeEt(newItemForm.getSizeEt());
-        products.setUseyn(newItemForm.getUseyn());
+        System.out.println("저장중인 kind :::: " + products.getKind());
+        System.out.println("저장중인 price :::: " + products.getPrice());
+        System.out.println("저장중인 quantity :::: " + products.getQuantity());
 
         pRepository.save(products);
     }
