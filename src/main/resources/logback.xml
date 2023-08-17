@@ -1,0 +1,24 @@
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{HH:mm:ss} [%-5level] %logger{36}[line: %L] - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>LodingTime.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>LodingTime-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>50</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{HH:mm:ss} %logger{36}[line: %L] - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.cloth.clothshop.Management.ManagementController" level="info">
+        <appender-ref ref="FILE"/>
+    </logger>
+</configuration>

@@ -6,16 +6,18 @@ import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
 
 @Controller @RequiredArgsConstructor
-@RequestMapping("/management")
+@RequestMapping("/management") @Slf4j
 public class ManagementController {
 
     private final MemberService mService;
@@ -56,6 +58,9 @@ public class ManagementController {
 /*    @GetMapping("/member")
     public String managementMember(Model model, ManagementMemberForm mmForm, HttpServletRequest request) {
 
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
         int page;
         if (request.getParameter("page") == null) {
 
@@ -73,16 +78,29 @@ public class ManagementController {
         model.addAttribute("memberList", paging);
         model.addAttribute("mmForm", mmForm);
 
+        stopWatch.stop();
+        System.out.println("non 리펙트코드 측정 : " + stopWatch.getTotalTimeNanos());
+
         return "management/member_management";
     }*/
 
     @GetMapping("/member")
     public String managementMember(Model model, ManagementMemberForm mmForm, HttpServletRequest request) {
 
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
         String tagetServiceClass = mService.getClass().getName();
         String tagetServiceClassMethod = "managementGetMemberList";
 
         managementRepeatCode.managementPaging(model, mmForm.getClass(), Member.class, request, tagetServiceClass, tagetServiceClassMethod);
+
+        stopWatch.stop();
+        long msg = stopWatch.getTotalTimeNanos();
+        log.info("리펙트코드 측정 나노초 : " + msg);
+
+        System.out.println("로그 이름? : " + log.getName());
+        System.out.println("로그 트래킹? : " + log.atTrace());
 
         return "management/member_management";
     }
