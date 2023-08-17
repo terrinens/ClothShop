@@ -4,6 +4,7 @@ import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
+import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +59,6 @@ public class ManagementController {
 /*    @GetMapping("/member")
     public String managementMember(Model model, ManagementMemberForm mmForm, HttpServletRequest request) {
 
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
         int page;
         if (request.getParameter("page") == null) {
 
@@ -78,9 +76,6 @@ public class ManagementController {
         model.addAttribute("memberList", paging);
         model.addAttribute("mmForm", mmForm);
 
-        stopWatch.stop();
-        System.out.println("non 리펙트코드 측정 : " + stopWatch.getTotalTimeNanos());
-
         return "management/member_management";
     }*/
 
@@ -90,14 +85,14 @@ public class ManagementController {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        String tagetServiceClass = mService.getClass().getName();
-        String tagetServiceClassMethod = "managementGetMemberList";
+        String targetServiceClass = mService.getClass().getName();
+        String targetServiceClassMethod = "managementGetMemberList";
 
-        managementRepeatCode.managementPaging(model, mmForm.getClass(), Member.class, request, tagetServiceClass, tagetServiceClassMethod);
+        managementRepeatCode.managementPaging(model, mmForm.getClass(), Member.class, request, targetServiceClass, targetServiceClassMethod);
 
         stopWatch.stop();
         long msg = stopWatch.getTotalTimeNanos();
-        log.info("리펙트코드 측정 나노초 : " + msg);
+        log.info("리펙트 코드 측정 나노초 : " + msg);
 
         return "management/member_management";
     }

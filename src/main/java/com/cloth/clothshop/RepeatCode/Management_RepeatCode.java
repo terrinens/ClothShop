@@ -1,4 +1,4 @@
-package com.cloth.clothshop.Management;
+package com.cloth.clothshop.RepeatCode;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
@@ -6,15 +6,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
 
 @Configuration
 public class Management_RepeatCode {
 
     private final ApplicationContext applicationContext;
+
     public Management_RepeatCode(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
@@ -31,10 +35,9 @@ public class Management_RepeatCode {
     }
 
     //참고 managementGetMemberList
-    private Page<?> autoWritePageing(int page, String searchOption, String keyword,
-                                   Class tagetRepositoryClassName) {
+    private Page<?> autoWriteManagementPaging(int page, String searchOption, String keyword,
+                                              String targetRepositoryClassName, String sortBenchmark) {
 
-        String sortBenchmark = "id";
         Sort sort = Sort.by(sortBenchmark).ascending();
         Pageable pageable = PageRequest.of(page, 15, sort);
 
@@ -43,24 +46,55 @@ public class Management_RepeatCode {
             Class<?>[] parameterType = new Class<?>[]{String.class, String.class, Pageable.class};
             Object[] arguments = new Object[]{searchOption, keyword, pageable};
 
-            Object repositoryInstance = applicationContext.getBean(tagetRepositoryClassName.getName());
+            Object repositoryInstance = applicationContext.getBean(targetRepositoryClassName);
             Method method = repositoryInstance.getClass().getDeclaredMethod("findByOptionAndKeyword", parameterType);
 
+            //ex : Page<Member> memberPage = mRepository.findByOptionAndKeyword(searchOption, keyword, pageable);
             Page<?> autoPaging = (Page<?>) method.invoke(repositoryInstance, arguments);
 
             return autoPaging;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 
+            //수정할것 최소 무슨 문제인지 알아볼수 있게 분리하자.
             throw new RuntimeException(e);
         }
     }
 
-    public void autoManagementPaging() {
+    public void autoManagementPaging(Model model, String targetFormClassName, Class<?> tableEntityClass,
+                                     String targetRepositoryClassName, String sortBenchmark, String[] pathVariable) {
+
+        int page = 0;
+        String keyword = null;
+        String option = null;
+
+        //?page=0&keyword=a&option=all
+        for (int i = 0; i <= pathVariable.length; i++) {
+
+            switch (pathVariable[i]) {
+
+                case "page":
+                    page = Integer.parseInt(pathVariable[i]);
+                    break;
+                case "keyword":
+                    keyword = pathVariable[i];
+                    break;
+                case "option":
+                    option = pathVariable[i];
+                    break;
+                default:
+                    page = 0;
+                    keyword = null;
+                    option = null;
+                    break;
+            }
+        }
+
+        CustomPage<?> customPage = new CustomPage<>()
 
     }
 
-    public void managementPaging(Model model ,Class form, Class<?> tableEntityClass, HttpServletRequest request,
-                                 String tagetServiceClass, String tagetServiceClassMethod) {
+    public void managementPaging(Model model, Class form, Class<?> tableEntityClass, HttpServletRequest request,
+                                 String targetServiceClass, String targetServiceClassMethod) {
 
         int page = 0;
 
@@ -74,10 +108,10 @@ public class Management_RepeatCode {
 
         try {
 
-            Class<?> serviceClass = Class.forName(tagetServiceClass);
+            Class<?> serviceClass = Class.forName(targetServiceClass);
             Object serviceInstance = applicationContext.getBean(serviceClass);
             Class<?>[] parameterType = new Class<?>[]{int.class, String.class, String.class};
-            Method method = serviceClass.getDeclaredMethod(tagetServiceClassMethod, parameterType);
+            Method method = serviceClass.getDeclaredMethod(targetServiceClassMethod, parameterType);
             Object[] arguments = new Object[]{page, option, keyword};
             Page<?> paging = (Page<?>) method.invoke(serviceInstance, arguments);
 
@@ -89,7 +123,7 @@ public class Management_RepeatCode {
         } catch (ClassNotFoundException | NoSuchMethodError | IllegalAccessError | InvocationTargetException |
                  NoSuchMethodException | IllegalAccessException e) {
 
-            //수정할것
+            //수정할것 최소 무슨 문제인지 알아볼수 있게 분리하자.
             throw new RuntimeException(e);
         }
     }
