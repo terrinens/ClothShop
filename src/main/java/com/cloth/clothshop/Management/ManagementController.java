@@ -99,9 +99,6 @@ public class ManagementController {
         long msg = stopWatch.getTotalTimeNanos();
         log.info("리펙트코드 측정 나노초 : " + msg);
 
-        System.out.println("로그 이름? : " + log.getName());
-        System.out.println("로그 트래킹? : " + log.atTrace());
-
         return "management/member_management";
     }
 

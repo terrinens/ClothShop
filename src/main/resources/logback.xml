@@ -7,10 +7,21 @@
     </appender>
 
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>LodingTime.log</file>
+    <appender name="notCodeUSE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:\BackEndProj\ClothShop\src\main\resources\LodingTime\RepectCodeUseLog\LodingTime.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>LodingTime-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>C:\BackEndProj\ClothShop\src\main\resources\LodingTime\RepectCodeUseLog\LodingTime-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>50</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{HH:mm:ss} %logger{36}[line: %L] - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="codeUSE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:\BackEndProj\ClothShop\src\main\resources\LodingTime\RepectCodeUseLog\LodingTime.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>C:\BackEndProj\ClothShop\src\main\resources\LodingTime\RepectCodeUseLog\LodingTime-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>50</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -19,6 +30,6 @@
     </appender>
 
     <logger name="com.cloth.clothshop.Management.ManagementController" level="info">
-        <appender-ref ref="FILE"/>
+            <appender-ref ref="notCodeUSE"/>
     </logger>
 </configuration>
