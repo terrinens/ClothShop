@@ -15,23 +15,24 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Configuration
 public class Management_RepeatCode {
+
+    private final ApplicationContext applicationContext;
+    public Management_RepeatCode(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
     @Getter
     public static class CustomPage<T> extends PageImpl<T> {
 
-        private final Class<?> entityClass; // 추가된 부분
+        private final Class<?> entityClass;
 
         public CustomPage(List<T> content, Pageable pageable, long total, Class<?> entityClass) {
             super(content, pageable, total);
             this.entityClass = entityClass;
         }
     }
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     public void managementPaging(Model model ,Class form, Class<?> tableEntityClass, HttpServletRequest request,
                                  String tagetServiceClass, String tagetServiceClassMethod) {
@@ -63,6 +64,7 @@ public class Management_RepeatCode {
         } catch (ClassNotFoundException | NoSuchMethodError | IllegalAccessError | InvocationTargetException |
                  NoSuchMethodException | IllegalAccessException e) {
 
+            //수정할것
             e.printStackTrace();
         }
     }
