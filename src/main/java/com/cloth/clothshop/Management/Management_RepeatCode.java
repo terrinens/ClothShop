@@ -2,13 +2,9 @@ package com.cloth.clothshop.Management;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.ui.Model;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +28,35 @@ public class Management_RepeatCode {
             super(content, pageable, total);
             this.entityClass = entityClass;
         }
+    }
+
+    //참고 managementGetMemberList
+    private Page<?> autoWritePageing(int page, String searchOption, String keyword,
+                                   Class tagetRepositoryClassName) {
+
+        String sortBenchmark = "id";
+        Sort sort = Sort.by(sortBenchmark).ascending();
+        Pageable pageable = PageRequest.of(page, 15, sort);
+
+        try {
+
+            Class<?>[] parameterType = new Class<?>[]{String.class, String.class, Pageable.class};
+            Object[] arguments = new Object[]{searchOption, keyword, pageable};
+
+            Object repositoryInstance = applicationContext.getBean(tagetRepositoryClassName.getName());
+            Method method = repositoryInstance.getClass().getDeclaredMethod("findByOptionAndKeyword", parameterType);
+
+            Page<?> autoPaging = (Page<?>) method.invoke(repositoryInstance, arguments);
+
+            return autoPaging;
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void autoManagementPaging() {
+
     }
 
     public void managementPaging(Model model ,Class form, Class<?> tableEntityClass, HttpServletRequest request,
@@ -65,7 +90,7 @@ public class Management_RepeatCode {
                  NoSuchMethodException | IllegalAccessException e) {
 
             //수정할것
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }
