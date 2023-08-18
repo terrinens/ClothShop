@@ -21,22 +21,6 @@
         <button class="btn btn-outline-success" type="submit" id="button_search" style="border-radius: 0em">검색</button>
     </div>
     
-    <script>
-        document.getElementById("searchKeyword").addEventListener("keydown", function (event) {
-            if (event.key === "Enter") { // 엔터 키
-                event.preventDefault();
-                document.getElementById("searchForm").submit();
-            }
-        });
-
-        document.getElementById("searchOption").addEventListener("keydown", function (event) {
-            if (event.key === "Enter") { // 엔터 키
-                event.preventDefault();
-                document.getElementById("searchForm").submit();
-            }
-        });
-    </script>
-    
     <form th:action="@{/management/member}" method="get" id="searchForm">
         <input type="hidden" id="page" name="page" th:value="${memberPaging.number}">
         <input type="hidden" id="keyword" name="keyword" th:value="keyword">
@@ -51,12 +35,25 @@
         const searchOption = document.getElementById('searchOption');
         const searchForm = document.getElementById('searchForm');
 
-        button_search.addEventListener('click', function () {
-
+        button_search.addEventListener('click', function (event) {
             keyword.value = searchKeyword.value;
             option.value = searchOption.value;
             searchForm.submit();
-        })
+        });
+
+        searchKeyword.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                button_search.click();
+            }
+        });
+
+        searchOption.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                button_search.click();
+            }
+        });
     </script>
     <table class="table table-hover container-xxl">
         <thead>
