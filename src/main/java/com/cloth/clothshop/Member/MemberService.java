@@ -62,22 +62,11 @@ public class MemberService {
                 mmForm.getTel());
     }
 
-    public Page<Member> managementGetMemberList(int page, String searchOption, String keyword) {
+    public Page<Member> managementGetAutoPaging(Object[] requestParamArray) {
 
-        Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
-
-        Page<Member> memberPage = mRepository.findByOptionAndKeyword(searchOption, keyword, pageable);
-
-        return memberPage;
-    }
-
-    public Page<Member> managementGetAutoPaging() {
-
-        Member member = new Member();
-
-        String targetRCN = mRepository.getClass().getName();
-        String sortBenchmark = member.getId().getClass().getName();
-        Page<Member> memberPage = managementRepeatCode.autoWriteManagementPaging(targetRCN, sortBenchmark);
+        String targetRCN = MemberRepository.class.getName();
+        String sortBenchmark = "id";
+        Page<Member> memberPage = managementRepeatCode.autoWritePaging(targetRCN, sortBenchmark, requestParamArray);
 
         return memberPage;
     }

@@ -1,6 +1,9 @@
 package com.cloth.clothshop.Products;
 
 import com.cloth.clothshop.Management.ManagementNewItemForm;
+import com.cloth.clothshop.Member.Member;
+import com.cloth.clothshop.Member.MemberRepository;
+import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class ProductsService {
 
     private final ProductsRepository pRepository;
+    private final Management_RepeatCode managementRepeatCode;
 
     public Page<Products> getlistCloth(char kindOption1, char kindOption2, int page
     ) {
@@ -24,11 +28,11 @@ public class ProductsService {
         return divisionCloth;
     }
 
-    public Page<Products> managementGetProductsPage(int page, String searchOption, String keyword) {
+    public Page<Products> managementGetAutoPaging(Object[] requestParamArray) {
 
-        Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
-
-        Page<Products> productsPage = pRepository.findByOptionAndKeyword(searchOption, keyword, pageable);
+        String targetRCN = ProductsRepository.class.getName();
+        String sortBenchmark = "id";
+        Page<Products> productsPage = managementRepeatCode.autoWritePaging(targetRCN, sortBenchmark, requestParamArray);
 
         return productsPage;
     }

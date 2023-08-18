@@ -1,15 +1,14 @@
 package com.cloth.clothshop.RepeatCode;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
-import org.springframework.ui.Model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Configuration
 public class Management_RepeatCode {
@@ -31,12 +30,40 @@ public class Management_RepeatCode {
         }
     }
 
-    //참고 managementGetMemberList
-    public <T>  Page<T> autoWriteManagementPaging(String targetRepositoryClassName, String sortBenchmark) {
+    /**
+     * QueryDsl로 커스텀한 메소드 이름 <strong>findByOptionAndKeyword</stroing>에서만 작동이 가능합니다. <br>
+     * <h4>ex : Page<T> findByOptionAndKeyword(String searchOption, String searchKeyword, {@link Pageable} pageable);</h4>
+     * 모든것이 올바르게 변수가 지정되었다면 자동으로 해당되는 레파지토리에서 메소드를 찾아 사용하여 페이징을 진행합니다.
+     * @author DongChuel Kim
+     * @version 0.1
+     * @param targetRCN 사용할 레파지토리 클래스 이름을 넣습니다. <br>
+     *                  ex : String targetRCN = EntityRepository.class.getName(); <br>
+     * @param sortBenchmark 엔티티 테이블에서 정렬에 기준이될 이름을 넣습니다. <br>
+     * @param requestParamArray 파라메터값을 배열화해서 넣습니다. 하지만 page, option, keyword값만 가능합니다. <br>
+     * @return Page<T> autoPaging;
+     */
+    public <T> Page<T> autoWritePaging(String targetRCN, String sortBenchmark, Object[] requestParamArray) {
 
-        final int page = 0;
-        final String searchOption = null;
-        final String keyword = null;
+        int page = 0;
+        String searchOption = null;
+        String keyword = null;
+
+        for (int i = 0; i < requestParamArray.length; i++) {
+            if (i == 0) {
+                if (requestParamArray[i] != null) {
+                    page = Integer.parseInt(requestParamArray[i].toString());
+                }
+            } else if (i == 1) {
+
+                if (requestParamArray[i] != null) {
+                    searchOption = requestParamArray[i].toString();
+                }
+            } else if (i == 2) {
+                if (requestParamArray[i] != null) {
+                    keyword = requestParamArray[i].toString();
+                }
+            }
+        }
 
         Sort sort = Sort.by(sortBenchmark).ascending();
         Pageable pageable = PageRequest.of(page, 15, sort);
@@ -44,74 +71,25 @@ public class Management_RepeatCode {
         try {
             Class<?>[] parameterType = new Class<?>[]{String.class, String.class, Pageable.class};
             Object[] arguments = new Object[]{searchOption, keyword, pageable};
-
-            Object repositoryInstance = applicationContext.getBean(targetRepositoryClassName);
+            Object repositoryInstance = applicationContext.getBean(Class.forName(targetRCN));
             Method method = repositoryInstance.getClass().getDeclaredMethod("findByOptionAndKeyword", parameterType);
 
-            //ex : Page<Member> memberPage = mRepository.findByOptionAndKeyword(searchOption, keyword, pageable);
-            Page<T> autoPaging = (Page<T>) method.invoke(repositoryInstance, arguments);
-
-            return autoPaging;
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            //수정할것 최소 무슨 문제인지 알아볼수 있게 분리하자.
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void autoManagementPaging(Model model, String targetFormClassName, Page<?> autoPaging,
-                                     Class<?> tableEntityClass, String[] pathVariable) {
-
-        int page = 0;
-        String keyword = null;
-        String option = null;
-
-        //?page=0&keyword=a&option=all
-        for (int i = 0; i <= pathVariable.length; i++) {
-            switch (pathVariable[i]) {
-                case "page" -> page = Integer.parseInt(pathVariable[i]);
-                case "keyword" -> keyword = pathVariable[i];
-                case "option" -> option = pathVariable[i];
+            Page<T> autoPaging;
+            Object reslut = method.invoke(repositoryInstance, arguments);
+            if (reslut instanceof Page<?>) {
+                autoPaging = (Page<T>) reslut;
+                return autoPaging;
+            } else {
+                throw new RuntimeException("Unexpected result type :::: ");
             }
-        }
-
-        CustomPage<?> customPage = new CustomPage<>(autoPaging.getContent(), autoPaging.getPageable(), autoPaging.getTotalElements(), tableEntityClass);
-
-        model.addAttribute("paging", customPage);
-        model.addAttribute("targetForm", targetFormClassName);
-    }
-
-    public void managementPaging(Model model, Class form, Class<?> tableEntityClass, HttpServletRequest request,
-                                 String targetServiceClass, String targetServiceClassMethod) {
-
-        int page = 0;
-
-        if (request.getParameter("page") != null) {
-
-            page = Integer.parseInt(request.getParameter("page"));
-        }
-
-        String option = request.getParameter("option");
-        String keyword = request.getParameter("keyword");
-
-        try {
-
-            Class<?> serviceClass = Class.forName(targetServiceClass);
-            Object serviceInstance = applicationContext.getBean(serviceClass);
-            Class<?>[] parameterType = new Class<?>[]{int.class, String.class, String.class};
-            Method method = serviceClass.getDeclaredMethod(targetServiceClassMethod, parameterType);
-            Object[] arguments = new Object[]{page, option, keyword};
-            Page<?> paging = (Page<?>) method.invoke(serviceInstance, arguments);
-
-            CustomPage<?> customPage = new CustomPage<>(paging.getContent(), paging.getPageable(), paging.getTotalElements(), tableEntityClass);
-
-            model.addAttribute("paging", customPage);
-            model.addAttribute("tagetForm", form);
-
-        } catch (ClassNotFoundException | NoSuchMethodError | IllegalAccessError | InvocationTargetException |
-                 NoSuchMethodException | IllegalAccessException e) {
-
-            //수정할것 최소 무슨 문제인지 알아볼수 있게 분리하자.
-            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("No such method found :::: ", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Illegal access :::: ", e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("Invocation target exception :::: ", e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Class not found :::: ", e);
         }
     }
 }

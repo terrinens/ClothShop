@@ -1,6 +1,7 @@
+<!--suppress HtmlRequiredLangAttribute, ThymeleafVariablesResolveInspection -->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://thymeleaf.org/extras/spring-security"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -70,9 +71,7 @@
             </li>
             <li th:each="page : ${#numbers.sequence(0, paging.getTotalPages() - 1)}"
                 th:if="${page >= paging.number - 10 and page <= paging.number + 10}"
-                th:classappend="${page == paging.number} ? 'active'"
-                class="page-item">
-                <!--&lt;!&ndash;실제로는 0부터 시작하니 참고할것. 가독성을 위해 text만 1부터 시작함&ndash;&gt;-->
+                th:classappend="${page == paging.number} ? 'active'" class="page-item">
                 <a th:text="${page + 1}" href="javascript:void(0)" th:data-page="${page}"
                    class="page-link"></a>
             </li>
@@ -83,7 +82,7 @@
         </ul>
     </div>
     
-    <!--&lt;!&ndash;페이지이동을 위한 js&ndash;&gt;-->
+    <!--페이지이동을 위한 js-->
     <script type="text/javascript">
         const page_elements = document.getElementsByClassName("page-link");
         Array.from(page_elements).forEach(function (element) {
@@ -103,7 +102,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/management/member/modify}" th:object="${tagetForm}" id="modifyForm" method="post">
+                    <form th:action="@{/management/member/modify}" th:object="${targetForm}" id="modifyForm" method="post">
                         <div th:replace="~{layout/formErrors::formErrorsFragment}"></div>
                         <div class="mb-3">
                             <fieldset disabled="">
@@ -179,7 +178,7 @@
         </div>
     </div>
     
-    <!--&lt;!&ndash;modifyForm을 위한 js&ndash;&gt;-->
+    <!--modifyForm을 위한 js-->
     <script>
         let pwd = document.getElementById('recipient-pwd');
         let pwd_modfiy = document.getElementById('recipient-pwdModify');

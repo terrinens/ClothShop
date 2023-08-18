@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -23,29 +22,21 @@ public class ManagementController {
 
     private final MemberService mService;
     private final ProductsService pService;
-    private final Management_RepeatCode managementRepeatCode;
 
     @GetMapping("/allitem")
-    public String managementAllItem(Model model, ManagementNewItemForm mnewItemForm, HttpServletRequest request) {
+    public String managementProudcts(Model model, ManagementNewItemForm managementNewItemForm,
+                                   @RequestParam (value = "page", defaultValue = "0") String page,
+                                   @RequestParam (value = "option", defaultValue = "") String option,
+                                   @RequestParam (value = "keyword", defaultValue = "") String keyword
+    ) {
 
-        int page;
-        if (request.getParameter("page") == null) {
+        Object[] requestParam = new Object[]{page, option, keyword};
+        Page<Products> paging = pService.managementGetAutoPaging(requestParam);
 
-            page = 0;
-        } else {
+        model.addAttribute("paging", paging);
+        model.addAttribute("targetForm", managementNewItemForm);
 
-            page = Integer.parseInt(request.getParameter("page"));
-        }
-
-        String option = request.getParameter("option");
-        String keyword = request.getParameter("keyword");
-
-        Page<Products> paging = pService.managementGetProductsPage(page, option, keyword);
-
-        model.addAttribute("itemPaging", paging);
-        model.addAttribute("mnewItemForm", mnewItemForm);
-
-        return "management/allitem_management";
+        return "management/member_management";
     }
 
     @PostMapping("/item/new")
@@ -56,42 +47,18 @@ public class ManagementController {
         return "redirect:/management/allitem";
     }
 
-/*    @GetMapping("/member")
-    public String managementMember(Model model, ManagementMemberForm mmForm, HttpServletRequest request) {
-
-        int page;
-        if (request.getParameter("page") == null) {
-
-            page = 0;
-        } else {
-
-            page = Integer.parseInt(request.getParameter("page"));
-        }
-
-        String option = request.getParameter("option");
-        String keyword = request.getParameter("keyword");
-
-        Page<Member> paging = mService.managementGetMemberList(page, option, keyword);
-
-        model.addAttribute("memberList", paging);
-        model.addAttribute("mmForm", mmForm);
-
-        return "management/member_management";
-    }*/
-
     @GetMapping("/member")
-    public String managementMember(Model model, ManagementMemberForm mmForm, HttpServletRequest request) {
+    public String managementMember(Model model, ManagementMemberForm managementMemberForm,
+                                   @RequestParam (value = "page", defaultValue = "0") String page,
+                                   @RequestParam (value = "option", defaultValue = "") String option,
+                                   @RequestParam (value = "keyword", defaultValue = "") String keyword
+                                   ) {
 
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        Object[] requestParam = new Object[]{page, option, keyword};
+        Page<Member> paging = mService.managementGetAutoPaging(requestParam);
 
-        String targetServiceClass = mService.getClass().getName();
-
-        /*managementRepeatCode.autoManagementPaging(model, mmFor);*/
-
-        stopWatch.stop();
-        long msg = stopWatch.getTotalTimeNanos();
-        log.info("리펙트 코드 측정 나노초 : " + msg);
+        model.addAttribute("paging", paging);
+        model.addAttribute("targetForm", managementMemberForm);
 
         return "management/member_management";
     }

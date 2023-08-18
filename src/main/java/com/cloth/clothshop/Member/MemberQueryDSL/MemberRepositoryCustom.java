@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface MemberRepositoryCustom {
 
-   Page<Member> findByOptionAndKeyword(String searchOption, String keyword, Pageable pageable);
+   Page<Member> findByOptionAndKeyword(String searchOption, String searchKeyword, Pageable pageable);
 }

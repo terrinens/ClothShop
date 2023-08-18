@@ -19,21 +19,17 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
     private final QueryDSL_RepeatCode queryDSLRepeatCode;
 
     @Override
-    public Page<Products> findByOptionAndKeyword(String searchOption, String keyword, Pageable pageable) {
+    public Page<Products> findByOptionAndKeyword(String searchOption, String searchKeyword, Pageable pageable) {
 
         BooleanExpression condition = null;
 
         if ("code".equals(searchOption)) {
-
-            condition = products.code.like("%" + keyword + "%");
+            condition = products.code.like("%" + searchKeyword + "%");
         } else if ("name".equals(searchOption)) {
-
-            condition = products.name.like("%" + keyword + "%");
+            condition = products.name.like("%" + searchKeyword + "%");
         } else if ("kind".equals(searchOption)) {
-
-            condition = products.kind.eq(ProductsKind.valueOf(keyword));
+            condition = products.kind.eq(ProductsKind.valueOf(searchKeyword));
         }
-
-        return queryDSLRepeatCode.keywordIsEmpty(products, condition, keyword, pageable);
+        return queryDSLRepeatCode.keywordIsEmpty(products, condition, searchKeyword, pageable);
     }
 }
