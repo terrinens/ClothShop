@@ -1,6 +1,7 @@
-<!--suppress ALL -->
+<!--suppress CssRedundantUnit -->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -27,6 +28,7 @@
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
+        <label for="searchOption"></label>
         <select style="width: 10%" class="form-select form-select-sm" name="searchOption" id="searchOption">
             <option value="all" th:selected="${option eq 'all'}">전체 찾기</option>
             <option value="code" th:selected="${option eq 'code'}">코드로 찾기</option>
@@ -51,7 +53,7 @@
         const searchOption = document.getElementById('searchOption');
         const searchForm = document.getElementById('searchForm');
 
-        button_search.addEventListener('click', function (event) {
+        button_search.addEventListener('click', function () {
             keyword.value = searchKeyword.value;
             option.value = searchOption.value;
             page.value = 0;
@@ -156,7 +158,9 @@
                             <input th:name="id" type="hidden" th:value="${item.getCode()}">
                             <div class="mb-3">
                                 <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
-                                <input th:name="pwdModify" type="text" class="form-control">
+                                <label>
+                                    <input th:name="pwdModify" type="text" class="form-control">
+                                </label>
                                 <input type="hidden" th:name="name" id="recipient-pwd" th:value="${item.getName()}">
                             </div>
                         </div>
@@ -258,32 +262,36 @@
                             </div>
                             <div class="mb-3">
                                 <label for="newItemContents" class="col-form-label">상품 설명</label>
-                                <textarea name="contents" class="form-control" rows="4"></textarea>
+                                <textarea id="newItemContents" name="contents" class="form-control" rows="4"></textarea>
+                            
                             </div>
                             <div class="mb-3">
                                 <label for="recipient-pwd" class="col-form-label">상품 최소 사이즈</label>
-                                <select name="sizeSt" id="newItemSizeSt" class="form-control-lg">
-                                    <option value="XS">XS</option>
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="XXL">XXL</option>
-                                </select>
+                                <label for="newItemSizeSt"></label><select name="sizeSt" id="newItemSizeSt"
+                                                                           class="form-control-lg">
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
                                 <div class="mb-2"></div>
                                 <label for="recipient-pwd" class="col-form-label">상품 최대 사이즈</label>
-                                <select name="sizeEt" id="newItemSizeEt" class="form-control-lg">
-                                    <option value="XXL">XXL</option>
-                                    <option value="XL">XL</option>
-                                    <option value="L">L</option>
-                                    <option value="M">M</option>
-                                    <option value="S">S</option>
-                                    <option value="XS">XS</option>
-                                </select>
+                                <label for="newItemSizeEt"></label><select name="sizeEt" id="newItemSizeEt"
+                                                                           class="form-control-lg">
+                                <option value="XXL">XXL</option>
+                                <option value="XL">XL</option>
+                                <option value="L">L</option>
+                                <option value="M">M</option>
+                                <option value="S">S</option>
+                                <option value="XS">XS</option>
+                            </select>
                             </div>
                             <div class="mb-3">
                                 <label for="newItemQuantity" class="col-form-label">상품 가격</label>
-                                <input name="price" id="newItemPrice" type="number" class="form-control-lg">
+                                <label for="newItemPrice"></label><input name="price" id="newItemPrice" type="number"
+                                                                         class="form-control-lg">
                                 <div class="mb-2"></div>
                                 <label for="newItemQuantity" class="col-form-label">재고 최초 등록 수량</label>
                                 <input name="quantity" id="newItemQuantity" type="number" class="form-control-lg">

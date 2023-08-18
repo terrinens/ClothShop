@@ -4,10 +4,12 @@ import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -66,7 +68,7 @@ public class ManagementController {
     }
 
     @PostMapping("/member/modify")
-    public String managementMemberModify(ManagementMemberForm mmForm, Principal principal) {
+    public String managementMemberModify(@Valid ManagementMemberForm mmForm, BindingResult bindingResult, Principal principal) {
 
         String memberId = principal.getName();
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
