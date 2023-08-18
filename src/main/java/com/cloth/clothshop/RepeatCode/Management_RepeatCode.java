@@ -69,28 +69,18 @@ public class Management_RepeatCode {
 
         //?page=0&keyword=a&option=all
         for (int i = 0; i <= pathVariable.length; i++) {
-
             switch (pathVariable[i]) {
-
-                case "page":
-                    page = Integer.parseInt(pathVariable[i]);
-                    break;
-                case "keyword":
-                    keyword = pathVariable[i];
-                    break;
-                case "option":
-                    option = pathVariable[i];
-                    break;
-                default:
-                    page = 0;
-                    keyword = null;
-                    option = null;
-                    break;
+                case "page" -> page = Integer.parseInt(pathVariable[i]);
+                case "keyword" -> keyword = pathVariable[i];
+                case "option" -> option = pathVariable[i];
             }
         }
 
-        CustomPage<?> customPage = new CustomPage<>()
+        Page<?> autoPage = autoWriteManagementPaging(page, option, keyword, targetRepositoryClassName, sortBenchmark);
+        CustomPage<?> customPage = new CustomPage<>(autoPage.getContent(), autoPage.getPageable(), autoPage.getTotalElements(), tableEntityClass);
 
+        model.addAttribute("paging", customPage);
+        model.addAttribute("targetForm", targetFormClassName);
     }
 
     public void managementPaging(Model model, Class form, Class<?> tableEntityClass, HttpServletRequest request,
