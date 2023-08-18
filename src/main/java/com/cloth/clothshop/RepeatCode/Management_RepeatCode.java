@@ -8,7 +8,6 @@ import org.springframework.data.domain.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Configuration
 public class Management_RepeatCode {
@@ -35,7 +34,6 @@ public class Management_RepeatCode {
      * <h4>ex : Page<T> findByOptionAndKeyword(String searchOption, String searchKeyword, {@link Pageable} pageable);</h4>
      * 모든것이 올바르게 변수가 지정되었다면 자동으로 해당되는 레파지토리에서 메소드를 찾아 사용하여 페이징을 진행합니다.
      * @author DongChuel Kim
-     * @version 0.1
      * @param targetRCN 사용할 레파지토리 클래스 이름을 넣습니다. <br>
      *                  ex : String targetRCN = EntityRepository.class.getName(); <br>
      * @param sortBenchmark 엔티티 테이블에서 정렬에 기준이될 이름을 넣습니다. <br>

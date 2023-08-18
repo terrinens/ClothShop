@@ -21,7 +21,7 @@ public class QueryDSL_RepeatCode {
         JPAQuery<T> query = queryFactory.selectFrom(table);
         long total = query.fetch().size();
         List<T> page;
-        if (condition != null && !keyword.isEmpty()) {
+        if (condition != null && !keyword.trim().isEmpty()) {
 
             page = query
                     .where(condition)

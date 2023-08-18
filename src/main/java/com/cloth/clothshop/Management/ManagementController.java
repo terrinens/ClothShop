@@ -4,8 +4,6 @@ import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
-import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -33,16 +31,17 @@ public class ManagementController {
         Object[] requestParam = new Object[]{page, option, keyword};
         Page<Products> paging = pService.managementGetAutoPaging(requestParam);
 
-        model.addAttribute("paging", paging);
-        model.addAttribute("targetForm", managementNewItemForm);
+        model.addAttribute("itemPaging", paging);
+        model.addAttribute("itemForm", managementNewItemForm);
 
-        return "management/member_management";
+        return "management/allitem_management";
     }
 
-    @PostMapping("/item/new")
-    public String managementNewItem(@ModelAttribute ManagementNewItemForm mnewItemForm) {
+    @GetMapping("/item/new")
+    public String managementNewItem(ManagementNewItemForm mnewItemForm) {
 
         pService.managementNewProductsItem(mnewItemForm);
+        System.out.println("컨트롤 :::: " + mnewItemForm.getKind());
 
         return "redirect:/management/allitem";
     }
@@ -57,8 +56,8 @@ public class ManagementController {
         Object[] requestParam = new Object[]{page, option, keyword};
         Page<Member> paging = mService.managementGetAutoPaging(requestParam);
 
-        model.addAttribute("paging", paging);
-        model.addAttribute("targetForm", managementMemberForm);
+        model.addAttribute("memberPaging", paging);
+        model.addAttribute("MMForm", managementMemberForm);
 
         return "management/member_management";
     }

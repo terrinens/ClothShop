@@ -22,21 +22,17 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         BooleanExpression condition = null;
 
         if ("id".equals(searchOption)) {
-
             condition = member.id.like("%" + keyword + "%");
         } else if ("name".equals(searchOption)) {
-
             condition = member.name.like("%" + keyword + "%");
         } else if ("role".equals(searchOption)) {
-
             condition = member.role.like("%" + keyword + "%");
         } else if ("all".equals(searchOption)) {
-
             condition = member.id.like("%" + keyword + "%")
                     .or(member.name.like("%" + keyword + "%"))
                     .or(member.role.like("%" + keyword + "%"))
                     .or(member.tel.like("%" + keyword + "%"))
-            ;
+                    ;
         } else if ("tel".equals(searchOption)) {
 
             condition = member.tel.like("%" + keyword + "%");

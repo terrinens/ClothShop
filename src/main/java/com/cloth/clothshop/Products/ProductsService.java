@@ -31,7 +31,7 @@ public class ProductsService {
     public Page<Products> managementGetAutoPaging(Object[] requestParamArray) {
 
         String targetRCN = ProductsRepository.class.getName();
-        String sortBenchmark = "id";
+        String sortBenchmark = "products_kind";
         Page<Products> productsPage = managementRepeatCode.autoWritePaging(targetRCN, sortBenchmark, requestParamArray);
 
         return productsPage;

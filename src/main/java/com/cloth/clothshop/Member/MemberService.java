@@ -1,12 +1,10 @@
 package com.cloth.clothshop.Member;
 
 import com.cloth.clothshop.Management.ManagementMemberForm;
+import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +19,7 @@ public class MemberService {
     private final PasswordEncoder pEncoder;
     private final Management_RepeatCode managementRepeatCode;
 
-    public Member memberSignup(String id, String pwd, String name, String address, String tel) {
+    public void memberSignup(String id, String pwd, String name, String address, String tel) {
 
         Member member = new Member();
 
@@ -33,11 +31,9 @@ public class MemberService {
         member.setTel(tel);
 
         mRepository.save(member);
-
-        return member;
     }
 
-    public Member adminSignup(String id, String pwd, String name, String address, String tel, String role) {
+    public void adminSignup(String id, String pwd, String name, String address, String tel, String role) {
 
         Member member = new Member();
 
@@ -50,8 +46,6 @@ public class MemberService {
         member.setRole(role);
 
         mRepository.save(member);
-
-        return member;
     }
 
     @Transactional
@@ -64,6 +58,7 @@ public class MemberService {
 
     public Page<Member> managementGetAutoPaging(Object[] requestParamArray) {
 
+        Products products = new Products();
         String targetRCN = MemberRepository.class.getName();
         String sortBenchmark = "id";
         Page<Member> memberPage = managementRepeatCode.autoWritePaging(targetRCN, sortBenchmark, requestParamArray);
