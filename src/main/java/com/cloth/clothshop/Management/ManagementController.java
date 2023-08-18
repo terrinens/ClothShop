@@ -5,7 +5,6 @@ import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 @Controller @RequiredArgsConstructor
-@RequestMapping("/management") @Slf4j
+@RequestMapping("/management")
 public class ManagementController {
 
     private final MemberService mService;

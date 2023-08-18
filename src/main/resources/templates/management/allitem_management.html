@@ -36,12 +36,27 @@
         <button class="btn btn-outline-success" type="submit" id="button_search">검색</button>
     </div>
     
+    <script>
+        document.getElementById("searchKeyword").addEventListener("keydown", function (event) {
+            if (event.key === "Enter") { // 엔터 키
+                event.preventDefault();
+                document.getElementById("searchForm").submit();
+            }
+        });
+
+        document.getElementById("searchOption").addEventListener("keydown", function (event) {
+            if (event.key === "Enter") { // 엔터 키
+                event.preventDefault();
+                document.getElementById("searchForm").submit();
+            }
+        });
+    </script>
+    
     <form th:action="@{/management/allitem}" method="get" id="searchForm">
         <input type="hidden" id="page" name="page" th:value="${itemPaging.number}">
         <input type="hidden" id="keyword" name="keyword" th:value="keyword">
         <input type="hidden" id="option" name="option" th:value="option">
     </form>
-    
     <script>
         const button_search = document.getElementById('button_search');
         const keyword = document.getElementById('keyword');
