@@ -6,11 +6,11 @@
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
     
-    <div class="input-group">
+    <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword">
         <label for="searchOption"></label>
-        <select style="width: 10%" class="form-select form-select-sm"
+        <select class="form-select form-select-sm"
                 name="searchOption" id="searchOption">
             <option value="all">전체 찾기</option>
             <option value="id">ID로 찾기</option>
@@ -18,7 +18,7 @@
             <option value="tel">연락처로 찾기</option>
             <option value="role">권한으로 찾기</option>
         </select>
-        <button class="btn btn-outline-success" type="submit" id="button_search">검색</button>
+        <button class="btn btn-outline-success" type="submit" id="button_search" style="border-radius: 0em">검색</button>
     </div>
     
     <script>
@@ -58,7 +58,7 @@
             searchForm.submit();
         })
     </script>
-    <table class="table table-hover">
+    <table class="table table-hover container-xxl">
         <thead>
         <tr class="table-info">
             <th scope="row">ID</th>
