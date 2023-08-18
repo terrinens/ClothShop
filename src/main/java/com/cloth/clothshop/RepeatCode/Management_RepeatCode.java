@@ -6,13 +6,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.prefs.BackingStoreException;
 
 @Configuration
 public class Management_RepeatCode {
@@ -35,14 +32,16 @@ public class Management_RepeatCode {
     }
 
     //참고 managementGetMemberList
-    private Page<?> autoWriteManagementPaging(int page, String searchOption, String keyword,
-                                              String targetRepositoryClassName, String sortBenchmark) {
+    public <T>  Page<T> autoWriteManagementPaging(String targetRepositoryClassName, String sortBenchmark) {
+
+        final int page = 0;
+        final String searchOption = null;
+        final String keyword = null;
 
         Sort sort = Sort.by(sortBenchmark).ascending();
         Pageable pageable = PageRequest.of(page, 15, sort);
 
         try {
-
             Class<?>[] parameterType = new Class<?>[]{String.class, String.class, Pageable.class};
             Object[] arguments = new Object[]{searchOption, keyword, pageable};
 
@@ -50,18 +49,17 @@ public class Management_RepeatCode {
             Method method = repositoryInstance.getClass().getDeclaredMethod("findByOptionAndKeyword", parameterType);
 
             //ex : Page<Member> memberPage = mRepository.findByOptionAndKeyword(searchOption, keyword, pageable);
-            Page<?> autoPaging = (Page<?>) method.invoke(repositoryInstance, arguments);
+            Page<T> autoPaging = (Page<T>) method.invoke(repositoryInstance, arguments);
 
             return autoPaging;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-
             //수정할것 최소 무슨 문제인지 알아볼수 있게 분리하자.
             throw new RuntimeException(e);
         }
     }
 
-    public void autoManagementPaging(Model model, String targetFormClassName, Class<?> tableEntityClass,
-                                     String targetRepositoryClassName, String sortBenchmark, String[] pathVariable) {
+    public void autoManagementPaging(Model model, String targetFormClassName, Page<?> autoPaging,
+                                     Class<?> tableEntityClass, String[] pathVariable) {
 
         int page = 0;
         String keyword = null;
@@ -76,8 +74,7 @@ public class Management_RepeatCode {
             }
         }
 
-        Page<?> autoPage = autoWriteManagementPaging(page, option, keyword, targetRepositoryClassName, sortBenchmark);
-        CustomPage<?> customPage = new CustomPage<>(autoPage.getContent(), autoPage.getPageable(), autoPage.getTotalElements(), tableEntityClass);
+        CustomPage<?> customPage = new CustomPage<>(autoPaging.getContent(), autoPaging.getPageable(), autoPaging.getTotalElements(), tableEntityClass);
 
         model.addAttribute("paging", customPage);
         model.addAttribute("targetForm", targetFormClassName);

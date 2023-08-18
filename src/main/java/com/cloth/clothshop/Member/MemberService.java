@@ -1,6 +1,7 @@
 package com.cloth.clothshop.Member;
 
 import com.cloth.clothshop.Management.ManagementMemberForm;
+import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ public class MemberService {
 
     private final MemberRepository mRepository;
     private final PasswordEncoder pEncoder;
+    private final Management_RepeatCode managementRepeatCode;
 
     public Member memberSignup(String id, String pwd, String name, String address, String tel) {
 
@@ -65,6 +67,17 @@ public class MemberService {
         Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
 
         Page<Member> memberPage = mRepository.findByOptionAndKeyword(searchOption, keyword, pageable);
+
+        return memberPage;
+    }
+
+    public Page<Member> managementGetAutoPaging() {
+
+        Member member = new Member();
+
+        String targetRCN = mRepository.getClass().getName();
+        String sortBenchmark = member.getId().getClass().getName();
+        Page<Member> memberPage = managementRepeatCode.autoWriteManagementPaging(targetRCN, sortBenchmark);
 
         return memberPage;
     }

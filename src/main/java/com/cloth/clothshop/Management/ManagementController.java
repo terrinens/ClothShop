@@ -86,9 +86,8 @@ public class ManagementController {
         stopWatch.start();
 
         String targetServiceClass = mService.getClass().getName();
-        String targetServiceClassMethod = "managementGetMemberList";
 
-        managementRepeatCode.managementPaging(model, mmForm.getClass(), Member.class, request, targetServiceClass, targetServiceClassMethod);
+        /*managementRepeatCode.autoManagementPaging(model, mmFor);*/
 
         stopWatch.stop();
         long msg = stopWatch.getTotalTimeNanos();
