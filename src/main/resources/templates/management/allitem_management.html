@@ -41,10 +41,12 @@
         <input type="hidden" id="keyword" name="keyword" th:value="keyword">
         <input type="hidden" id="option" name="option" th:value="option">
     </form>
+    
     <script>
         const button_search = document.getElementById('button_search');
         const keyword = document.getElementById('keyword');
         const option = document.getElementById('option');
+        const page = document.getElementById('page');
         const searchKeyword = document.getElementById('searchKeyword');
         const searchOption = document.getElementById('searchOption');
         const searchForm = document.getElementById('searchForm');
@@ -52,6 +54,7 @@
         button_search.addEventListener('click', function (event) {
             keyword.value = searchKeyword.value;
             option.value = searchOption.value;
+            page.value = 0;
             searchForm.submit();
         });
 
