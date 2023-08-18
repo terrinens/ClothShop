@@ -32,6 +32,8 @@ public class ManagementController {
 
         model.addAttribute("itemPaging", paging);
         model.addAttribute("itemForm", managementNewItemForm);
+        model.addAttribute("option", option);
+        model.addAttribute("keyword", keyword);
 
         return "management/allitem_management";
     }
@@ -57,6 +59,8 @@ public class ManagementController {
 
         model.addAttribute("memberPaging", paging);
         model.addAttribute("MMForm", managementMemberForm);
+        model.addAttribute("option", option);
+        model.addAttribute("keyword", keyword);
 
         return "management/member_management";
     }

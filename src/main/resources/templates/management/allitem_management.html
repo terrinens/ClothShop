@@ -26,20 +26,20 @@
     
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
-               aria-label="Search" name="searchKeyword" id="searchKeyword">
+               aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
         <select style="width: 10%" class="form-select form-select-sm" name="searchOption" id="searchOption">
-            <option value="all">전체 찾기</option>
-            <option value="code">코드로 찾기</option>
-            <option value="name">상품이름으로 찾기</option>
-            <option value="kind">판매여부로 찾기</option>
+            <option value="all" th:selected="${option eq 'all'}">전체 찾기</option>
+            <option value="code" th:selected="${option eq 'code'}">코드로 찾기</option>
+            <option value="name" th:selected="${option eq 'name'}">상품이름으로 찾기</option>
+            <option value="kind" th:selected="${option eq 'kind'}">판매여부로 찾기</option>
         </select>
         <button class="btn btn-outline-success" type="submit" id="button_search" style="border-radius: 0em">검색</button>
     </div>
     
     <form th:action="@{/management/allitem}" method="get" id="searchForm">
         <input type="hidden" id="page" name="page" th:value="${itemPaging.number}">
-        <input type="hidden" id="keyword" name="keyword" th:value="keyword">
-        <input type="hidden" id="option" name="option" th:value="option">
+        <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
+        <input type="hidden" id="option" name="option" th:value="${option}">
     </form>
     
     <script>

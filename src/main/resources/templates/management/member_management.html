@@ -1,30 +1,30 @@
 <!--suppress HtmlRequiredLangAttribute, ThymeleafVariablesResolveInspection -->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:se22c="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
     
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
-               aria-label="Search" name="searchKeyword" id="searchKeyword">
+               aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
         <label for="searchOption"></label>
         <select class="form-select form-select-sm"
                 name="searchOption" id="searchOption">
-            <option value="all">전체 찾기</option>
-            <option value="id">ID로 찾기</option>
-            <option value="name">이름으로 찾기</option>
-            <option value="tel">연락처로 찾기</option>
-            <option value="role">권한으로 찾기</option>
+            <option value="all" th:selected="${option eq 'all'}">전체 찾기</option>
+            <option value="id" th:selected="${option eq 'id'}">ID로 찾기</option>
+            <option value="name" th:selected="${option eq 'name'}">이름으로 찾기</option>
+            <option value="tel" th:selected="${option eq 'tel'}">연락처로 찾기</option>
+            <option value="role" th:selected="${option eq 'role'}">권한으로 찾기</option>
         </select>
         <button class="btn btn-outline-success" type="submit" id="button_search" style="border-radius: 0em">검색</button>
     </div>
     
     <form th:action="@{/management/member}" method="get" id="searchForm">
         <input type="hidden" id="page" name="page" th:value="${memberPaging.number}">
-        <input type="hidden" id="keyword" name="keyword" th:value="keyword">
-        <input type="hidden" id="option" name="option" th:value="option">
+        <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
+        <input type="hidden" id="option" name="option" th:value="${option}">
     </form>
     
     <script>
