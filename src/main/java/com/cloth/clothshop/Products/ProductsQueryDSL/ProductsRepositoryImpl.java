@@ -22,13 +22,32 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
     public Page<Products> findByOptionAndKeyword(String searchOption, String searchKeyword, Pageable pageable) {
 
         BooleanExpression condition = null;
+        String likeKeyword = "%" + searchKeyword + "%";
 
         if ("code".equals(searchOption)) {
-            condition = products.code.like("%" + searchKeyword + "%");
+            condition = products.code.like(likeKeyword);
         } else if ("name".equals(searchOption)) {
-            condition = products.name.like("%" + searchKeyword + "%");
+            condition = products.name.like(likeKeyword);
         } else if ("kind".equals(searchOption)) {
-            condition = products.kind.eq(ProductsKind.valueOf(searchKeyword));
+            condition = products.kind.eq(ProductsKind.valueOf(searchKeyword.toUpperCase()));
+        } else if ("all".equals(searchOption)) {
+            //noinspection ConstantValue
+            if (searchOption.length() <= 1) {
+                try {
+                    condition = products.code.like(likeKeyword)
+                            .or(products.name.like(likeKeyword))
+                            .or(products.kind.eq(ProductsKind.valueOf(searchKeyword.toUpperCase())))
+                    ;
+                } catch (RuntimeException e) {
+                    condition = products.code.like(likeKeyword)
+                            .or(products.name.like(likeKeyword))
+                    ;
+                }
+            } else {
+                condition = products.code.like(likeKeyword)
+                        .or(products.name.like(likeKeyword))
+                ;
+            }
         }
         return queryDSLRepeatCode.keywordIsEmpty(products, condition, searchKeyword, pageable);
     }

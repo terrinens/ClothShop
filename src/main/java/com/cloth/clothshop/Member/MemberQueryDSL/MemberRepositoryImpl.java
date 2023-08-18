@@ -17,27 +17,28 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final QueryDSL_RepeatCode queryDSLRepeatCode;
 
     @Override
-    public Page<Member> findByOptionAndKeyword(String searchOption, String keyword, Pageable pageable) {
+    public Page<Member> findByOptionAndKeyword(String searchOption, String searchKeyword, Pageable pageable) {
 
         BooleanExpression condition = null;
+        String likeKeyword = "%" + searchKeyword + "%";
 
         if ("id".equals(searchOption)) {
-            condition = member.id.like("%" + keyword + "%");
+            condition = member.id.like(likeKeyword);
         } else if ("name".equals(searchOption)) {
-            condition = member.name.like("%" + keyword + "%");
+            condition = member.name.like(likeKeyword);
         } else if ("role".equals(searchOption)) {
-            condition = member.role.like("%" + keyword + "%");
+            condition = member.role.like(likeKeyword);
         } else if ("all".equals(searchOption)) {
-            condition = member.id.like("%" + keyword + "%")
-                    .or(member.name.like("%" + keyword + "%"))
-                    .or(member.role.like("%" + keyword + "%"))
-                    .or(member.tel.like("%" + keyword + "%"))
+            condition = member.id.like(likeKeyword)
+                    .or(member.name.like(likeKeyword))
+                    .or(member.role.like(likeKeyword))
+                    .or(member.tel.like(likeKeyword))
                     ;
         } else if ("tel".equals(searchOption)) {
 
-            condition = member.tel.like("%" + keyword + "%");
+            condition = member.tel.like(likeKeyword);
         }
 
-        return queryDSLRepeatCode.keywordIsEmpty(member, condition, keyword, pageable);
+        return queryDSLRepeatCode.keywordIsEmpty(member, condition, searchKeyword, pageable);
     }
 }
