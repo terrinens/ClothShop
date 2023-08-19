@@ -5,7 +5,7 @@
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
-    
+    <script src="/webjars/jquery/3.6.0/jquery.slim.min.js"></script>
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
@@ -28,33 +28,25 @@
     </form>
     
     <script>
-        const button_search = document.getElementById('button_search');
-        const keyword = document.getElementById('keyword');
-        const option = document.getElementById('option');
-        const page = document.getElementById('page');
-        const searchKeyword = document.getElementById('searchKeyword');
-        const searchOption = document.getElementById('searchOption');
-        const searchForm = document.getElementById('searchForm');
-        
-        button_search.addEventListener('click', function (event) {
-            keyword.value = searchKeyword.value;
-            option.value = searchOption.value;
-            page.value = 0;
-            searchForm.submit();
-        });
+        $(function() {
+            const searchKeyword = $('#searchKeyword');
+            const searchOption = $('#searchOption');
+            const searchForm = $('#searchForm');
+            const buttonSearch = $('#button_search');
 
-        searchKeyword.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                button_search.click();
-            }
-        });
+            buttonSearch.on('click', function(event) {
+                $('#keyword').val(searchKeyword.val());
+                $('#option').val(searchOption.val());
+                $('#page').val(0);
+                searchForm.submit();
+            });
 
-        searchOption.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                button_search.click();
-            }
+            searchKeyword.add(searchOption).on('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    buttonSearch.click();
+                }
+            });
         });
     </script>
     
@@ -101,11 +93,12 @@
     
     <!--페이지이동을 위한 js-->
     <script type="text/javascript">
-        const page_elements = document.getElementsByClassName("page-link");
-        Array.from(page_elements).forEach(function (element) {
-            element.addEventListener('click', function () {
-                document.getElementById('page').value = this.dataset.page;
-                document.getElementById('searchForm').submit();
+        $(function () {
+            $('.page-link').each(function () {
+                $(this).on('click', function () {
+                    $('#page').val($(this).data('page'));
+                    $('#searchForm').submit();
+                });
             });
         });
     </script>
@@ -198,37 +191,32 @@
     
     <!--modifyForm을 위한 js-->
     <script>
-        let pwd = document.getElementById('recipient-pwd');
-        let pwd_modfiy = document.getElementById('recipient-pwdModify');
-        const btn_modify = document.getElementById('button_modify');
-        btn_modify.addEventListener('click', function () {
+        $(function () {
+            const pwd = $('#recipient-pwd');
+            const pwd_modify = $('#recipient-pwdModify');
+            const btn_modify = $('#button_modify');
 
-            if (pwd_modfiy == null) {
+            btn_modify.on('click', function () {
+                if (pwd_modify.length === 0) {
+                    alert("비밀번호를 정확히 입력해주세요.");
+                } else {
+                    pwd.val(pwd_modify.val());
+                    $('#modifyForm').submit();
+                }
+            });
 
-                alert("비밀번호를 정확히 입력해주세요.");
-            } else {
+            const btn_reset = $('#button_reset');
+            btn_reset.on('click', function () {
+                $('#modifyForm')[0].reset();
+            });
 
-                pwd.value = pwd_modfiy.value;
-                document.getElementById('modifyForm').submit();
-            }
-        });
-
-        const btn_reset = document.getElementById('button_reset');
-        btn_reset.addEventListener('click', function () {
-
-            document.getElementById('modifyForm').reset();
-        });
-
-        const call_delete_modal = document.getElementsByClassName('call_delete_modal');
-        Array.from(call_delete_modal).forEach(function (modal) {
-
-            modal.addEventListener('click', function () {
-
-                const uri = this.dataset.uri;
-                const btn_delete = document.getElementsByClassName('button_delete');
-                Array.from(btn_delete).forEach(function (button) {
-                    button.addEventListener('click', function () {
-                        location.href = uri;
+            $('.call_delete_modal').each(function () {
+                $(this).on('click', function () {
+                    const uri = $(this).data('uri');
+                    $('.button_delete').each(function () {
+                        $(this).on('click', function () {
+                            location.href = uri;
+                        });
                     });
                 });
             });
