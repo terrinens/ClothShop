@@ -30,12 +30,10 @@ public class ManagementController {
     ) {
 
         Object[] requestParam = new Object[]{page, option, keyword};
-        Page<Products> paging = pService.managementGetAutoPaging(requestParam);
+        Page<Products> paging = pService.managementGetAutoPaging(model, requestParam);
 
         model.addAttribute("itemPaging", paging);
         model.addAttribute("itemForm", managementNewItemForm);
-        model.addAttribute("option", option);
-        model.addAttribute("keyword", keyword);
 
         return "management/allitem_management";
     }
@@ -57,12 +55,10 @@ public class ManagementController {
                                    ) {
 
         Object[] requestParam = new Object[]{page, option, keyword};
-        Page<Member> paging = mService.managementGetAutoPaging(requestParam);
+        Page<Member> paging = mService.managementGetAutoPaging(model, requestParam);
 
         model.addAttribute("memberPaging", paging);
         model.addAttribute("MMForm", managementMemberForm);
-        model.addAttribute("option", option);
-        model.addAttribute("keyword", keyword);
 
         return "management/member_management";
     }

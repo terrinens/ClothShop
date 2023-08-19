@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +29,11 @@ public class ProductsService {
         return divisionCloth;
     }
 
-    public Page<Products> managementGetAutoPaging(Object[] requestParamArray) {
+    public Page<Products> managementGetAutoPaging(Model model, Object[] requestParamArray) {
 
         String targetRCN = ProductsRepository.class.getName();
         String sortBenchmark = "products_kind";
-        Page<Products> productsPage = managementRepeatCode.autoWritePaging(targetRCN, sortBenchmark, requestParamArray);
+        Page<Products> productsPage = managementRepeatCode.autoWritePaging(model, targetRCN, sortBenchmark, requestParamArray);
 
         return productsPage;
     }

@@ -16,12 +16,12 @@ public class QueryDSL_RepeatCode {
 
     private final  JPAQueryFactory queryFactory;
 
-    public <T> PageImpl<T> keywordIsEmpty(EntityPath<T> table, BooleanExpression condition, String keyword, Pageable pageable) {
+    public <T> PageImpl<T> keywordIsEmpty(EntityPath<T> table, BooleanExpression condition, String searchKeyword, Pageable pageable) {
 
         JPAQuery<T> query = queryFactory.selectFrom(table);
         long total = query.fetch().size();
         List<T> page;
-        if (condition != null && !keyword.trim().isEmpty()) {
+        if (condition != null && !searchKeyword.trim().isEmpty()) {
 
             page = query
                     .where(condition)

@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
+import org.springframework.ui.Model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -38,13 +39,14 @@ public class Management_RepeatCode {
      *                  ex : String targetRCN = EntityRepository.class.getName(); <br>
      * @param sortBenchmark 엔티티 테이블에서 정렬에 기준이될 이름을 넣습니다. <br>
      * @param requestParamArray 파라메터값을 배열화해서 넣습니다. 하지만 page, option, keyword값만 가능합니다. <br>
-     * @return Page<T> autoPaging;
+     * @return Page<T> autoPaging <br> model.option <br> model.keyword <br>
      */
-    public <T> Page<T> autoWritePaging(String targetRCN, String sortBenchmark, Object[] requestParamArray) {
+    @SuppressWarnings("unchecked")
+    public <T> Page<T> autoWritePaging(Model model, String targetRCN, String sortBenchmark, Object[] requestParamArray) {
 
         int page = 0;
         String searchOption = null;
-        String keyword = null;
+        String searchKeyword = null;
 
         for (int i = 0; i < requestParamArray.length; i++) {
             if (i == 0) {
@@ -58,7 +60,7 @@ public class Management_RepeatCode {
                 }
             } else if (i == 2) {
                 if (requestParamArray[i] != null) {
-                    keyword = requestParamArray[i].toString();
+                    searchKeyword = requestParamArray[i].toString();
                 }
             }
         }
@@ -68,14 +70,16 @@ public class Management_RepeatCode {
 
         try {
             Class<?>[] parameterType = new Class<?>[]{String.class, String.class, Pageable.class};
-            Object[] arguments = new Object[]{searchOption, keyword, pageable};
+            Object[] arguments = new Object[]{searchOption, searchKeyword, pageable};
             Object repositoryInstance = applicationContext.getBean(Class.forName(targetRCN));
             Method method = repositoryInstance.getClass().getDeclaredMethod("findByOptionAndKeyword", parameterType);
 
             Page<T> autoPaging;
-            Object reslut = method.invoke(repositoryInstance, arguments);
-            if (reslut instanceof Page<?>) {
-                autoPaging = (Page<T>) reslut;
+            Object result = method.invoke(repositoryInstance, arguments);
+            if (result instanceof Page<?>) {
+                autoPaging = (Page<T>) result;
+                model.addAttribute("option", searchOption);
+                model.addAttribute("keyword", searchKeyword);
                 return autoPaging;
             } else {
                 throw new RuntimeException("Unexpected result type :::: ");

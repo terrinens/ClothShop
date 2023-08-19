@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.util.Optional;
 
@@ -56,12 +57,11 @@ public class MemberService {
                 mmForm.getTel());
     }
 
-    public Page<Member> managementGetAutoPaging(Object[] requestParamArray) {
+    public Page<Member> managementGetAutoPaging(Model model, Object[] requestParamArray) {
 
-        Products products = new Products();
         String targetRCN = MemberRepository.class.getName();
         String sortBenchmark = "id";
-        Page<Member> memberPage = managementRepeatCode.autoWritePaging(targetRCN, sortBenchmark, requestParamArray);
+        Page<Member> memberPage = managementRepeatCode.autoWritePaging(model, targetRCN, sortBenchmark, requestParamArray);
 
         return memberPage;
     }
