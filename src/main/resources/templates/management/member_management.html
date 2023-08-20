@@ -5,7 +5,6 @@
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
-    <script src="/webjars/jquery/3.6.0/jquery.slim.min.js"></script>
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
@@ -27,28 +26,7 @@
         <input type="hidden" id="option" name="option" th:value="${option}">
     </form>
     
-    <script>
-        $(function() {
-            const searchKeyword = $('#searchKeyword');
-            const searchOption = $('#searchOption');
-            const searchForm = $('#searchForm');
-            const buttonSearch = $('#button_search');
-
-            buttonSearch.on('click', function(event) {
-                $('#keyword').val(searchKeyword.val());
-                $('#option').val(searchOption.val());
-                $('#page').val(0);
-                searchForm.submit();
-            });
-
-            searchKeyword.add(searchOption).on('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    buttonSearch.click();
-                }
-            });
-        });
-    </script>
+    <script th:src="@{./searchForm.js}"></script>
     
     <table class="table table-hover container-xxl">
         <thead>

@@ -20,9 +20,12 @@
     <link href="/assets/css/style.css" rel="stylesheet">
 </head>
 <body>
+<script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
 <nav th:replace="~{layout/nav :: topnav}"></nav>
 
-<th:block layout:fragment="content"></th:block>
+<th:block layout:fragment="content">
+</th:block>
  <!--Vendor JS Files-->
 <script src="/assets/vendor/aos/aos.js"></script>
 <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
