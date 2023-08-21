@@ -40,8 +40,8 @@
         </tr>
         </thead>
         
-        <tbody id="memberPaging">
-        <tr th:each="member, i : ${memberPaging}"
+        <tbody >
+        <tr th:each="member, i : ${memberPaging}" th:class="memberPaging"
             class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#memberDetail_' + ${member.id}">
             <th th:text="${member.getId()}" scope="row">ID</th>
             <td th:text="${member.getName()}">멤버이름</td>
@@ -120,8 +120,9 @@
                     data:{page: page, keyword: keyword, option: option},
                     contentType: "application/json",
                     success: function (responseData) {
-                        
                         console.log('Ajax success');
+                        const memberPaging = responseData.memberPaging;
+                        $('memberPaging').replaceWith(memberPaging);
                     },
                     error: function () {
                         console.log('Ajax faill');

@@ -43,57 +43,6 @@ public class Management_RepeatCode {
      */
 
     @SuppressWarnings("unchecked")
-    public <T> Page<T> autoWritePagingAjax(String targetRCN, String sortBenchmark, Object[] requestParamArray) {
-
-        int page = 0;
-        String searchOption = null;
-        String searchKeyword = null;
-
-        for (int i = 0; i < requestParamArray.length; i++) {
-            if (i == 0) {
-                if (requestParamArray[i] != null) {
-                    page = Integer.parseInt(requestParamArray[i].toString());
-                }
-            } else if (i == 1) {
-
-                if (requestParamArray[i] != null) {
-                    searchOption = requestParamArray[i].toString();
-                }
-            } else if (i == 2) {
-                if (requestParamArray[i] != null) {
-                    searchKeyword = requestParamArray[i].toString();
-                }
-            }
-        }
-
-        Sort sort = Sort.by(sortBenchmark).ascending();
-        Pageable pageable = PageRequest.of(page, 15, sort);
-
-        try {
-            Class<?>[] parameterType = new Class<?>[]{String.class, String.class, Pageable.class};
-            Object[] arguments = new Object[]{searchOption, searchKeyword, pageable};
-            Object repositoryInstance = applicationContext.getBean(Class.forName(targetRCN));
-            Method method = repositoryInstance.getClass().getDeclaredMethod("findByOptionAndKeyword", parameterType);
-
-            Page<T> autoPaging;
-            Object result = method.invoke(repositoryInstance, arguments);
-            if (result instanceof Page<?>) {
-                autoPaging = (Page<T>) result;
-                return autoPaging;
-            } else {
-                throw new RuntimeException("Unexpected result type :::: ");
-            }
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("No such method found :::: ", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Illegal access :::: ", e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("Invocation target exception :::: ", e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Class not found :::: ", e);
-        }
-    }
-
     public <T> Page<T> autoWritePaging(Model model, String targetRCN, String sortBenchmark, Object[] requestParamArray) {
 
         int page = 0;
@@ -132,6 +81,58 @@ public class Management_RepeatCode {
                 autoPaging = (Page<T>) result;
                 model.addAttribute("option", searchOption);
                 model.addAttribute("keyword", searchKeyword);
+                return autoPaging;
+            } else {
+                throw new RuntimeException("Unexpected result type :::: ");
+            }
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("No such method found :::: ", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Illegal access :::: ", e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("Invocation target exception :::: ", e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Class not found :::: ", e);
+        }
+    }
+
+    public <T> Page<T> autoWritePagingAjax(String targetRCN, String sortBenchmark, Object[] requestParamArray) {
+
+        int page = 0;
+        String searchOption = null;
+        String searchKeyword = null;
+
+        for (int i = 0; i < requestParamArray.length; i++) {
+            if (i == 0) {
+                if (requestParamArray[i] != null) {
+                    page = Integer.parseInt(requestParamArray[i].toString());
+                }
+            } else if (i == 1) {
+
+                if (requestParamArray[i] != null) {
+                    searchOption = requestParamArray[i].toString();
+                }
+            } else if (i == 2) {
+                if (requestParamArray[i] != null) {
+                    searchKeyword = requestParamArray[i].toString();
+                }
+            }
+        }
+
+        Sort sort = Sort.by(sortBenchmark).ascending();
+        Pageable pageable = PageRequest.of(page, 15, sort);
+
+        try {
+            Class<?>[] parameterType = new Class<?>[]{String.class, String.class, Pageable.class};
+            Object[] arguments = new Object[]{searchOption, searchKeyword, pageable};
+            Object repositoryInstance = applicationContext.getBean(Class.forName(targetRCN));
+            Method method = repositoryInstance.getClass().getDeclaredMethod("findByOptionAndKeyword", parameterType);
+
+            Page<T> autoPaging;
+            Object result = method.invoke(repositoryInstance, arguments);
+            if (result instanceof Page<?>) {
+                autoPaging = (Page<T>) result;
+                System.out.println("매니지먼트 리펙트 코드에서 보내짐 토탈 페이지 :::: " + autoPaging.getTotalPages());
                 return autoPaging;
             } else {
                 throw new RuntimeException("Unexpected result type :::: ");

@@ -79,17 +79,19 @@ public class ManagementController {
         Object[] requestParam = new Object[]{page, option, keyword};
         Page<Member> paging = mService.managementGetAutoPagingAjax(requestParam);
 
+        System.out.println(paging.getTotalElements());
+
+        System.out.println("ajax 컨트롤러 호출 성공 !!!");
+        System.out.println("ajax 넘어옴 :::: " + keyword);
+        System.out.println("ajax 넘어옴 :::: " + option);
+
         Map<String, Object> responseData = new HashMap<>();
-        model.addAttribute("memberPaging", paging);
-        model.addAttribute("MMForm", managementMemberForm);
         responseData.put("memberPaging", paging);
         responseData.put("page", page);
         responseData.put("option", option);
         responseData.put("keyword", keyword);
 
-        System.out.println("ajax 컨트롤러 호출 성공 !!!");
-        System.out.println("ajax 넘어옴 :::: " + keyword);
-        System.out.println("ajax 넘어옴 :::: " + option);
+        System.out.println("map 으로 쏨 :::: " + paging.getTotalPages());
         return responseData;
     }
 
