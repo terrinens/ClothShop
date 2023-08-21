@@ -100,11 +100,10 @@
     
     <!--페이지이동을 위한 js-->
     <script type="text/javascript">
-        const page_elements = document.getElementsByClassName("page-link");
-        Array.from(page_elements).forEach(function (element) {
-            element.addEventListener('click', function () {
-                document.getElementById('page').value = this.dataset.page;
-                document.getElementById('searchForm').submit();
+        $(function() {
+            $(".page-link").on('click', function() {
+                $('#page').val($(this).data('page'));
+                $('#searchForm').submit();
             });
         });
     </script>
@@ -167,38 +166,27 @@
     </div>
     <!--modifyForm을 위한 js-->
     <script>
-        let pwd = document.getElementById('recipient-pwd');
-        let pwd_modfiy = document.getElementById('recipient-pwdModify');
-        const btn_modify = document.getElementById('button_modify');
-        btn_modify.addEventListener('click', function () {
+        $(function() {
+            let pwd = $('#recipient-pwd');
+            let pwd_modify = $('#recipient-pwdModify');
 
-            if (pwd_modfiy == null) {
+            $('#button_modify').on('click', function() {
+                if (pwd_modify.length === 0) {
+                    alert("비밀번호를 정확히 입력해주세요.");
+                } else {
+                    pwd.val(pwd_modify.val());
+                    $('#modifyForm').submit();
+                }
+            });
 
-                alert("비밀번호를 정확히 입력해주세요.");
-            } else {
+            $('#button_reset').on('click', function() {
+                $('#modifyForm')[0].reset();
+            });
 
-                pwd.value = pwd_modfiy.value;
-                document.getElementById('modifyForm').submit();
-            }
-        });
-
-        const btn_reset = document.getElementById('button_reset');
-        btn_reset.addEventListener('click', function () {
-
-            document.getElementById('modifyForm').reset();
-        });
-
-        const call_delete_modal = document.getElementsByClassName('call_delete_modal');
-        Array.from(call_delete_modal).forEach(function (modal) {
-
-            modal.addEventListener('click', function () {
-
-                const uri = this.dataset.uri;
-                const btn_delete = document.getElementsByClassName('button_delete');
-                Array.from(btn_delete).forEach(function (button) {
-                    button.addEventListener('click', function () {
-                        location.href = uri;
-                    });
+            $('.call_delete_modal').on('click', function() {
+                const uri = $(this).data('uri');
+                $('.button_delete').on('click', function() {
+                    location.href = uri;
                 });
             });
         });
