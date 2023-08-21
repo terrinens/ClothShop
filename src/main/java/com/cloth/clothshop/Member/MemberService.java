@@ -66,6 +66,15 @@ public class MemberService {
         return memberPage;
     }
 
+    public Page<Member> managementGetAutoPagingAjax(Object[] requestParamArray) {
+
+        String targetRCN = MemberRepository.class.getName();
+        String sortBenchmark = "id";
+        Page<Member> memberPage = managementRepeatCode.autoWritePagingAjax(targetRCN, sortBenchmark, requestParamArray);
+
+        return memberPage;
+    }
+
     public Member memberSearch(String id) {
 
         Optional<Member> optionalMember = mRepository.findMemberById(id);

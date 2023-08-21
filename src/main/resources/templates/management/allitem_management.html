@@ -44,7 +44,28 @@
         <input type="hidden" id="option" name="option" th:value="${option}">
     </form>
     
-    <script src="./searchForm.js"></script>
+    <script>
+        $(function () {
+            const searchKeyword = $('#searchKeyword');
+            const searchOption = $('#searchOption');
+            const searchForm = $('#searchForm');
+            const buttonSearch = $('#button_search');
+
+            buttonSearch.on('click', function () {
+                $('#keyword').val(searchKeyword.val());
+                $('#option').val(searchOption.val());
+                $('#page').val(0);
+                searchForm.submit();
+            });
+
+            searchKeyword.add(searchOption).on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    buttonSearch.click();
+                }
+            });
+        });
+    </script>
     
     <table class="table table-hover container-xxl">
         <thead>
@@ -100,8 +121,8 @@
     
     <!--페이지이동을 위한 js-->
     <script type="text/javascript">
-        $(function() {
-            $(".page-link").on('click', function() {
+        $(function () {
+            $(".page-link").on('click', function () {
                 $('#page').val($(this).data('page'));
                 $('#searchForm').submit();
             });
@@ -166,11 +187,11 @@
     </div>
     <!--modifyForm을 위한 js-->
     <script>
-        $(function() {
+        $(function () {
             let pwd = $('#recipient-pwd');
             let pwd_modify = $('#recipient-pwdModify');
 
-            $('#button_modify').on('click', function() {
+            $('#button_modify').on('click', function () {
                 if (pwd_modify.length === 0) {
                     alert("비밀번호를 정확히 입력해주세요.");
                 } else {
@@ -179,13 +200,13 @@
                 }
             });
 
-            $('#button_reset').on('click', function() {
+            $('#button_reset').on('click', function () {
                 $('#modifyForm')[0].reset();
             });
 
-            $('.call_delete_modal').on('click', function() {
+            $('.call_delete_modal').on('click', function () {
                 const uri = $(this).data('uri');
-                $('.button_delete').on('click', function() {
+                $('.button_delete').on('click', function () {
                     location.href = uri;
                 });
             });

@@ -5,6 +5,9 @@
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
@@ -20,13 +23,11 @@
         <button class="btn btn-outline-success" type="submit" id="button_search" style="border-radius: 0em">검색</button>
     </div>
     
-    <form th:action="@{/management/member}" method="get" id="searchForm">
+    <form method="get" id="searchForm">
         <input type="hidden" id="page" name="page" th:value="${memberPaging.number}">
         <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
         <input type="hidden" id="option" name="option" th:value="${option}">
     </form>
-    
-    <script th:src="@{./searchForm.js}"></script>
     
     <table class="table table-hover container-xxl">
         <thead>
@@ -39,7 +40,7 @@
         </tr>
         </thead>
         
-        <tbody>
+        <tbody id="memberPaging">
         <tr th:each="member, i : ${memberPaging}"
             class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#memberDetail_' + ${member.id}">
             <th th:text="${member.getId()}" scope="row">ID</th>
@@ -70,12 +71,63 @@
     </div>
     
     <!--페이지이동을 위한 js-->
-    <script type="text/javascript">
+    <!--    <script type="text/javascript">
+            $(function () {
+                $('.page-link').each(function () {
+                    $(this).on('click', function () {
+                        $('#page').val($(this).data('page'));
+                        $('#searchForm').submit();
+                    });
+                });
+            });
+        </script>-->
+    <script>
         $(function () {
-            $('.page-link').each(function () {
-                $(this).on('click', function () {
-                    $('#page').val($(this).data('page'));
-                    $('#searchForm').submit();
+            let header = $("meta[name='_csrf_header']").attr('content');
+            let token = $("meta[name='_csrf']").attr('content');
+            const buttonSearch = $('#button_search');
+            const searchKeyword = $('#searchKeyword');
+            const searchOption = $('#searchOption');
+
+            /*console.log("토큰? ::: " + token);
+            console.log("헤더 토큰? ::: " + header);*/
+
+            searchKeyword.add(searchOption).on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    buttonSearch.click();
+                }
+            });
+
+            buttonSearch.on('click', function (event) {
+                event.preventDefault();
+
+                const page = 0;
+                const keyword = searchKeyword.val();
+                const option = searchOption.val();
+
+                console.log("값 테스트1 :::: " + keyword);
+                console.log("값 테스트2 :::: " + option);
+
+                $.ajax({
+                    type: 'GET',
+                    url: "/management/member-Ajax",
+/*                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },*/
+                    dataType: "json",
+                    /*data: JSON.stringify(params),*/
+                    data:{page: page, keyword: keyword, option: option},
+                    contentType: "application/json",
+                    success: function (responseData) {
+                        
+                        console.log('Ajax success');
+                    },
+                    error: function () {
+                        console.log('Ajax faill');
+                        console.log("ajax val test " + searchKeyword.val());
+                        console.log("ajax val test " + searchOption.val());
+                    }
                 });
             });
         });

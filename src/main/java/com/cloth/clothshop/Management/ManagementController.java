@@ -1,6 +1,7 @@
 package com.cloth.clothshop.Management;
 
 import com.cloth.clothshop.Member.Member;
+import com.cloth.clothshop.Member.MemberAjaxDTO;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
@@ -13,9 +14,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
-@Controller @RequiredArgsConstructor
+@Controller
+@RequiredArgsConstructor
 @RequestMapping("/management")
 public class ManagementController {
 
@@ -24,9 +29,9 @@ public class ManagementController {
 
     @GetMapping("/allitem")
     public String managementProudcts(Model model, ManagementNewItemForm managementNewItemForm,
-                                   @RequestParam (value = "page", defaultValue = "0") String page,
-                                   @RequestParam (value = "option", defaultValue = "") String option,
-                                   @RequestParam (value = "keyword", defaultValue = "") String keyword
+                                     @RequestParam(value = "page", defaultValue = "0") String page,
+                                     @RequestParam(value = "option", defaultValue = "") String option,
+                                     @RequestParam(value = "keyword", defaultValue = "") String keyword
     ) {
 
         Object[] requestParam = new Object[]{page, option, keyword};
@@ -49,10 +54,10 @@ public class ManagementController {
 
     @GetMapping("/member")
     public String managementMember(Model model, ManagementMemberForm managementMemberForm,
-                                   @RequestParam (value = "page", defaultValue = "0") String page,
-                                   @RequestParam (value = "option", defaultValue = "") String option,
-                                   @RequestParam (value = "keyword", defaultValue = "") String keyword
-                                   ) {
+                                   @RequestParam(value = "page", defaultValue = "0") String page,
+                                   @RequestParam(value = "option", defaultValue = "") String option,
+                                   @RequestParam(value = "keyword", defaultValue = "") String keyword
+    ) {
 
         Object[] requestParam = new Object[]{page, option, keyword};
         Page<Member> paging = mService.managementGetAutoPaging(model, requestParam);
@@ -61,6 +66,31 @@ public class ManagementController {
         model.addAttribute("MMForm", managementMemberForm);
 
         return "management/member_management";
+    }
+
+    /*ajax 테스트*/
+    @GetMapping("/member-Ajax")
+    public @ResponseBody Map<String, Object> managementMemberAjax(
+            Model model, ManagementMemberForm managementMemberForm,
+            @RequestParam(value = "page", defaultValue = "0") String page,
+            @RequestParam(value = "option", defaultValue = "") String option,
+            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+
+        Object[] requestParam = new Object[]{page, option, keyword};
+        Page<Member> paging = mService.managementGetAutoPagingAjax(requestParam);
+
+        Map<String, Object> responseData = new HashMap<>();
+        model.addAttribute("memberPaging", paging);
+        model.addAttribute("MMForm", managementMemberForm);
+        responseData.put("memberPaging", paging);
+        responseData.put("page", page);
+        responseData.put("option", option);
+        responseData.put("keyword", keyword);
+
+        System.out.println("ajax 컨트롤러 호출 성공 !!!");
+        System.out.println("ajax 넘어옴 :::: " + keyword);
+        System.out.println("ajax 넘어옴 :::: " + option);
+        return responseData;
     }
 
     @PostMapping("/member/modify")
