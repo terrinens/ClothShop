@@ -71,6 +71,9 @@ dependencies {
 
     //제이쿼리
     implementation "org.webjars:jquery:3.6.0"
+
+    //Jackson
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
 }
 
 // Querydsl 설정부
