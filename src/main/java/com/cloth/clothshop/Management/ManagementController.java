@@ -5,6 +5,7 @@ import com.cloth.clothshop.Member.MemberAjaxDTO;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -70,57 +70,20 @@ public class ManagementController {
         return "management/member_management";
     }
 
-    /*ajax 테스트*/
-/*    @GetMapping("/member-Ajax")
+    @GetMapping("/member-Ajax")
     public @ResponseBody Map<String, Object> managementMemberAjax(
-            Model model, ManagementMemberForm managementMemberForm,
             @RequestParam(value = "page", defaultValue = "0") String page,
             @RequestParam(value = "option", defaultValue = "") String option,
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
         Object[] requestParam = new Object[]{page, option, keyword};
         Page<Member> paging = mService.managementGetAutoPagingAjax(requestParam);
-
-        System.out.println(paging.getTotalElements());
-
-        System.out.println("ajax 컨트롤러 호출 성공 !!!");
-        System.out.println("ajax 넘어옴 :::: " + keyword);
-        System.out.println("ajax 넘어옴 :::: " + option);
 
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("memberPaging", paging);
         responseData.put("page", page);
-        responseData.put("option", option);
-        responseData.put("keyword", keyword);
 
-        System.out.println("map 으로 쏨 :::: " + paging.getTotalPages());
         return responseData;
-    }*/
-
-    //Json 테스트
-    @GetMapping("/member-Ajax") @ResponseBody
-    public ModelAndView managementMemberAjax(
-            @RequestParam(value = "page", defaultValue = "0") String page,
-            @RequestParam(value = "option", defaultValue = "") String option,
-            @RequestParam(value = "keyword", defaultValue = "") String keyword) {
-
-        Object[] requestParam = new Object[]{page, option, keyword};
-        Page<Member> paging = mService.managementGetAutoPagingAjax(requestParam);
-
-        System.out.println("ajax 컨트롤러 호출 성공 !!!");
-        System.out.println("ajax 컨트롤러 토탈 페이지 :::: " + paging.getTotalElements());
-        System.out.println("ajax 넘어옴 :::: " + keyword);
-        System.out.println("ajax 넘어옴 :::: " + option);
-
-        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
-        ModelAndView modelAndView = new ModelAndView(jsonView);
-        modelAndView.addObject("memberPaging", paging);
-        modelAndView.addObject("page", page);
-        modelAndView.addObject("option", option);
-        modelAndView.addObject("keyword", keyword);
-
-        System.out.println("Jackson 으로 쏨 :::: " + paging.getTotalPages());
-        return modelAndView;
     }
 
     @PostMapping("/member/modify")

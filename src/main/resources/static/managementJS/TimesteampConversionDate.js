@@ -1,6 +1,4 @@
 function conversionDate(indate) {
-    console.log("외부스크립트 호출됨");
-
     if (indate == null) {
         return "";
     } else {
