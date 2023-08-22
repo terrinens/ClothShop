@@ -55,7 +55,7 @@
         <ul class="pagination justify-content-center">
             <li th:classappend="${!memberPaging.hasPrevious()} ? 'disabled'" class="page-item">
                 <a class="page-link" href="javascript:void(0)"
-                   th:data-page="${(memberPaging.number) - 1}">&laquo;</a>
+                   th:data-page="${(memberPaging.number) - 1}">&lsaquo;</a>
             </li>
             <li th:each="page : ${#numbers.sequence(0, memberPaging.getTotalPages() - 1)}"
                 th:if="${page >= memberPaging.number - 10 and page <= memberPaging.number + 10}"
@@ -65,7 +65,7 @@
             </li>
             <li th:classappend="${!memberPaging.hasNext()} ? 'disabled'" class="page-item">
                 <a class="page-link" href="javascript:void(0)"
-                   th:data-page="${(memberPaging.number) + 1}">&raquo;</a>
+                   th:data-page="${(memberPaging.number) + 1}">&rsaquo;</a>
             </li>
         </ul>
     </div>
