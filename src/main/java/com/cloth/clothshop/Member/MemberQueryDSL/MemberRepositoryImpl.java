@@ -37,12 +37,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         } else if ("tel".equals(searchOption)) {
             condition = member.tel.like(likeKeyword);
         }
-
-        System.out.println("MRimpl에서 보내짐 keyword  :::: " + likeKeyword);
-        System.out.println("MRimpl에서 보내짐 option  :::: " + searchOption);
-        System.out.println(
-                "MRimpl에서 보내짐 총 엘레멘트 :::: " + queryDSLRepeatCode.keywordIsEmpty(member, condition, searchKeyword, pageable).getTotalElements());
-
         return queryDSLRepeatCode.keywordIsEmpty(member, condition, searchKeyword, pageable);
     }
 }
