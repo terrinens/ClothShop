@@ -16,7 +16,8 @@ function Ajax(page, keyword, option) {
         success: function (data) {
             console.log('Ajax success');
             const memberPagingHtml = $('.memberPaging');
-            const member = data.memberPaging.content;
+            const memberPaging = data.memberPaging;
+            const member = memberPaging.content;
             const memberTbody = $('#memberTbody');
             const pagingNumberBox = $('#pagingNumberBox');
 
@@ -37,6 +38,26 @@ function Ajax(page, keyword, option) {
                     '</tr>';
                 memberTbody.append(row);
             });
+
+            if (!member.isEmptyObject()) {
+                pagingNumberBox.append('<ul class="pagination">');
+
+                if (!memberPaging.hasPrevious()) {
+                    pagingNumberBox.append(
+                        '<li class="disabled page-item">' +
+                        '<a class="page-link" href="javascript:void(0)">&lsaquo;</a>' +
+                        '</li>'
+                    );
+                } else {
+                    pagingNumberBox.append(
+                        '<li class="page-item">' +
+                        '<a class="page-link" href="javascript:void(0)">&lsaquo;</a>' +
+                        '</li>'
+                    );
+                }
+
+                pagingNumberBox.append('</ul>');
+            }
         },
         error: function () {
             console.log('Ajax request failed');
