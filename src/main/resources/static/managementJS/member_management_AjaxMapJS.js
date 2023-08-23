@@ -40,14 +40,12 @@ function Ajax(page, keyword, option) {
                 htmlPagingNumberBox.append('<ul class="pagination justify-content-center">');
 
                 if (hasPrevious === true) {
-                    console.log("화살표 표시 출력 완료 if");
                     htmlPagingNumberBox.children().append(
                         '<li class="disabled page-item <<<">' +
                         '<a class="page-link" href="javascript:void(0)">' + "&lsaquo;" + '</a>' +
                         '</li>'
                     );
-                } else {
-                    console.log("화살표 표시 출력 완료 else");
+                } else if (hasPrevious === true && memberPaging.empty === false) {
                     htmlPagingNumberBox.children().append(
                         '<li class="page-item <<<">' +
                         '<a class="page-link" href="javascript:void(0)" data-page="${(memberPaging.number) - 1}">'
