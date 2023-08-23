@@ -4,14 +4,17 @@
 const buttonSearch = $('#button_search');
 const searchKeyword = $('#searchKeyword');
 const searchOption = $('#searchOption');
+const pageLink = $('.page-link');
+const htmlMemberPagingLocation = $('.memberPaging');
+const htmlPagingNumberBox = $('#pagingNumberBox');
+const htmlMemberTbody = $('#memberTbody');
 
-$('.page-link').each(function (page, keyword, option) {
-    $(this).on('click', function () {
-        page = $(this).data('page');
-        keyword = searchKeyword.val();
-        option = searchOption.val();
-        Ajax(page, keyword, option);
-    });
+pageLink.on('click', function () {
+    const page = $(this).data('page');
+    const keyword = searchKeyword.val();
+    const option = searchOption.val();
+    pageLink.off('click');
+    Ajax(page, keyword, option);
 });
 
 function Ajax(page, keyword, option) {
@@ -25,9 +28,6 @@ function Ajax(page, keyword, option) {
         dataType: "json",
         success: function (data) {
             console.log('Ajax success');
-            const htmlMemberPagingLocation = $('.memberPaging');
-            const htmlPagingNumberBox = $('#pagingNumberBox');
-            const htmlMemberTbody = $('#memberTbody');
             const memberPaging = data.memberPaging;
             const member = memberPaging.content;
             const hasPrevious = data.hasPrevious;
@@ -50,6 +50,7 @@ function Ajax(page, keyword, option) {
                 htmlPagingNumberBox.append('<ul class="pagination justify-content-center">');
 
                 if (memberPaging.totalPages > 2) {
+                    const previousPage = memberPaging.number - 1;
                     if (hasPrevious === false) {
                         htmlPagingNumberBox.children().append(
                             '<li class="disabled page-item">' +
@@ -59,7 +60,7 @@ function Ajax(page, keyword, option) {
                     } else if (hasPrevious === true) {
                         htmlPagingNumberBox.children().append(
                             '<li class="page-item">' +
-                            '<a class="page-link" href="javascript:void(0)" data-page="' + (memberPaging.number -= 1) + '">'
+                            '<a class="page-link" href="javascript:void(0)" data-page="' + previousPage + '">'
                             + "&lsaquo;" +
                             '</a>' +
                             '</li>'
@@ -94,9 +95,10 @@ function Ajax(page, keyword, option) {
                             '</li>'
                         );
                     } else if (hasNext === true) {
+                        const nextpage = memberPaging.number + 1;
                         htmlPagingNumberBox.children().append(
                             '<li class="page-item">' +
-                            '<a class="page-link" href="javascript:void(0)" data-page="' + (memberPaging.number += 1) + '">'
+                            '<a class="page-link" href="javascript:void(0)" data-page="' + nextpage + '">'
                             + "&rsaquo;" +
                             '</a>' +
                             '</li>'
@@ -105,19 +107,13 @@ function Ajax(page, keyword, option) {
                 }
                 htmlPagingNumberBox.append('</ul>');
             }
-
-            htmlPagingNumberBox.on('click', '.page-link', function () {
-                const page = $(this).data('page');
-                const keyword = searchKeyword.val();
-                const option = searchOption.val();
-                Ajax(page, keyword, option);
-            });
         },
         error: function () {
             console.log('Ajax request failed');
         }
     });
 }
+
 searchKeyword.add(searchOption).on('keydown', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -133,5 +129,13 @@ buttonSearch.on('click', function (event) {
     const option = searchOption.val();
 
     Ajax(page, keyword, option);
+});
+
+htmlPagingNumberBox.on('click', '.page-link', function () {
+    const page = $(this).data('page');
+    const keyword = searchKeyword.val();
+    const option = searchOption.val();
+    Ajax(page, keyword, option);
+    pageLink.empty();
 });
 
