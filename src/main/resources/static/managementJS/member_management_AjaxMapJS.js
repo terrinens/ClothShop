@@ -1,8 +1,16 @@
 // noinspection DuplicatedCode
-
 const buttonSearch = $('#button_search');
 const searchKeyword = $('#searchKeyword');
 const searchOption = $('#searchOption');
+
+$('.page-link').each(function (page, keyword, option) {
+    $(this).on('click', function () {
+        page = $(this).data('page');
+        keyword = searchKeyword.val();
+        option = searchOption.val();
+        Ajax(page, keyword, option);
+    });
+});
 
 function Ajax(page, keyword, option) {
     $.ajax({
@@ -41,7 +49,6 @@ function Ajax(page, keyword, option) {
 
                 if (memberPaging.totalPages > 2) {
                     if (hasPrevious === false) {
-                        console.log("false 도달함");
                         htmlPagingNumberBox.children().append(
                             '<li class="disabled page-item">' +
                             '<a class="page-link" href="javascript:void(0)">' + "&lsaquo;" + '</a>' +
@@ -60,9 +67,11 @@ function Ajax(page, keyword, option) {
 
                 const previouse = Math.max(0, memberPaging.number - 10);
                 const Next = Math.min(memberPaging.number + 10, memberPaging.totalPages - 1);
+                console.log("멤버 페이지 넘버? :::: " + memberPaging.number);
                 for (let i = previouse; i <= Next; i++) {
                     let viewNumber = i + 1;
-                    if (i === memberPaging.number) {
+                    if (i === page) {
+                        console.log("액티브 도달함");
                         htmlPagingNumberBox.children().append(
                             '<li class="active page-item">' +
                             '<a class="page-link" href="javascript:void(0)" data-page="' + i + '">' + viewNumber + '</a>'
@@ -94,9 +103,20 @@ function Ajax(page, keyword, option) {
                         );
                     }
                 }
-
                 htmlPagingNumberBox.append('</ul>');
             }
+
+            $('.page-link').each(function (page, keyword, option) {
+                $(this).on('click', function () {
+                    page = $(this).data('page');
+                    keyword = searchKeyword.val();
+                    option = searchOption.val();
+                    console.log("ajax 재할당 번호버튼 클릭 페이지값 ::: " + page);
+                    console.log("ajax 재할당 번호버튼 클릭 키워드값 ::: " + keyword);
+                    console.log("ajax 재할당 번호버튼 클릭 옵션값 ::: " + option);
+                    Ajax(page, keyword, option);
+                });
+            });
         },
         error: function () {
             console.log('Ajax request failed');

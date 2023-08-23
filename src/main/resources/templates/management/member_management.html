@@ -70,17 +70,6 @@
         </ul>
     </div>
     
-    <!--페이지이동을 위한 js-->
-    <script type="text/javascript">
-        $(function () {
-            $('.page-link').each(function () {
-                $(this).on('click', function () {
-                    $('#page').val($(this).data('page'));
-                    $('#searchForm').submit();
-                });
-            });
-        });
-    </script>
     <script th:src="@{/managementJS/TimesteampConversionDate.js}" type="text/javascript"></script>
     <script th:src="@{/managementJS/member_management_AjaxMapJS.js}"></script>
     
