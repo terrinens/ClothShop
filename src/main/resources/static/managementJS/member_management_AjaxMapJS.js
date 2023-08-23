@@ -20,7 +20,7 @@ function Ajax(page, keyword, option) {
             const htmlMemberTbody = $('#memberTbody');
             const memberPaging = data.memberPaging;
             const member = memberPaging.content;
-            const hasPrevious = data.hsaPrevious;
+            const hasPrevious = data.hasPrevious;
             const hasNext = data.hasNext;
 
             htmlMemberPagingLocation.add(htmlMemberTbody).add(htmlPagingNumberBox).empty();
@@ -39,20 +39,23 @@ function Ajax(page, keyword, option) {
             if (memberPaging.empty === false) {
                 htmlPagingNumberBox.append('<ul class="pagination justify-content-center">');
 
-                if (hasPrevious === true) {
-                    htmlPagingNumberBox.children().append(
-                        '<li class="disabled page-item <<<">' +
-                        '<a class="page-link" href="javascript:void(0)">' + "&lsaquo;" + '</a>' +
-                        '</li>'
-                    );
-                } else if (hasPrevious === true && memberPaging.empty === false) {
-                    htmlPagingNumberBox.children().append(
-                        '<li class="page-item <<<">' +
-                        '<a class="page-link" href="javascript:void(0)" data-page="${(memberPaging.number) - 1}">'
-                        + "&lsaquo;" +
-                        '</a>' +
-                        '</li>'
-                    );
+                if (memberPaging.totalPages > 2) {
+                    if (hasPrevious === false) {
+                        console.log("false 도달함");
+                        htmlPagingNumberBox.children().append(
+                            '<li class="disabled page-item">' +
+                            '<a class="page-link" href="javascript:void(0)">' + "&lsaquo;" + '</a>' +
+                            '</li>'
+                        );
+                    } else if (hasPrevious === true) {
+                        htmlPagingNumberBox.children().append(
+                            '<li class="page-item">' +
+                            '<a class="page-link" href="javascript:void(0)" data-page="' + (memberPaging.number -= 1) + '">'
+                            + "&lsaquo;" +
+                            '</a>' +
+                            '</li>'
+                        );
+                    }
                 }
 
                 const previouse = Math.max(0, memberPaging.number - 10);
@@ -62,17 +65,36 @@ function Ajax(page, keyword, option) {
                     if (i === memberPaging.number) {
                         htmlPagingNumberBox.children().append(
                             '<li class="active page-item">' +
-                            '<a class="page-link" href="javascript:void(0)" th:data-page="' + i + '">' + viewNumber + '</a>'
+                            '<a class="page-link" href="javascript:void(0)" data-page="' + i + '">' + viewNumber + '</a>'
                             + '</li>'
                         );
                     } else {
                         htmlPagingNumberBox.children().append(
                             '<li class="page-item">' +
-                            '<a class="page-link" href="javascript:void(0)" th:data-page="' + i + '">' + viewNumber + '</a>'
+                            '<a class="page-link" href="javascript:void(0)" data-page="' + i + '">' + viewNumber + '</a>'
                             + '</li>'
                         );
                     }
                 }
+
+                if (memberPaging.totalPages > 2) {
+                    if (hasNext === false) {
+                        htmlPagingNumberBox.children().append(
+                            '<li class="disabled page-item">' +
+                            '<a class="page-link" href="javascript:void(0)">' + "&rsaquo;" + '</a>' +
+                            '</li>'
+                        );
+                    } else if (hasNext === true && memberPaging.empty === false) {
+                        htmlPagingNumberBox.children().append(
+                            '<li class="page-item">' +
+                            '<a class="page-link" href="javascript:void(0)" data-page="' + (memberPaging.number += 1) + '">'
+                            + "&rsaquo;" +
+                            '</a>' +
+                            '</li>'
+                        );
+                    }
+                }
+
                 htmlPagingNumberBox.append('</ul>');
             }
         },
