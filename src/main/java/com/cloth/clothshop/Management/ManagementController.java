@@ -78,9 +78,13 @@ public class ManagementController {
 
         Object[] requestParam = new Object[]{page, option, keyword};
         Page<Member> paging = mService.managementGetAutoPagingAjax(requestParam);
+        Boolean hasPrevious = paging.hasPrevious();
+        Boolean hasNext = paging.hasNext();
 
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("memberPaging", paging);
+        responseData.put("hasPrevious", hasPrevious);
+        responseData.put("hasNext", hasNext);
         responseData.put("page", page);
 
         return responseData;

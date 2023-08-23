@@ -15,13 +15,15 @@ function Ajax(page, keyword, option) {
         dataType: "json",
         success: function (data) {
             console.log('Ajax success');
-            const memberPagingHtml = $('.memberPaging');
+            const htmlMemberPagingLocation = $('.memberPaging');
+            const htmlPagingNumberBox = $('#pagingNumberBox');
+            const htmlMemberTbody = $('#memberTbody');
             const memberPaging = data.memberPaging;
             const member = memberPaging.content;
-            const memberTbody = $('#memberTbody');
-            const pagingNumberBox = $('#pagingNumberBox');
+            const hasPrevious = data.hsaPrevious;
+            const hasNext = data.hasNext;
 
-            memberPagingHtml.add(memberTbody).add(pagingNumberBox).empty();
+            htmlMemberPagingLocation.add(htmlMemberTbody).add(htmlPagingNumberBox).empty();
             $.each(member, function (index, member) {
                 const id = member.id;
                 const name = member.name;
@@ -30,33 +32,52 @@ function Ajax(page, keyword, option) {
                 const indate = member.indate;
                 const viewIndate = conversionDate(indate);
                 let row = '<tr>' +
-                    '<td>' + id + '</td>' +
+                    '<th>' + id + '</th>' +
                     '<td>' + name + '</td>' +
                     '<td>' + tel + '</td>' +
                     '<td>' + role + '</td>' +
                     '<td>' + viewIndate + '</td>' +
                     '</tr>';
-                memberTbody.append(row);
+                htmlMemberTbody.append(row);
             });
 
-            if (!member.isEmptyObject()) {
-                pagingNumberBox.append('<ul class="pagination">');
+            if (memberPaging.empty === false) {
+                htmlPagingNumberBox.append('<ul class="pagination justify-content-center">');
 
-                if (!memberPaging.hasPrevious()) {
-                    pagingNumberBox.append(
-                        '<li class="disabled page-item">' +
+                if (hasPrevious === true) {
+                    htmlPagingNumberBox.children().append(
+                        '<li class="disabled page-item <<<">' +
                         '<a class="page-link" href="javascript:void(0)">&lsaquo;</a>' +
                         '</li>'
                     );
                 } else {
-                    pagingNumberBox.append(
-                        '<li class="page-item">' +
-                        '<a class="page-link" href="javascript:void(0)">&lsaquo;</a>' +
+                    htmlPagingNumberBox.children().append(
+                        '<li class="page-item <<<">' +
+                        '<a class="page-link" href="javascript:void(0)" ' +
+                        'data-page="${(memberPaging.number) - 1}>&lsaquo;</a>' +
                         '</li>'
                     );
                 }
-
-                pagingNumberBox.append('</ul>');
+                const previouse = Math.max(0, memberPaging.number - 10);
+                const Next = Math.min(memberPaging.number + 10, memberPaging.totalPages - 1);
+                for (let i = previouse; i <= Next; i++) {
+                    let viewNumber = i+1;
+                    if (i === memberPaging.number) {
+                        htmlPagingNumberBox.children().append(
+                            '<li class="active page-item nnn">' +
+                            '<a class="page-link" href="javascript:void(0)" th:data-page="'+i+'">'+viewNumber+'</a>'
+                            +'</li>'
+                        );
+                    } else {
+                        htmlPagingNumberBox.children().append(
+                            '<li class="page-item nnn">' +
+                            '<a class="page-link" href="javascript:void(0)" th:data-page="'+i+'">'+viewNumber+'</a>'
+                            +'</li>'
+                        );
+                    }
+                }
+                htmlPagingNumberBox.append('</ul>');
+                console.log("번호할당 끝");
             }
         },
         error: function () {
