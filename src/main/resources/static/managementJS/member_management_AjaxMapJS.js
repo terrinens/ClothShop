@@ -1,6 +1,6 @@
-// noinspection JSUnresolvedReference
-// noinspection JSUnresolvedReference
+// noinspection JSFileReferences,JSUnresolvedReference
 
+import('/managementJS/TimesteampConversionDate.js');
 const buttonSearch = $('#button_search');
 const searchKeyword = $('#searchKeyword');
 const searchOption = $('#searchOption');
