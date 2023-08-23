@@ -25,17 +25,12 @@ function Ajax(page, keyword, option) {
 
             htmlMemberPagingLocation.add(htmlMemberTbody).add(htmlPagingNumberBox).empty();
             $.each(member, function (index, member) {
-                const id = member.id;
-                const name = member.name;
-                const tel = member.tel;
-                const role = member.role;
-                const indate = member.indate;
-                const viewIndate = conversionDate(indate);
+                const viewIndate = conversionDate(member.indate);
                 let row = '<tr>' +
-                    '<th>' + id + '</th>' +
-                    '<td>' + name + '</td>' +
-                    '<td>' + tel + '</td>' +
-                    '<td>' + role + '</td>' +
+                    '<th>' + member.id + '</th>' +
+                    '<td>' + member.name + '</td>' +
+                    '<td>' + member.tel + '</td>' +
+                    '<td>' + member.role + '</td>' +
                     '<td>' + viewIndate + '</td>' +
                     '</tr>';
                 htmlMemberTbody.append(row);
@@ -45,39 +40,42 @@ function Ajax(page, keyword, option) {
                 htmlPagingNumberBox.append('<ul class="pagination justify-content-center">');
 
                 if (hasPrevious === true) {
+                    console.log("화살표 표시 출력 완료 if");
                     htmlPagingNumberBox.children().append(
                         '<li class="disabled page-item <<<">' +
-                        '<a class="page-link" href="javascript:void(0)">&lsaquo;</a>' +
+                        '<a class="page-link" href="javascript:void(0)">' + "&lsaquo;" + '</a>' +
                         '</li>'
                     );
                 } else {
+                    console.log("화살표 표시 출력 완료 else");
                     htmlPagingNumberBox.children().append(
                         '<li class="page-item <<<">' +
-                        '<a class="page-link" href="javascript:void(0)" ' +
-                        'data-page="${(memberPaging.number) - 1}>&lsaquo;</a>' +
+                        '<a class="page-link" href="javascript:void(0)" data-page="${(memberPaging.number) - 1}">'
+                        + "&lsaquo;" +
+                        '</a>' +
                         '</li>'
                     );
                 }
+
                 const previouse = Math.max(0, memberPaging.number - 10);
                 const Next = Math.min(memberPaging.number + 10, memberPaging.totalPages - 1);
                 for (let i = previouse; i <= Next; i++) {
-                    let viewNumber = i+1;
+                    let viewNumber = i + 1;
                     if (i === memberPaging.number) {
                         htmlPagingNumberBox.children().append(
-                            '<li class="active page-item nnn">' +
-                            '<a class="page-link" href="javascript:void(0)" th:data-page="'+i+'">'+viewNumber+'</a>'
-                            +'</li>'
+                            '<li class="active page-item">' +
+                            '<a class="page-link" href="javascript:void(0)" th:data-page="' + i + '">' + viewNumber + '</a>'
+                            + '</li>'
                         );
                     } else {
                         htmlPagingNumberBox.children().append(
-                            '<li class="page-item nnn">' +
-                            '<a class="page-link" href="javascript:void(0)" th:data-page="'+i+'">'+viewNumber+'</a>'
-                            +'</li>'
+                            '<li class="page-item">' +
+                            '<a class="page-link" href="javascript:void(0)" th:data-page="' + i + '">' + viewNumber + '</a>'
+                            + '</li>'
                         );
                     }
                 }
                 htmlPagingNumberBox.append('</ul>');
-                console.log("번호할당 끝");
             }
         },
         error: function () {
