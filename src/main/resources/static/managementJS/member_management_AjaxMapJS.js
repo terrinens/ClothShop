@@ -1,4 +1,6 @@
-// noinspection DuplicatedCode
+// noinspection JSUnresolvedReference
+// noinspection JSUnresolvedReference
+
 const buttonSearch = $('#button_search');
 const searchKeyword = $('#searchKeyword');
 const searchOption = $('#searchOption');
@@ -67,11 +69,9 @@ function Ajax(page, keyword, option) {
 
                 const previouse = Math.max(0, memberPaging.number - 10);
                 const Next = Math.min(memberPaging.number + 10, memberPaging.totalPages - 1);
-                console.log("멤버 페이지 넘버? :::: " + memberPaging.number);
                 for (let i = previouse; i <= Next; i++) {
                     let viewNumber = i + 1;
                     if (i === page) {
-                        console.log("액티브 도달함");
                         htmlPagingNumberBox.children().append(
                             '<li class="active page-item">' +
                             '<a class="page-link" href="javascript:void(0)" data-page="' + i + '">' + viewNumber + '</a>'
@@ -93,7 +93,7 @@ function Ajax(page, keyword, option) {
                             '<a class="page-link" href="javascript:void(0)">' + "&rsaquo;" + '</a>' +
                             '</li>'
                         );
-                    } else if (hasNext === true && memberPaging.empty === false) {
+                    } else if (hasNext === true) {
                         htmlPagingNumberBox.children().append(
                             '<li class="page-item">' +
                             '<a class="page-link" href="javascript:void(0)" data-page="' + (memberPaging.number += 1) + '">'
@@ -106,16 +106,11 @@ function Ajax(page, keyword, option) {
                 htmlPagingNumberBox.append('</ul>');
             }
 
-            $('.page-link').each(function (page, keyword, option) {
-                $(this).on('click', function () {
-                    page = $(this).data('page');
-                    keyword = searchKeyword.val();
-                    option = searchOption.val();
-                    console.log("ajax 재할당 번호버튼 클릭 페이지값 ::: " + page);
-                    console.log("ajax 재할당 번호버튼 클릭 키워드값 ::: " + keyword);
-                    console.log("ajax 재할당 번호버튼 클릭 옵션값 ::: " + option);
-                    Ajax(page, keyword, option);
-                });
+            htmlPagingNumberBox.on('click', '.page-link', function () {
+                const page = $(this).data('page');
+                const keyword = searchKeyword.val();
+                const option = searchOption.val();
+                Ajax(page, keyword, option);
             });
         },
         error: function () {
@@ -123,6 +118,12 @@ function Ajax(page, keyword, option) {
         }
     });
 }
+searchKeyword.add(searchOption).on('keydown', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        buttonSearch.click();
+    }
+});
 
 buttonSearch.on('click', function (event) {
     event.preventDefault();
@@ -134,9 +135,3 @@ buttonSearch.on('click', function (event) {
     Ajax(page, keyword, option);
 });
 
-searchKeyword.add(searchOption).on('keydown', function (event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        buttonSearch.click();
-    }
-});
