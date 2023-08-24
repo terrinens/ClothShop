@@ -8,15 +8,13 @@ const $pageLink = $('.page-link');
 const $htmlMemberPagingLocation = $('.memberPaging');
 const $htmlPagingNumberBox = $('#pagingNumberBox');
 const $htmlMemberTbody = $('#memberTbody');
-const $mainNav = $('#mainNav');
-const $bootstrapbundleJS = $('#bootstrapbundleJS');
 let lodingCheck = false;
 
 $pageLink.on('click', function () {
     const page = $(this).data('page');
     const keyword = $searchKeyword.val();
     const option = $searchOption.val();
-    $mainNav.append($.getScript("/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"));
+    $('#modifyFormJS').remove();
     $pageLink.off('click');
     this.remove();
     Ajax(page, keyword, option);
@@ -126,9 +124,9 @@ function Ajax(page, keyword, option) {
                 const childTarget2 = $('.childTarget2').eq(i);
                 childTarget2.append(
                     '<br><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>'
-                    + '<button type="submit" class="btn btn-primary" id="button_modify">수정하기</button>'
+                    + '<button class="btn btn-primary" id="button_modify">수정하기</button>'
                     + '<button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>'
-                    + '<button th:data-uri="@{|/management/member/delete/${member.getId()}|}" type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제</button>'
+                    + '<button data-uri="/management/member/delete/'+memberData.id+'" type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제</button>'
                     + '</form>'
                     + '</div>'
                     + '</div>'
@@ -136,6 +134,7 @@ function Ajax(page, keyword, option) {
                     + '</div>'
                 );
             }
+            deleteButtonReMapping();
             lodingCheck = true;
         },
         error: function () {
@@ -145,9 +144,8 @@ function Ajax(page, keyword, option) {
 }
 
 function modalReLoad(modifyModalBox, modalTarget, memberData, index) {
-    const i = index;
     modifyModalBox.append(
-        '<div class="modal fade" id="' + modalTarget[i] + '" tabindex="-1" aria-hidden="true">'
+        '<div class="modal fade" id="' + modalTarget[index] + '" tabindex="-1" aria-hidden="true">'
         + '<div class="modal-dialog">'
         + '<div class="modal-content">'
         + '<div class="modal-header">'
@@ -189,7 +187,6 @@ function generateRoleOption(memberData, index) {
     const childTarget = $('.childTarget').eq(index);
 
     if (memberData.role === "Admin") {
-        console.log("자식 타겟 추가");
         return childTarget.append(
             '<div class="mb-3 childTarget2">'
             + '<label for="recipient-role" class="col-form-label">권한 수정</label>'
@@ -199,7 +196,6 @@ function generateRoleOption(memberData, index) {
             + '</select>'
             + '</div>');
     } else {
-        console.log("자식 타겟 추가");
         return childTarget.append(
             '<div class="mb-3 childTarget2">'
             + '<label for="recipient-role" class="col-form-label">권한 수정</label>'
@@ -234,9 +230,41 @@ $htmlPagingNumberBox.on('click', '.page-link', function () {
     const option = $searchOption.val();
 
     if (lodingCheck === true) {
-        $('.modal.fade').remove();
+        $('.modal.fade').not('#delete_modal').remove();
     }
     Ajax(page, keyword, option);
 });
 
+/*console.log(deleteTrueModal);*/
 
+const pwd = $('#recipient-pwd');
+const pwd_modify = $('#recipient-pwdModify');
+const btn_modify = $('#button_modify');
+
+btn_modify.on('click', function () {
+    if (pwd_modify.length === 0) {
+        alert("비밀번호를 정확히 입력해주세요.");
+    } else {
+        pwd.val(pwd_modify.val());
+        $('#modifyForm').submit();
+    }
+});
+
+const btn_reset = $('#button_reset');
+btn_reset.on('click', function () {
+    $('#modifyForm')[0].reset();
+});
+
+function deleteButtonReMapping() {
+    $('.call_delete_modal').each(function () {
+        $(this).on('click', function () {
+            const uri = $(this).data('uri');
+            $('.button_delete').each(function () {
+                $(this).on('click', function () {
+                    location.href = uri;
+                });
+            });
+        });
+    });
+
+}
