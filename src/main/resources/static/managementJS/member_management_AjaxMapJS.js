@@ -1,23 +1,29 @@
 // noinspection JSFileReferences,JSUnresolvedReference
+// noinspection JSUnresolvedReference
 
-import('/managementJS/TimesteampConversionDate.js');
-const buttonSearch = $('#button_search');
-const searchKeyword = $('#searchKeyword');
-const searchOption = $('#searchOption');
-const pageLink = $('.page-link');
-const htmlMemberPagingLocation = $('.memberPaging');
-const htmlPagingNumberBox = $('#pagingNumberBox');
-const htmlMemberTbody = $('#memberTbody');
+const $buttonSearch = $('#button_search');
+const $searchKeyword = $('#searchKeyword');
+const $searchOption = $('#searchOption');
+const $pageLink = $('.page-link');
+const $htmlMemberPagingLocation = $('.memberPaging');
+const $htmlPagingNumberBox = $('#pagingNumberBox');
+const $htmlMemberTbody = $('#memberTbody');
+const $mainNav = $('#mainNav');
+const $bootstrapbundleJS = $('#bootstrapbundleJS');
+let lodingCheck = false;
 
-pageLink.on('click', function () {
+$pageLink.on('click', function () {
     const page = $(this).data('page');
-    const keyword = searchKeyword.val();
-    const option = searchOption.val();
-    pageLink.off('click');
+    const keyword = $searchKeyword.val();
+    const option = $searchOption.val();
+    $mainNav.append($.getScript("/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"));
+    $pageLink.off('click');
+    this.remove();
     Ajax(page, keyword, option);
 });
 
 function Ajax(page, keyword, option) {
+    let modalTarget = [];
     $.ajax({
         type: 'GET',
         url: "/management/member-Ajax",
@@ -28,37 +34,40 @@ function Ajax(page, keyword, option) {
         dataType: "json",
         success: function (data) {
             console.log('Ajax success');
+            lodingCheck = true;
             const memberPaging = data.memberPaging;
             const member = memberPaging.content;
             const hasPrevious = data.hasPrevious;
             const hasNext = data.hasNext;
 
-            htmlMemberPagingLocation.add(htmlMemberTbody).add(htmlPagingNumberBox).empty();
+            $htmlMemberPagingLocation.add($htmlMemberTbody).add($htmlPagingNumberBox).empty();
             $.each(member, function (index, member) {
                 const viewIndate = conversionDate(member.indate);
-                let row = '<tr>' +
+                modalTarget.push("memberDetail_" + member.id);
+                let row = '<tr class="memberPaging" data-bs-toggle="modal" ' +
+                    'data-bs-target="' +"#"+ modalTarget.at(index) + '">' +
                     '<th>' + member.id + '</th>' +
                     '<td>' + member.name + '</td>' +
                     '<td>' + member.tel + '</td>' +
                     '<td>' + member.role + '</td>' +
                     '<td>' + viewIndate + '</td>' +
                     '</tr>';
-                htmlMemberTbody.append(row);
+                $htmlMemberTbody.append(row);
             });
 
             if (memberPaging.empty === false) {
-                htmlPagingNumberBox.append('<ul class="pagination justify-content-center">');
+                $htmlPagingNumberBox.append('<ul class="pagination justify-content-center">');
 
                 if (memberPaging.totalPages > 2) {
                     const previousPage = memberPaging.number - 1;
                     if (hasPrevious === false) {
-                        htmlPagingNumberBox.children().append(
+                        $htmlPagingNumberBox.children().append(
                             '<li class="disabled page-item">' +
                             '<a class="page-link" href="javascript:void(0)">' + "&lsaquo;" + '</a>' +
                             '</li>'
                         );
                     } else if (hasPrevious === true) {
-                        htmlPagingNumberBox.children().append(
+                        $htmlPagingNumberBox.children().append(
                             '<li class="page-item">' +
                             '<a class="page-link" href="javascript:void(0)" data-page="' + previousPage + '">'
                             + "&lsaquo;" +
@@ -73,13 +82,13 @@ function Ajax(page, keyword, option) {
                 for (let i = previouse; i <= Next; i++) {
                     let viewNumber = i + 1;
                     if (i === page) {
-                        htmlPagingNumberBox.children().append(
+                        $htmlPagingNumberBox.children().append(
                             '<li class="active page-item">' +
                             '<a class="page-link" href="javascript:void(0)" data-page="' + i + '">' + viewNumber + '</a>'
                             + '</li>'
                         );
                     } else {
-                        htmlPagingNumberBox.children().append(
+                        $htmlPagingNumberBox.children().append(
                             '<li class="page-item">' +
                             '<a class="page-link" href="javascript:void(0)" data-page="' + i + '">' + viewNumber + '</a>'
                             + '</li>'
@@ -89,14 +98,14 @@ function Ajax(page, keyword, option) {
 
                 if (memberPaging.totalPages > 2) {
                     if (hasNext === false) {
-                        htmlPagingNumberBox.children().append(
+                        $htmlPagingNumberBox.children().append(
                             '<li class="disabled page-item">' +
                             '<a class="page-link" href="javascript:void(0)">' + "&rsaquo;" + '</a>' +
                             '</li>'
                         );
                     } else if (hasNext === true) {
                         const nextpage = memberPaging.number + 1;
-                        htmlPagingNumberBox.children().append(
+                        $htmlPagingNumberBox.children().append(
                             '<li class="page-item">' +
                             '<a class="page-link" href="javascript:void(0)" data-page="' + nextpage + '">'
                             + "&rsaquo;" +
@@ -105,8 +114,67 @@ function Ajax(page, keyword, option) {
                         );
                     }
                 }
-                htmlPagingNumberBox.append('</ul>');
+                $htmlPagingNumberBox.append('</ul>');
             }
+
+            const $modifyModalBox = $('#modifyModalBox');
+            lodingCheck = false;
+            for (let i = 0; i < modalTarget.length; i++) {
+                $modifyModalBox.append(
+                    '<div class="modal fade" id="' + modalTarget[i] + '" tabindex="-1" aria-hidden="true">'
+                    + '<div class="modal-dialog">'
+                    + '<div class="modal-content">'
+                    + '<div class="modal-header">'
+                    + '<h1 class="modal-title fs-5">' + member[i].id + "님의 정보 수정" + '</h1>'
+                    + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
+                    + '</div>'
+                    + '<div class="modal-body">'
+                    + '<form action="/management/member/modify" th:object="${MMForm}" id="modifyForm" method="post">'
+                    + '<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>'
+                    + '<div class="mb-3">'
+                    + '<fieldset disabled="">'
+                    + '<label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>'
+                    + '<input th:name="id_view" type="text" class="form-control" id="recipient-id_view" th:value="${member.getId()}">'
+                    + '</fieldset>'
+                    + '<input th:field="*{id}" type="hidden" th:value="${member.getId()}">'
+                    + '</div>'
+                    + '<div class="mb-3">'
+                    + '<label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>'
+                    + '<label for="recipient-pwdModify"></label>'
+                    + '<input th:name="pwdModify" type="text" class="form-control" id="recipient-pwdModify" placeholder="공백으로 설정시 기존 비밀번호로 유지됩니다.">'
+                    + '<input type="hidden" th:field="*{pwd}" id="recipient-pwd" th:value="${member.getPwd()}">'
+                    + '</div>'
+                    + '<div class="mb-3">'
+                    + '<label for="recipient-name" class="col-form-label">이름 수정</label>'
+                    + '<input th:field="*{name}" type="text" class="form-control" id="recipient-name" th:default="${member.getName()}" th:value="${member.getName()}">'
+                    + '</div>'
+                    + '<div class="mb-3">'
+                    + '<label for="recipient-tel" class="col-form-label">연락처 수정</label>'
+                    + '<input th:name="tel" type="text" class="form-control" id="recipient-tel" th:default="${member.getTel()}" th:value="${member.getTel()}">'
+                    + '</div>'
+                    + '<div class="mb-3">'
+                    + '<label for="recipient-address" class="col-form-label">이메일 수정</label>'
+                    + '<input th:field="*{address}" type="text" class="form-control" id="recipient-address" th:default="${member.getAddress()}" th:value="${member.getAddress()}">'
+                    + '</div>'
+                    + '<div class="mb-3">'
+                    + '<label for="recipient-role" class="col-form-label">권한 수정</label>'
+                    + '<select th:field="*{role}" type="text" class="form-control" id="recipient-role">'
+                    + '<option name="admin" value="Admin" th:selected="${member.getRole() == \'Admin\'}">Admin</option>'
+                    + '<option name="user" value="User" th:selected="${member.getRole() == \'User\' || member.getRole() == null}">User</option>'
+                    + '</select>'
+                    + '</div>'
+                    + '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>'
+                    + '<button type="submit" class="btn btn-primary" id="button_modify">수정하기</button>'
+                    + '<button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>'
+                    + '<button th:data-uri="@{|/management/member/delete/${member.getId()}|}" type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제</button>'
+                    + '</form>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                )
+            }
+            lodingCheck = true;
         },
         error: function () {
             console.log('Ajax request failed');
@@ -114,28 +182,31 @@ function Ajax(page, keyword, option) {
     });
 }
 
-searchKeyword.add(searchOption).on('keydown', function (event) {
+$searchKeyword.add($searchOption).on('keydown', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault();
-        buttonSearch.click();
+        $buttonSearch.click();
     }
 });
 
-buttonSearch.on('click', function (event) {
+$buttonSearch.on('click', function (event) {
     event.preventDefault();
 
     const page = 0;
-    const keyword = searchKeyword.val();
-    const option = searchOption.val();
+    const keyword = $searchKeyword.val();
+    const option = $searchOption.val();
 
     Ajax(page, keyword, option);
 });
 
-htmlPagingNumberBox.on('click', '.page-link', function () {
+$htmlPagingNumberBox.on('click', '.page-link', function () {
     const page = $(this).data('page');
-    const keyword = searchKeyword.val();
-    const option = searchOption.val();
+    const keyword = $searchKeyword.val();
+    const option = $searchOption.val();
+
+    if (lodingCheck === true) {
+        $('.modal.fade').remove();
+    }
     Ajax(page, keyword, option);
-    pageLink.empty();
 });
 

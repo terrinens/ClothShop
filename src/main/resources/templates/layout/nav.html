@@ -2,7 +2,7 @@
       xmlns:sec="http://thymeleaf.org/extras/spring-security">
 
 <body>
-<nav th:fragment="topnav" class="navbar navbar-expand-lg bg-body-tertiary">
+<nav id="mainNav" th:fragment="topnav" class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">옷가게</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor04"
@@ -50,6 +50,6 @@
             </ul>
         </div>
     </div>
-    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script id="bootstrapbundleJS" src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </nav>
 </body>
