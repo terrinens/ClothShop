@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -100,17 +101,21 @@ public class ManagementController {
 
             mService.ManagementMemberModify(mmForm);
         }
-        System.out.println("수정에서 넘어옴 "+mmForm.getId());
+        System.out.println("수정에서 넘어옴 " + mmForm.getId());
         System.out.println("수정 불러옴");
-        return "redirect:/management/member";
+        return "redirect:/management/member-Ajax";
     }
 
     @GetMapping("/member/delete/{id}")
-    public String managementMemberDelete(@PathVariable String id) {
-
-        mService.memberDelete(id);
-
-        return "redirect:/management/member";
+    public ResponseEntity<?> managementMemberDelete(@PathVariable String id) {
+        try {
+            if (id != null && !id.isEmpty()) {
+                mService.memberDelete(id);
+            }
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping("/order")

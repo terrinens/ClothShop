@@ -20,6 +20,14 @@ $pageLink.on('click', function () {
     Ajax(page, keyword, option);
 });
 
+let count = 0;
+$(function () {
+    if (count === 0) {
+        Ajax(0, null, "all");
+        count++;
+    }
+});
+
 function Ajax(page, keyword, option) {
     let modalTarget = [];
     $.ajax({
@@ -38,7 +46,7 @@ function Ajax(page, keyword, option) {
             const hasPrevious = data.hasPrevious;
             const hasNext = data.hasNext;
 
-            $htmlMemberPagingLocation.add($htmlMemberTbody).add($htmlPagingNumberBox).empty();
+            $htmlMemberPagingLocation.add($htmlMemberTbody).add($htmlPagingNumberBox).not('#delete_modal').empty();
             $.each(member, function (index, member) {
                 const viewIndate = conversionDate(member.indate);
                 modalTarget.push("memberDetail_" + member.id);
@@ -126,7 +134,7 @@ function Ajax(page, keyword, option) {
                     '<br><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>'
                     + '<button class="btn btn-primary" id="button_modify">수정하기</button>'
                     + '<button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>'
-                    + '<button data-uri="/management/member/delete/'+memberData.id+'" type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제</button>'
+                    + '<button data-uri="/management/member/delete/' + memberData.id + '" type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제</button>'
                     + '</form>'
                     + '</div>'
                     + '</div>'
@@ -134,7 +142,7 @@ function Ajax(page, keyword, option) {
                     + '</div>'
                 );
             }
-            deleteButtonReMapping();
+            deleteButtonReMapping(page, keyword, option);
             lodingCheck = true;
         },
         error: function () {
@@ -235,8 +243,6 @@ $htmlPagingNumberBox.on('click', '.page-link', function () {
     Ajax(page, keyword, option);
 });
 
-/*console.log(deleteTrueModal);*/
-
 const pwd = $('#recipient-pwd');
 const pwd_modify = $('#recipient-pwdModify');
 const btn_modify = $('#button_modify');
@@ -255,16 +261,54 @@ btn_reset.on('click', function () {
     $('#modifyForm')[0].reset();
 });
 
-function deleteButtonReMapping() {
-    $('.call_delete_modal').each(function () {
-        $(this).on('click', function () {
-            const uri = $(this).data('uri');
-            $('.button_delete').each(function () {
-                $(this).on('click', function () {
-                    location.href = uri;
-                });
-            });
+function CloseDeleteModal() {
+    const $deleteModalCloseButton = $('#deleteModalCloseButton');
+    $deleteModalCloseButton.click();
+}
+
+function deleteButtonReMapping(page, keyword, option) {
+    $('.call_delete_modal').on('click', function () {
+        CloseDeleteModal();
+        const uri = $(this).data('uri');
+
+        $('.button_delete').on('click', function () {
+            deleteAjax(uri, page, keyword, option);
         });
     });
+}
 
+const childTarget2 = $('.childTarget2');
+
+async function emptyCall() {
+    await new Promise((resolve) => {
+        CloseDeleteModal();
+
+        setTimeout(() => {
+            $('.modal.fade').not('#delete_modal').remove();
+            $('.modal.fade.show').not('#delete_modal').remove();
+            $('.childTarget2').remove();
+            $('.modal-dialog:not(#delete_modal .modal-dialog)').remove();
+            console.log("삭제 불러옴");
+            resolve();
+        }, 300);
+    });
+}
+
+function deleteAjax(uri, page, keyword, option) {
+    $.ajax({
+        type: "get"
+        , url: uri
+        , success: function () {
+            CloseDeleteModal();
+            emptyCall().then(() => {
+                Ajax(page, keyword, option);
+            })
+        }
+        , error: function () {
+            CloseDeleteModal();
+            emptyCall().then(() => {
+                Ajax(page, keyword, option);
+            })
+        }
+    })
 }
