@@ -45,7 +45,7 @@ function Ajax(page, keyword, option) {
                 const viewIndate = conversionDate(member.indate);
                 modalTarget.push("memberDetail_" + member.id);
                 let row = '<tr class="memberPaging" data-bs-toggle="modal" ' +
-                    'data-bs-target="' +"#"+ modalTarget.at(index) + '">' +
+                    'data-bs-target="' + "#" + modalTarget.at(index) + '">' +
                     '<th>' + member.id + '</th>' +
                     '<td>' + member.name + '</td>' +
                     '<td>' + member.tel + '</td>' +
@@ -120,21 +120,22 @@ function Ajax(page, keyword, option) {
             const $modifyModalBox = $('#modifyModalBox');
             lodingCheck = false;
             for (let i = 0; i < modalTarget.length; i++) {
+                const memberData = member[i];
                 $modifyModalBox.append(
                     '<div class="modal fade" id="' + modalTarget[i] + '" tabindex="-1" aria-hidden="true">'
                     + '<div class="modal-dialog">'
                     + '<div class="modal-content">'
                     + '<div class="modal-header">'
-                    + '<h1 class="modal-title fs-5">' + member[i].id + "님의 정보 수정" + '</h1>'
+                    + '<h1 class="modal-title fs-5">' + memberData.id + "님의 정보 수정" + '</h1>'
                     + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
                     + '</div>'
                     + '<div class="modal-body">'
-                    + '<form action="/management/member/modify" th:object="${MMForm}" id="modifyForm" method="post">'
+                    + '<form action="/management/member/modify" !object="MMForm" id="modifyForm" method="post">'
                     + '<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>'
                     + '<div class="mb-3">'
                     + '<fieldset disabled="">'
                     + '<label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>'
-                    + '<input th:name="id_view" type="text" class="form-control" id="recipient-id_view" th:value="${member.getId()}">'
+                    + '<input th:name="id_view" type="text" class="form-control" id="recipient-id_view" value="' + memberData.id + '">'
                     + '</fieldset>'
                     + '<input th:field="*{id}" type="hidden" th:value="${member.getId()}">'
                     + '</div>'
@@ -142,28 +143,25 @@ function Ajax(page, keyword, option) {
                     + '<label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>'
                     + '<label for="recipient-pwdModify"></label>'
                     + '<input th:name="pwdModify" type="text" class="form-control" id="recipient-pwdModify" placeholder="공백으로 설정시 기존 비밀번호로 유지됩니다.">'
-                    + '<input type="hidden" th:field="*{pwd}" id="recipient-pwd" th:value="${member.getPwd()}">'
+                    + '<input type="hidden" th:field="*{pwd}" id="recipient-pwd" !value="' + memberData.password + '">'
                     + '</div>'
                     + '<div class="mb-3">'
                     + '<label for="recipient-name" class="col-form-label">이름 수정</label>'
-                    + '<input th:field="*{name}" type="text" class="form-control" id="recipient-name" th:default="${member.getName()}" th:value="${member.getName()}">'
+                    + '<input th:field="*{name}" type="text" class="form-control" id="recipient-name" value="' + memberData.name + '">'
                     + '</div>'
                     + '<div class="mb-3">'
                     + '<label for="recipient-tel" class="col-form-label">연락처 수정</label>'
-                    + '<input th:name="tel" type="text" class="form-control" id="recipient-tel" th:default="${member.getTel()}" th:value="${member.getTel()}">'
+                    + '<input th:name="tel" type="text" class="form-control" id="recipient-tel" value="' + memberData.tel + '">'
                     + '</div>'
-                    + '<div class="mb-3">'
+                    + '<div class="mb-3 childTarget">'
                     + '<label for="recipient-address" class="col-form-label">이메일 수정</label>'
-                    + '<input th:field="*{address}" type="text" class="form-control" id="recipient-address" th:default="${member.getAddress()}" th:value="${member.getAddress()}">'
+                    + '<input th:field="*{address}" type="text" class="form-control" id="recipient-address" value="' + memberData.address + '">'
                     + '</div>'
-                    + '<div class="mb-3">'
-                    + '<label for="recipient-role" class="col-form-label">권한 수정</label>'
-                    + '<select th:field="*{role}" type="text" class="form-control" id="recipient-role">'
-                    + '<option name="admin" value="Admin" th:selected="${member.getRole() == \'Admin\'}">Admin</option>'
-                    + '<option name="user" value="User" th:selected="${member.getRole() == \'User\' || member.getRole() == null}">User</option>'
-                    + '</select>'
-                    + '</div>'
-                    + '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>'
+                );
+                generateRoleOption(memberData, i);
+                const childTarget2 = $('.childTarget2').eq(i);
+                childTarget2.append(
+                    '<br><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>'
                     + '<button type="submit" class="btn btn-primary" id="button_modify">수정하기</button>'
                     + '<button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>'
                     + '<button th:data-uri="@{|/management/member/delete/${member.getId()}|}" type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제</button>'
@@ -172,7 +170,7 @@ function Ajax(page, keyword, option) {
                     + '</div>'
                     + '</div>'
                     + '</div>'
-                )
+                );
             }
             lodingCheck = true;
         },
@@ -180,6 +178,72 @@ function Ajax(page, keyword, option) {
             console.log('Ajax request failed');
         }
     });
+}
+
+function modalReLoad(modifyModalBox, modalTarget, memberData) {
+    modifyModalBox.append(
+        '<div class="modal fade" id="' + modalTarget[i] + '" tabindex="-1" aria-hidden="true">'
+        + '<div class="modal-dialog">'
+        + '<div class="modal-content">'
+        + '<div class="modal-header">'
+        + '<h1 class="modal-title fs-5">' + memberData.id + "님의 정보 수정" + '</h1>'
+        + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
+        + '</div>'
+        + '<div class="modal-body">'
+        + '<form action="/management/member/modify" !object="MMForm" id="modifyForm" method="post">'
+        + '<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>'
+        + '<div class="mb-3">'
+        + '<fieldset disabled="">'
+        + '<label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>'
+        + '<input th:name="id_view" type="text" class="form-control" id="recipient-id_view" value="' + memberData.id + '">'
+        + '</fieldset>'
+        + '<input th:field="*{id}" type="hidden" th:value="${member.getId()}">'
+        + '</div>'
+        + '<div class="mb-3">'
+        + '<label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>'
+        + '<label for="recipient-pwdModify"></label>'
+        + '<input th:name="pwdModify" type="text" class="form-control" id="recipient-pwdModify" placeholder="공백으로 설정시 기존 비밀번호로 유지됩니다.">'
+        + '<input type="hidden" th:field="*{pwd}" id="recipient-pwd" !value="' + memberData.password + '">'
+        + '</div>'
+        + '<div class="mb-3">'
+        + '<label for="recipient-name" class="col-form-label">이름 수정</label>'
+        + '<input th:field="*{name}" type="text" class="form-control" id="recipient-name" value="' + memberData.name + '">'
+        + '</div>'
+        + '<div class="mb-3">'
+        + '<label for="recipient-tel" class="col-form-label">연락처 수정</label>'
+        + '<input th:name="tel" type="text" class="form-control" id="recipient-tel" value="' + memberData.tel + '">'
+        + '</div>'
+        + '<div class="mb-3 childTarget">'
+        + '<label for="recipient-address" class="col-form-label">이메일 수정</label>'
+        + '<input th:field="*{address}" type="text" class="form-control" id="recipient-address" value="' + memberData.address + '">'
+        + '</div>'
+    );
+}
+
+function generateRoleOption(memberData, index) {
+    const childTarget = $('.childTarget').eq(index);
+
+    if (memberData.role === "Admin") {
+        console.log("자식 타겟 추가");
+        return childTarget.append(
+            '<div class="mb-3 childTarget2">'
+            + '<label for="recipient-role" class="col-form-label">권한 수정</label>'
+            + '<select class="role form-control" id="recipient-role" type="text">'
+            + '<option name="admin" value="Admin" selected>Admin</option>'
+            + '<option name="user" value="User">User</option>'
+            + '</select>'
+            + '</div>');
+    } else {
+        console.log("자식 타겟 추가");
+        return childTarget.append(
+            '<div class="mb-3 childTarget2">'
+            + '<label for="recipient-role" class="col-form-label">권한 수정</label>'
+            + '<select class="role form-control" id="recipient-role" type="text">'
+            + '<option name="admin" value="Admin">Admin</option>'
+            + '<option name="user" value="User" selected>User</option>'
+            + '</select>'
+            + '</div>');
+    }
 }
 
 $searchKeyword.add($searchOption).on('keydown', function (event) {
@@ -209,4 +273,5 @@ $htmlPagingNumberBox.on('click', '.page-link', function () {
     }
     Ajax(page, keyword, option);
 });
+
 

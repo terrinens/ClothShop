@@ -100,7 +100,8 @@ public class ManagementController {
 
             mService.ManagementMemberModify(mmForm);
         }
-
+        System.out.println("수정에서 넘어옴 "+mmForm.getId());
+        System.out.println("수정 불러옴");
         return "redirect:/management/member";
     }
 
