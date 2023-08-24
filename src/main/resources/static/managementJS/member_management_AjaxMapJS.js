@@ -121,43 +121,7 @@ function Ajax(page, keyword, option) {
             lodingCheck = false;
             for (let i = 0; i < modalTarget.length; i++) {
                 const memberData = member[i];
-                $modifyModalBox.append(
-                    '<div class="modal fade" id="' + modalTarget[i] + '" tabindex="-1" aria-hidden="true">'
-                    + '<div class="modal-dialog">'
-                    + '<div class="modal-content">'
-                    + '<div class="modal-header">'
-                    + '<h1 class="modal-title fs-5">' + memberData.id + "님의 정보 수정" + '</h1>'
-                    + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'
-                    + '</div>'
-                    + '<div class="modal-body">'
-                    + '<form action="/management/member/modify" !object="MMForm" id="modifyForm" method="post">'
-                    + '<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>'
-                    + '<div class="mb-3">'
-                    + '<fieldset disabled="">'
-                    + '<label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>'
-                    + '<input th:name="id_view" type="text" class="form-control" id="recipient-id_view" value="' + memberData.id + '">'
-                    + '</fieldset>'
-                    + '<input th:field="*{id}" type="hidden" th:value="${member.getId()}">'
-                    + '</div>'
-                    + '<div class="mb-3">'
-                    + '<label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>'
-                    + '<label for="recipient-pwdModify"></label>'
-                    + '<input th:name="pwdModify" type="text" class="form-control" id="recipient-pwdModify" placeholder="공백으로 설정시 기존 비밀번호로 유지됩니다.">'
-                    + '<input type="hidden" th:field="*{pwd}" id="recipient-pwd" !value="' + memberData.password + '">'
-                    + '</div>'
-                    + '<div class="mb-3">'
-                    + '<label for="recipient-name" class="col-form-label">이름 수정</label>'
-                    + '<input th:field="*{name}" type="text" class="form-control" id="recipient-name" value="' + memberData.name + '">'
-                    + '</div>'
-                    + '<div class="mb-3">'
-                    + '<label for="recipient-tel" class="col-form-label">연락처 수정</label>'
-                    + '<input th:name="tel" type="text" class="form-control" id="recipient-tel" value="' + memberData.tel + '">'
-                    + '</div>'
-                    + '<div class="mb-3 childTarget">'
-                    + '<label for="recipient-address" class="col-form-label">이메일 수정</label>'
-                    + '<input th:field="*{address}" type="text" class="form-control" id="recipient-address" value="' + memberData.address + '">'
-                    + '</div>'
-                );
+                modalReLoad($modifyModalBox, modalTarget, memberData, i);
                 generateRoleOption(memberData, i);
                 const childTarget2 = $('.childTarget2').eq(i);
                 childTarget2.append(
@@ -180,7 +144,8 @@ function Ajax(page, keyword, option) {
     });
 }
 
-function modalReLoad(modifyModalBox, modalTarget, memberData) {
+function modalReLoad(modifyModalBox, modalTarget, memberData, index) {
+    const i = index;
     modifyModalBox.append(
         '<div class="modal fade" id="' + modalTarget[i] + '" tabindex="-1" aria-hidden="true">'
         + '<div class="modal-dialog">'
