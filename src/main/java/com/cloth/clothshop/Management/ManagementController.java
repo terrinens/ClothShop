@@ -88,22 +88,15 @@ public class ManagementController {
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
 
         if (optionalMember.isPresent()) {
-
             mService.ManagementMemberModify(mmForm);
         }
-        return "redirect:/management/member-Ajax";
+        return "redirect:/management/member";
     }
 
     @GetMapping("/member/delete/{id}")
-    public ResponseEntity<?> managementMemberDelete(@PathVariable String id) {
-        try {
-            if (id != null && !id.isEmpty()) {
-                mService.memberDelete(id);
-            }
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.noContent().build();
-        }
+    public String managementMemberDelete(@PathVariable String id) {
+        mService.memberDelete(id);
+        return "redirect:/management/member";
     }
 
     @GetMapping("/order")

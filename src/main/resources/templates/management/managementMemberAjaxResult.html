@@ -130,6 +130,17 @@
 
         sendAjax(page, keyword, option);
     });
+
+    let uri = null;
+    $('.call_delete_modal').on('click', function () {
+        uri = $(this).data('uri');
+        console.log("삭제 재확인 모달 불러오기");
+        console.log(uri);
+    });
+
+    $('.button_delete').on('click', function () {
+        location.href = uri;
+    });
 </script>
 </body>
 </html>
