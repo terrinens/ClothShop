@@ -1,11 +1,9 @@
 package com.cloth.clothshop.Management;
 
 import com.cloth.clothshop.Member.Member;
-import com.cloth.clothshop.Member.MemberAjaxDTO;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,12 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -72,23 +66,19 @@ public class ManagementController {
     }
 
     @GetMapping("/member-Ajax")
-    public @ResponseBody Map<String, Object> managementMemberAjax(
+    public String managementMemberAjax(
+            Model model,
             @RequestParam(value = "page", defaultValue = "0") String page,
             @RequestParam(value = "option", defaultValue = "") String option,
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
-        Object[] requestParam = new Object[]{page, option, keyword};
-        Page<Member> paging = mService.managementGetAutoPagingAjax(requestParam);
-        Boolean hasPrevious = paging.hasPrevious();
-        Boolean hasNext = paging.hasNext();
+        Object[] requestParamArray = new Object[]{page, option, keyword};
+        Page<Member> paging = mService.managementGetAutoPagingAjax(requestParamArray);
 
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("memberPaging", paging);
-        responseData.put("hasPrevious", hasPrevious);
-        responseData.put("hasNext", hasNext);
-        responseData.put("page", page);
+        model.addAttribute("memberPaging", paging);
+        model.addAttribute("page", page);
 
-        return responseData;
+        return "management/managementMemberAjaxResult";
     }
 
     @PostMapping("/member/modify")
@@ -101,8 +91,6 @@ public class ManagementController {
 
             mService.ManagementMemberModify(mmForm);
         }
-        System.out.println("수정에서 넘어옴 " + mmForm.getId());
-        System.out.println("수정 불러옴");
         return "redirect:/management/member-Ajax";
     }
 
