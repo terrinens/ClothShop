@@ -129,18 +129,7 @@ function Ajax(page, keyword, option) {
                 const memberData = member[i];
                 modalReLoad($modifyModalBox, modalTarget, memberData, i);
                 generateRoleOption(memberData, i);
-                const childTarget2 = $('.childTarget2').eq(i);
-                childTarget2.append(
-                    '<br><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>'
-                    + '<button class="btn btn-primary" id="button_modify">수정하기</button>'
-                    + '<button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>'
-                    + '<button data-uri="/management/member/delete/' + memberData.id + '" type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제</button>'
-                    + '</form>'
-                    + '</div>'
-                    + '</div>'
-                    + '</div>'
-                    + '</div>'
-                );
+                closeBoxs(memberData, i);
             }
             deleteButtonReMapping(page, keyword, option);
             lodingCheck = true;
@@ -215,6 +204,22 @@ function generateRoleOption(memberData, index) {
     }
 }
 
+const childTarget2 = $('.childTarget2');
+function closeBoxs(memberData ,index) {
+    childTarget2.eq(index);
+    childTarget2.append(
+        '<br><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>'
+        + '<button class="btn btn-primary" id="button_modify">수정하기</button>'
+        + '<button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>'
+        + '<button data-uri="/management/member/delete/' + memberData.id + '" type="button" class="call_delete_modal btn btn-outline-danger" id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제</button>'
+        + '</form>'
+        + '</div>'
+        + '</div>'
+        + '</div>'
+        + '</div>'
+    );
+}
+
 $searchKeyword.add($searchOption).on('keydown', function (event) {
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -267,22 +272,20 @@ function CloseDeleteModal() {
 }
 
 function deleteButtonReMapping(page, keyword, option) {
-    $('.call_delete_modal').on('click', function () {
-        CloseDeleteModal();
+
+    $('.call_delete_modal').off('click').on('click', function () {
         const uri = $(this).data('uri');
 
-        $('.button_delete').on('click', function () {
+        $('.button_delete').off('click').on('click', function () {
+            CloseDeleteModal();
             deleteAjax(uri, page, keyword, option);
         });
     });
 }
 
-const childTarget2 = $('.childTarget2');
-
 async function emptyCall() {
     await new Promise((resolve) => {
         CloseDeleteModal();
-
         setTimeout(() => {
             $('.modal.fade').not('#delete_modal').remove();
             $('.modal.fade.show').not('#delete_modal').remove();
@@ -300,15 +303,15 @@ function deleteAjax(uri, page, keyword, option) {
         , url: uri
         , success: function () {
             CloseDeleteModal();
-            emptyCall().then(() => {
+            /*emptyCall().then(() => {*/
                 Ajax(page, keyword, option);
-            })
+            /*})*/
         }
         , error: function () {
             CloseDeleteModal();
-            emptyCall().then(() => {
+            /*emptyCall().then(() => {*/
                 Ajax(page, keyword, option);
-            })
+            /*})*/
         }
     })
 }
