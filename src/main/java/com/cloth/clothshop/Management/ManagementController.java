@@ -7,10 +7,8 @@ import com.cloth.clothshop.Products.ProductsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -38,6 +36,21 @@ public class ManagementController {
         model.addAttribute("itemForm", managementNewItemForm);
 
         return "management/allitem_management";
+    }
+    @GetMapping("/allitem-Ajax")
+    public String managementProudctsAjax(Model model, ManagementNewItemForm managementNewItemForm,
+                                     @RequestParam(value = "page", defaultValue = "0") String page,
+                                     @RequestParam(value = "option", defaultValue = "") String option,
+                                     @RequestParam(value = "keyword", defaultValue = "") String keyword
+    ) {
+
+        Object[] requestParam = new Object[]{page, option, keyword};
+        Page<Products> paging = pService.managementGetAutoPaging(model, requestParam);
+
+        model.addAttribute("itemPaging", paging);
+        model.addAttribute("itemForm", managementNewItemForm);
+
+        return "management/allitem_management_AjaxResult";
     }
 
     @GetMapping("/item/new")
@@ -78,11 +91,12 @@ public class ManagementController {
         model.addAttribute("memberPaging", paging);
         model.addAttribute("page", page);
 
-        return "management/managementMemberAjaxResult";
+        return "/management/member_management_AjaxResult";
     }
 
     @PostMapping("/member/modify")
-    public String managementMemberModify(@Valid ManagementMemberForm mmForm, BindingResult bindingResult, Principal principal) {
+    public String managementMemberModify(@Valid ManagementMemberForm mmForm,  Principal principal) {
+        /*BindingResult bindingResult,*/
 
         String memberId = principal.getName();
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));

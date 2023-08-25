@@ -1,21 +1,19 @@
 import {firstLodingAjax} from "../firstLodingAjax.js";
-import {commonAction} from "../commonAction.js";
+import {handleSearchButtonClick} from "../commonAction.js";
 
-const $memberAjax = $('#memberAjax');
+const $allItemAjax = $('#allItemAjax');
 
 firstLodingAjax(sendAjax);
-commonAction(sendAjax);
+handleSearchButtonClick(sendAjax);
 
-function sendAjax(page, keyword, option) {
+export function sendAjax(page, keyword, option) {
     if (page === null) {page = 0} if (option === null) {option = ""}
     $.ajax({
         type: 'get'
-        ,url: "/management/member-Ajax"
+        ,url: "/management/allitem-Ajax"
         ,data: {page: page, option: option, keyword: keyword}
         ,success: function (html) {
-            $memberAjax.html(html);
+            $allItemAjax.html(html);
         }
     });
 }
-
-export {sendAjax};

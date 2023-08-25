@@ -123,6 +123,7 @@
     const $searchKeyword = $('#searchKeyword');
     const $searchOption = $('#searchOption');
 
+    console.log($pageLink.prop('class'));
     $pageLink.on('click', function () {
         const page = $(this).data('page');
         const keyword = $searchKeyword.val();

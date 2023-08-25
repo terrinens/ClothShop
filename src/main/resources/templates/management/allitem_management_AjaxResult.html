@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<table class="table table-hover container-xxl">
+    <thead>
+    <tr class="table-info">
+        <td>상품분류</td>
+        <th scope="row">상품코드</th>
+        <td>상품이름</td>
+        <td>최소사이즈</td>
+        <td>최대사이즈</td>
+        <td>상품재고</td>
+        <td>판매여부</td>
+    </tr>
+    </thead>
+    
+    <tbody>
+    <tr th:each="item, i : ${itemPaging}"
+        class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#itemDetail_' + ${item.getCode()}">
+        <th th:text="${item.getKind()}" scope="row">상품분류</th>
+        <th th:text="${item.getCode()}" scope="row">상품코드</th>
+        <th th:text="${item.getName()}" scope="row">상품이름</th>
+        <th th:text="${item.getSizeSt()}" scope="row">상품최소사이즈</th>
+        <th th:text="${item.getSizeEt()}" scope="row">상품최대사이즈</th>
+        <th th:text="${item.getQuantity()}" scope="row">상품재고</th>
+        <th th:text="${item.getUseyn()}" scope="row">판매여부</th>
+    </tr>
+    </tbody>
+</table>
+<div class="d-grid gap-2">
+    <button type="submit" class="btn btn-outline-success" id="button_item_new" data-bs-toggle="modal"
+            data-bs-target="#newItemBox">상품추가
+    </button>
+</div>
+<br>
+<div th:if="${!itemPaging.isEmpty()}">
+    <ul class="pagination justify-content-center">
+        <li th:classappend="${!itemPaging.hasPrevious()} ? 'disabled'" class="page-item">
+            <a class="page-link" href="javascript:void(0)"
+               th:data-page="${(itemPaging.number) - 1}">&laquo;</a>
+        </li>
+        <li th:each="page : ${#numbers.sequence(0, itemPaging.getTotalPages() - 1)}"
+            th:if="${page >= itemPaging.number - 10 and page <= itemPaging.number + 10}"
+            th:classappend="${page == itemPaging.number} ? 'active'"
+            class="page-item">
+            <a th:text="${page + 1}" href="javascript:void(0)" th:data-page="${page}"
+               class="page-link"></a>
+        </li>
+        <li th:classappend="${!itemPaging.hasNext()} ? 'disabled'" class="page-item">
+            <a class="page-link" href="javascript:void(0)"
+               th:data-page="${(itemPaging.number) + 1}">&raquo;</a>
+        </li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".page-link").on('click', function () {
+            $('#page').val($(this).data('page'));
+            $('#searchForm').submit();
+        });
+    });
+</script>
+
+<div th:each="item, i : ${itemPaging}" class="modal fade" th:id="'itemDetail_' + ${item.code}"
+     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel" th:text="|${item.getCode()} 상세 정보 수정|"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/management/item/modify}" th:object="${itemForm}" id="modifyForm"
+                      method="post">
+                    <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
+                    <div class="mb-3">
+                        <fieldset disabled="">
+                            <label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>
+                            <input th:name="id_view" type="text" class="form-control" id="recipient-id_view"
+                                   th:value="${item.getCode()}">
+                        </fieldset>
+                        <input th:name="id" type="hidden" th:value="${item.getCode()}">
+                        <div class="mb-3">
+                            <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
+                            <label>
+                                <input th:name="pwdModify" type="text" class="form-control">
+                            </label>
+                            <input type="hidden" th:name="name" id="recipient-pwd" th:value="${item.getName()}">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="submit" class="btn btn-primary" id="button_modify">수정하기</button>
+                    <button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>
+                    <button th:data-uri="@{|/management/item/delete/${item.getCode}|}"
+                            type="button" class="call_delete_modal btn btn-outline-danger"
+                            id="call_delete_modal"
+                            data-bs-toggle="modal" data-bs-target="#delete_modal">해당 상품 삭제
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
