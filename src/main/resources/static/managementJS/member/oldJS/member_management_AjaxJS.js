@@ -1,4 +1,4 @@
-/*    @GetMapping("/member-Ajax") @ResponseBody
+/*/!*    @GetMapping("/member-Ajax") @ResponseBody
     public ModelAndView managementMemberAjax(
             @RequestParam(value = "page", defaultValue = "0") String page,
             @RequestParam(value = "option", defaultValue = "") String option,
@@ -16,7 +16,7 @@
         paging.hasNext();
 
         return modelAndView;
-    }*/
+    }*!/
 
 const buttonSearch = $('#button_search');
 const searchKeyword = $('#searchKeyword');
@@ -26,11 +26,11 @@ function Ajax(page, keyword, option) {
     $.ajax({
         type: 'GET',
         url: "/management/member-Ajax",
-        /*beforeSend: function (xhr) {
+        /!*beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
-        },*/
+        },*!/
         dataType: "json",
-        /*data: JSON.stringify(params),*/
+        /!*data: JSON.stringify(params),*!/
         data: {page: page, keyword: keyword, option: option},
         contentType: "application/json",
         success: function (data) {
@@ -60,7 +60,7 @@ function Ajax(page, keyword, option) {
                 memberTbody.append(row);
             });
 
-/*            const ul = '<ul class="pagination justify-content-center">';
+/!*            const ul = '<ul class="pagination justify-content-center">';
             pagingNumberBox.append(ul);
             $.each(totalPage, function (i, totalPage) {
 
@@ -68,7 +68,7 @@ function Ajax(page, keyword, option) {
                 pagingNumberBox.append('<li class="page-item">' + i);
                 pagingNumberBox.append('</li>');
                 pagingNumberBox.append('</ul>');
-            })*/
+            })*!/
         },
         error: function () {
             console.log('Ajax fail');
@@ -91,4 +91,4 @@ searchKeyword.add(searchOption).on('keydown', function (event) {
         event.preventDefault();
         buttonSearch.click();
     }
-});
+});*/

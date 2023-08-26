@@ -1,3 +1,4 @@
+/*
 // noinspection JSFileReferences,JSUnresolvedReference
 // noinspection JSUnresolvedReference
 
@@ -33,9 +34,9 @@ function Ajax(page, keyword, option) {
     $.ajax({
         type: 'GET',
         url: "/management/member-Ajax",
-        /*beforeSend: function (xhr) {
+        /!*beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
-        },*/
+        },*!/
         data: {page: page, option: option, keyword: keyword},
         dataType: "json",
         success: function (data) {
@@ -303,15 +304,16 @@ function deleteAjax(uri, page, keyword, option) {
         , url: uri
         , success: function () {
             CloseDeleteModal();
-            /*emptyCall().then(() => {*/
+            /!*emptyCall().then(() => {*!/
                 Ajax(page, keyword, option);
-            /*})*/
+            /!*})*!/
         }
         , error: function () {
             CloseDeleteModal();
-            /*emptyCall().then(() => {*/
+            /!*emptyCall().then(() => {*!/
                 Ajax(page, keyword, option);
-            /*})*/
+            /!*})*!/
         }
     })
 }
+*/
