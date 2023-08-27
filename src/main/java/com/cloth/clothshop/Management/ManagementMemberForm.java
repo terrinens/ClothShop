@@ -10,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Setter
 public class ManagementMemberForm {
 
-    PasswordEncoder pEncoder;
-
     @NotEmpty(message = "아이디는 필수 입력 사항 입니다.")
     private String id;
 

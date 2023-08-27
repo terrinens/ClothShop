@@ -1,7 +1,6 @@
 package com.cloth.clothshop.Member;
 
 import com.cloth.clothshop.Management.ManagementMemberForm;
-import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -71,8 +70,6 @@ public class MemberService {
         String targetRCN = MemberRepository.class.getName();
         String sortBenchmark = "id";
         Page<Member> memberPage = managementRepeatCode.autoWritePagingAjax(targetRCN, sortBenchmark, requestParamArray);
-
-        System.out.println("서비스에서 보내짐 :::: " + memberPage.getTotalPages());
 
         return memberPage;
     }

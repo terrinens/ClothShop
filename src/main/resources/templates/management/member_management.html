@@ -53,28 +53,5 @@
             </div>
         </div>
     </div>
-    
-    <!--modifyForm을 위한 js-->
-    <script id="modifyFormJS">
-        $(function () {
-            const pwd = $('#recipient-pwd');
-            const pwd_modify = $('#recipient-pwdModify');
-            const btn_modify = $('#button_modify');
-
-            btn_modify.on('click', function () {
-                if (pwd_modify.length === 0) {
-                    alert("비밀번호를 정확히 입력해주세요.");
-                } else {
-                    pwd.val(pwd_modify.val());
-                    $('#modifyForm').submit();
-                }
-            });
-
-            const btn_reset = $('#button_reset');
-            btn_reset.on('click', function () {
-                $('#modifyForm')[0].reset();
-            });
-        });
-    </script>
 </div>
 

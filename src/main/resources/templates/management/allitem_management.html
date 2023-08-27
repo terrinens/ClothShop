@@ -44,29 +44,6 @@
         <input type="hidden" id="option" name="option" th:value="${option}">
     </form>
     
-    <script>
-        $(function () {
-            const searchKeyword = $('#searchKeyword');
-            const searchOption = $('#searchOption');
-            const searchForm = $('#searchForm');
-            const buttonSearch = $('#button_search');
-
-            buttonSearch.on('click', function () {
-                $('#keyword').val(searchKeyword.val());
-                $('#option').val(searchOption.val());
-                $('#page').val(0);
-                searchForm.submit();
-            });
-
-            searchKeyword.add(searchOption).on('keydown', function (event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    buttonSearch.click();
-                }
-            });
-        });
-    </script>
-    
     <div id="allItemAjax">
     </div>
     <div class="modal fade" id="delete_modal">
@@ -87,33 +64,6 @@
             </div>
         </div>
     </div>
-    <!--modifyForm을 위한 js-->
-    <script>
-        $(function () {
-            let pwd = $('#recipient-pwd');
-            let pwd_modify = $('#recipient-pwdModify');
-
-            $('#button_modify').on('click', function () {
-                if (pwd_modify.length === 0) {
-                    alert("비밀번호를 정확히 입력해주세요.");
-                } else {
-                    pwd.val(pwd_modify.val());
-                    $('#modifyForm').submit();
-                }
-            });
-
-            $('#button_reset').on('click', function () {
-                $('#modifyForm')[0].reset();
-            });
-
-            $('.call_delete_modal').on('click', function () {
-                const uri = $(this).data('uri');
-                $('.button_delete').on('click', function () {
-                    location.href = uri;
-                });
-            });
-        });
-    </script>
     
     <div class="modal fade modal-xl" id="newItemBox"
          tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

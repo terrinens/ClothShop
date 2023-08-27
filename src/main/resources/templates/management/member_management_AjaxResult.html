@@ -53,8 +53,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/management/member/modify}" th:object="${MMForm}" id="modifyForm"
-                          method="post">
+                    <form th:object="${MMForm}" id="modifyForm" method="post">
                         <div class="mb-3">
                             <fieldset disabled="">
                                 <label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>
@@ -101,8 +100,8 @@
                             </select>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary" id="button_modify">수정하기</button>
-                        <button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>
+                        <button type="submit" class="btn btn-primary button_modify">수정하기</button>
+                        <button type="reset" class="btn btn-warning button_reset">값 되돌리기</button>
                         <button th:data-uri="@{|/management/member/delete/${member.getId}|}"
                                 type="button" class="call_delete_modal btn btn-outline-danger"
                                 id="call_delete_modal"
@@ -117,31 +116,8 @@
 
 <!--suppress JSFileReferences -->
 <script type="module">
-    import {sendAjax} from "/managementJS/member/member_management_AjaxModel.js";
-
-    const $pageLink = $('.page-link');
-    const $searchKeyword = $('#searchKeyword');
-    const $searchOption = $('#searchOption');
-
-    console.log($pageLink.prop('class'));
-    $pageLink.on('click', function () {
-        const page = $(this).data('page');
-        const keyword = $searchKeyword.val();
-        const option = $searchOption.val();
-
-        sendAjax(page, keyword, option);
-    });
-
-    let uri = null;
-    $('.call_delete_modal').on('click', function () {
-        uri = $(this).data('uri');
-        console.log("삭제 재확인 모달 불러오기");
-        console.log(uri);
-    });
-
-    $('.button_delete').on('click', function () {
-        location.href = uri;
-    });
+    import {commonLink} from "/managementJS/commonAction.js";
+    commonLink();
 </script>
 </body>
 </html>

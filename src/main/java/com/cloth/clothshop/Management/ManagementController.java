@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -95,19 +96,22 @@ public class ManagementController {
     }
 
     @PostMapping("/member/modify")
-    public String managementMemberModify(@Valid ManagementMemberForm mmForm,  Principal principal) {
+    public String managementMemberModify(@RequestBody Map<String, Object> ModifyData, Principal principal, Model model) {
         /*BindingResult bindingResult,*/
 
-        String memberId = principal.getName();
+        ManagementMemberForm mmForm = (ManagementMemberForm) ModifyData.get("formData");
+        Object[] searchData = (Object[]) ModifyData.get("serachData");
+        System.out.println("수정 넘어옴 테스트 :::: " + searchData[0]);
+
+        String memberId = mmForm.getId();
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
 
-        if (optionalMember.isPresent()) {
-            mService.ManagementMemberModify(mmForm);
-        }
-        return "redirect:/management/member";
+        Page<Member> paging = mService.managementGetAutoPagingAjax(searchData);
+
+        return "/management/member_management_AjaxResult";
     }
 
-    @GetMapping("/member/delete/{id}")
+    @PostMapping("/member/delete-Ajax")
     public String managementMemberDelete(@PathVariable String id) {
         mService.memberDelete(id);
         return "redirect:/management/member";

@@ -1,14 +1,11 @@
 package com.cloth.clothshop.Products;
 
 import com.cloth.clothshop.Management.ManagementNewItemForm;
-import com.cloth.clothshop.Member.Member;
-import com.cloth.clothshop.Member.MemberRepository;
 import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 

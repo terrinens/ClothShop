@@ -132,7 +132,6 @@ public class Management_RepeatCode {
             Object result = method.invoke(repositoryInstance, arguments);
             if (result instanceof Page<?>) {
                 autoPaging = (Page<T>) result;
-                System.out.println("매니지먼트 리펙트 코드에서 보내짐 토탈 페이지 :::: " + autoPaging.getTotalPages());
                 return autoPaging;
             } else {
                 throw new RuntimeException("Unexpected result type :::: ");

@@ -1,12 +1,9 @@
 package com.cloth.clothshop.Products;
 
-import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
 import java.util.Random;
 
 @SpringBootTest
