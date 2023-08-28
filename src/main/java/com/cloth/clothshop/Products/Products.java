@@ -4,6 +4,7 @@ import com.cloth.clothshop.Management.ManagementNewItemForm;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKindConverter;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -77,7 +78,7 @@ public class Products {
     @CreationTimestamp
     private Date indate;
 
-    public Products managementItemSave(ManagementNewItemForm newItemForm) {
+    public Products managementNewItemSave(ManagementNewItemForm newItemForm) {
 
         this.name = newItemForm.getName();
         this.kind = ProductsKind.fromChar(newItemForm.getKind());
