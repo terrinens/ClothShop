@@ -61,26 +61,25 @@ export function commonLink() {
 
     $buttonModify.on('click', function (event) {
         event.preventDefault();
-        /*if ($modifyPwd.length === 0) {
-            alert("비밀번호를 정확히 입력해주세요.");
-        } else {*/
         const formSelect = $(this).closest("form")
         const formData = formSelect.serialize();
         const $originPwd = formSelect.find('.recipient-pwd');
         const $modifyPwd = formSelect.find('.recipient-pwdModify');
 
-        $originPwd.val($modifyPwd.val());
-
-        let serachData = {
-            page: 0
-            , keyword: $searchKeyword.val()
-            , option: $searchOption.val()
-        };
-        const sendData = {
-            formData: formData
-            , serachData: serachData
-        };
-        commonModifyAjax(sendData);
-        /*}*/
+        if (!$modifyPwd.val() < 1) {
+            alert("비밀번호를 정확히 입력해주세요.");
+        } else {
+            $originPwd.val($modifyPwd.val());
+            let serachData = {
+                page: 0
+                , keyword: $searchKeyword.val()
+                , option: $searchOption.val()
+            };
+            const sendData = {
+                formData: formData
+                , serachData: serachData
+            };
+            commonModifyAjax(sendData);
+        }
     });
 }
