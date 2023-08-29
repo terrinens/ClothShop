@@ -2,6 +2,11 @@
 <!--suppress ALL -->
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
+<!--suppress JSFileReferences -->
+<script type="module">
+    import {commonLink} from "/managementJS/commonAction.js";
+    commonLink();
+</script>
 <table class="table table-hover container-xxl">
     <thead>
     <tr class="table-info">
@@ -53,7 +58,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:object="${MMForm}" id="modifyForm" method="post">
+                    <form th:object="${MMForm}" class="modifyForm" method="post">
                         <div class="mb-3">
                             <fieldset disabled="">
                                 <label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>
@@ -63,11 +68,9 @@
                             <input th:name="id" type="hidden" th:value="${member.getId()}">
                         </div>
                         <div class="mb-3">
-                            <label for="recipient-pwd" class="col-form-label">비밀번호 수정</label>
-                            <label for="recipient-pwdModify"></label>
-                            <input th:name="pwdModify" type="text" class="form-control"
-                                   id="recipient-pwdModify" placeholder="공백으로 설정시 기존 비밀번호로 유지됩니다.">
-                            <input type="hidden" th:name="pwd" id="recipient-pwd" th:value="${member.getPwd()}">
+                            <label for="recipient-pwdModify" class="col-form-label">비밀번호 수정</label>
+                            <input th:name="pwdModify" type="text" class="form-control recipient-pwdModify" placeholder="공백으로 설정시 기존 비밀번호로 유지됩니다.">
+                            <input type="hidden" class="recipient-pwd" th:name="pwd" th:value="${member.getPwd()}">
                         </div>
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">이름 수정</label>
@@ -104,8 +107,8 @@
                         <button type="reset" class="btn btn-warning button_reset">값 되돌리기</button>
                         <button th:data-uri="@{|/management/member/delete/${member.getId}|}"
                                 type="button" class="call_delete_modal btn btn-outline-danger"
-                                id="call_delete_modal"
-                                data-bs-toggle="modal" data-bs-target="#delete_modal">해당 유저 삭제
+                                id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">
+                            해당 유저 삭제
                         </button>
                     </form>
                 </div>
@@ -114,10 +117,5 @@
     </div>
 </div>
 
-<!--suppress JSFileReferences -->
-<script type="module">
-    import {commonLink} from "/managementJS/commonAction.js";
-    commonLink();
-</script>
 </body>
 </html>

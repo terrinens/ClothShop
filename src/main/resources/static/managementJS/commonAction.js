@@ -2,10 +2,6 @@ const $buttonSearch = $('#button_search');
 const $searchKeyword = $('#searchKeyword');
 const $searchOption = $('#searchOption');
 
-const pwd = $('#recipient-pwd');
-const pwd_modify = $('#recipient-pwdModify');
-const btn_modify = $('.button_modify');
-
 let commonAjax = null;
 let commonModifyAjax = null;
 let commonDELAjax = null
@@ -33,31 +29,12 @@ export function commonAction(sendAjax, sendModifyAjax, sendDELAjax) {
         }
     });
 
-    btn_modify.on('click', function () {
-        if (pwd_modify.length === 0) {
-            alert("비밀번호를 정확히 입력해주세요.");
-        } else {
-            $(this).preventDefault();
-            let formData = $(this).closest("form").serialize();
-            let serachData = {
-                page : 0
-                , keyword : $searchKeyword.val()
-                , option : $searchOption.val()
-            };
-            const sendData = {
-                formData : formData
-                , serachData : serachData
-            };
-            pwd.val(pwd_modify.val());
-            /*sendModifyAjax(sendData);*/
-        }
-    });
-
     const btn_reset = $('#button_reset');
     btn_reset.on('click', function () {
         $('#modifyForm')[0].reset();
     });
 }
+
 
 /**commonAction에 할당된것들에 의존한다. Ajax가 불러들이는 html에서 import할것*/
 export function commonLink() {
@@ -78,5 +55,32 @@ export function commonLink() {
         const option = $searchOption.val();
 
         commonAjax(page, keyword, option);
+    });
+
+    const $buttonModify = $('.button_modify');
+
+    $buttonModify.on('click', function (event) {
+        event.preventDefault();
+        /*if ($modifyPwd.length === 0) {
+            alert("비밀번호를 정확히 입력해주세요.");
+        } else {*/
+        const formSelect = $(this).closest("form")
+        const formData = formSelect.serialize();
+        const $originPwd = formSelect.find('.recipient-pwd');
+        const $modifyPwd = formSelect.find('.recipient-pwdModify');
+
+        $originPwd.val($modifyPwd.val());
+
+        let serachData = {
+            page: 0
+            , keyword: $searchKeyword.val()
+            , option: $searchOption.val()
+        };
+        const sendData = {
+            formData: formData
+            , serachData: serachData
+        };
+        commonModifyAjax(sendData);
+        /*}*/
     });
 }

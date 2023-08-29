@@ -12,8 +12,7 @@
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
         <label for="searchOption"></label>
-        <select class="form-select form-select-sm"
-                name="searchOption" id="searchOption">
+        <select class="form-select form-select-sm" name="searchOption" id="searchOption">
             <option value="all" th:selected="${option eq 'all'}">전체 찾기</option>
             <option value="id" th:selected="${option eq 'id'}">ID로 찾기</option>
             <option value="name" th:selected="${option eq 'name'}">이름으로 찾기</option>

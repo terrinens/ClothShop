@@ -26,21 +26,18 @@ function sendAjax(page, keyword, option) {
 }
 
 function sendModifyAjax(sendData) {
-    console.log(header);
-    console.log(token);
-    console.log("test");
-    /*$.ajax({
+    $.ajax({
         type: 'post'
         , beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         }
-        , url: "/member/modify"
+        , url: "/management/member/modify"
         , data: JSON.stringify(sendData)
         , contentType: "application/json"
         , success: function (html) {
             $memberAjax.html(html);
         }
-    });*/
+    });
 }
 
 function sendDELAjax() {

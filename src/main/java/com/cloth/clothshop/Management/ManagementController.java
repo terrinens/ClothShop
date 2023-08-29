@@ -96,9 +96,10 @@ public class ManagementController {
     }
 
     @PostMapping("/member/modify")
-    public String managementMemberModify(@RequestBody Map<String, Object> ModifyData, Principal principal, Model model) {
+    public String managementMemberModify(/*@RequestBody Map<String, Object> ModifyData, Principal principal, Model model*/) {
         /*BindingResult bindingResult,*/
 
+/*
         ManagementMemberForm mmForm = (ManagementMemberForm) ModifyData.get("formData");
         Object[] searchData = (Object[]) ModifyData.get("serachData");
         System.out.println("수정 넘어옴 테스트 :::: " + searchData[0]);
@@ -107,6 +108,7 @@ public class ManagementController {
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
 
         Page<Member> paging = mService.managementGetAutoPagingAjax(searchData);
+*/
 
         return "/management/member_management_AjaxResult";
     }
