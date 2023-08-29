@@ -26,6 +26,7 @@ function sendAjax(page, keyword, option) {
 }
 
 function sendModifyAjax(sendData) {
+    console.log(sendData);
     $.ajax({
         type: 'post'
         , beforeSend: function (xhr) {

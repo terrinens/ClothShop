@@ -62,13 +62,14 @@ export function commonLink() {
     $buttonModify.on('click', function (event) {
         event.preventDefault();
         const formSelect = $(this).closest("form")
-        const formData = formSelect.serialize();
+        const formData = new FormData(formSelect[0]);
         const $originPwd = formSelect.find('.recipient-pwd');
         const $modifyPwd = formSelect.find('.recipient-pwdModify');
 
         if (!$modifyPwd.val() < 1) {
             alert("비밀번호를 정확히 입력해주세요.");
         } else {
+            /*formSelect.find('.modal.fade').toggle();*/
             $originPwd.val($modifyPwd.val());
             let serachData = {
                 page: 0
@@ -76,7 +77,7 @@ export function commonLink() {
                 , option: $searchOption.val()
             };
             const sendData = {
-                formData: formData
+                formData: Object.fromEntries(formData.entries())
                 , serachData: serachData
             };
             commonModifyAjax(sendData);

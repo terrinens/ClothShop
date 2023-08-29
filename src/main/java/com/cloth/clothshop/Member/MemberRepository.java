@@ -23,6 +23,19 @@ public interface MemberRepository extends JpaRepository<Member, String>
 
     @Modifying
     @Query("UPDATE Member "
+            + "SET name = :name, role = :role, address = :address, tel = :tel "
+            + "WHERE id = :id"
+    )
+    void managementModifyNotPWD(
+            @Param("id") String id,
+            @Param("name") String name,
+            @Param("role") String role,
+            @Param("address") String address,
+            @Param("tel") String tel
+            );
+
+    @Modifying
+    @Query("UPDATE Member "
             + "SET pwd = :pwd, name = :name, role = :role, address = :address, tel = :tel "
             + "WHERE id = :id"
     )

@@ -4,6 +4,7 @@ import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
+import jakarta.validation.Configuration;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -96,19 +97,28 @@ public class ManagementController {
     }
 
     @PostMapping("/member/modify")
-    public String managementMemberModify(/*@RequestBody Map<String, Object> ModifyData, Principal principal, Model model*/) {
+    public String managementMemberModify(@RequestBody Map<String, Object> modifyData, Principal principal, Model model) {
         /*BindingResult bindingResult,*/
 
-/*
-        ManagementMemberForm mmForm = (ManagementMemberForm) ModifyData.get("formData");
-        Object[] searchData = (Object[]) ModifyData.get("serachData");
-        System.out.println("수정 넘어옴 테스트 :::: " + searchData[0]);
+        Map<String, Object> formData = (Map<String, Object>) modifyData.get("formData");
+        Map<String, Object> serachData = (Map<String, Object>) modifyData.get("serachData");
 
-        String memberId = mmForm.getId();
+        String memberId = formData.get("id").toString();
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
 
-        Page<Member> paging = mService.managementGetAutoPagingAjax(searchData);
-*/
+        if (optionalMember.isPresent()) {
+            String page = serachData.get("page").toString();
+            String option = serachData.get("option").toString();
+            String keyword = serachData.get("keyword").toString();
+
+            Object[] requestParamArray = new Object[]{page, option, keyword};
+            Page<Member> paging = mService.managementGetAutoPagingAjax(requestParamArray);
+
+            mService.managementMemberModifyAjax(formData);
+
+            model.addAttribute("memberPaging", paging);
+            model.addAttribute("page", 0);
+        }
 
         return "/management/member_management_AjaxResult";
     }
