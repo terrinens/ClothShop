@@ -18,7 +18,6 @@ public class MemberService {
     private final MemberRepository mRepository;
     private final PasswordEncoder pEncoder;
     private final Management_RepeatCode managementRepeatCode;
-    private final PasswordEncoder passwordEncoder;
     private Page<Member> memberPage;
 
     public void memberSignup(String id, String pwd, String name, String address, String tel) {
@@ -51,30 +50,17 @@ public class MemberService {
     }
 
     public void managementMemberModify(ManagementMemberForm mmForm) {
+        Optional<Member> member = mRepository.findMemberById(mmForm.getId());
 
-        mRepository.managementModify(mmForm.getId(), mmForm.getPwd(),
-                mmForm.getName(), mmForm.getRole(), mmForm.getAddress(),
-                mmForm.getTel());
+        String formDataPWD = mmForm.getPwd();
+        managementRepeatCode.encoderPwdModify(member, formDataPWD);
     }
 
-    public void managementMemberModifyAjax(Map<String, Object> formData) {
+    public void managementMemberModify(Map<String, Object> formData) {
         Optional<Member> member = mRepository.findMemberById(formData.get("id").toString());
 
         String formDataPWD = formData.get("pwd").toString();
-        if (member.isPresent()) {
-            String id = member.get().getId();
-            String pwd = member.get().getPwd();
-            String name = member.get().getName();
-            String role = member.get().getRole();
-            String address = member.get().getAddress();
-            String tel = member.get().getTel();
-
-            if (passwordEncoder.matches(formDataPWD, pwd)) {
-                mRepository.managementModifyNotPWD(id, name, role, address, tel);
-            } else {
-                mRepository.managementModify(id, pwd, name, role, address, tel);
-            }
-        }
+        managementRepeatCode.encoderPwdModify(member, formDataPWD);
     }
 
     public Page<Member> managementGetAutoPaging(Model model, Object[] requestParamArray) {

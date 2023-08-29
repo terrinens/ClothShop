@@ -114,7 +114,7 @@ public class ManagementController {
             Object[] requestParamArray = new Object[]{page, option, keyword};
             Page<Member> paging = mService.managementGetAutoPagingAjax(requestParamArray);
 
-            mService.managementMemberModifyAjax(formData);
+            mService.managementMemberModify(formData);
 
             model.addAttribute("memberPaging", paging);
             model.addAttribute("page", 0);

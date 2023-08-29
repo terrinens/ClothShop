@@ -1,22 +1,31 @@
 package com.cloth.clothshop.RepeatCode;
 
+import com.cloth.clothshop.Member.Member;
+import com.cloth.clothshop.Member.MemberRepository;
 import lombok.Getter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class Management_RepeatCode {
 
     private final ApplicationContext applicationContext;
 
-    public Management_RepeatCode(ApplicationContext applicationContext) {
+    private final PasswordEncoder passwordEncoder;
+    private final MemberRepository mRepository;
+
+    public Management_RepeatCode(ApplicationContext applicationContext, PasswordEncoder passwordEncoder, MemberRepository memberRepository) {
         this.applicationContext = applicationContext;
+        this.passwordEncoder = passwordEncoder;
+        this.mRepository = memberRepository;
     }
 
     @Getter
@@ -144,6 +153,24 @@ public class Management_RepeatCode {
             throw new RuntimeException("Invocation target exception :::: ", e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Class not found :::: ", e);
+        }
+    }
+
+    public void encoderPwdModify(Optional<Member> optional, String formDataPWD) {
+
+        if (optional.isPresent()) {
+            String id = optional.get().getId();
+            String pwd = optional.get().getPwd();
+            String name = optional.get().getName();
+            String role = optional.get().getRole();
+            String address = optional.get().getAddress();
+            String tel = optional.get().getTel();
+
+            if (passwordEncoder.matches(formDataPWD, pwd)) {
+                mRepository.managementModifyNotPWD(id, name, role, address, tel);
+            } else {
+                mRepository.managementModify(id, pwd, name, role, address, tel);
+            }
         }
     }
 }
