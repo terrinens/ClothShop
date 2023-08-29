@@ -1,5 +1,6 @@
 package com.cloth.clothshop.RepeatCode;
 
+import com.cloth.clothshop.Management.ManagementMemberForm;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberRepository;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Configuration
@@ -156,21 +158,57 @@ public class Management_RepeatCode {
         }
     }
 
-    public void encoderPwdModify(Optional<Member> optional, String formDataPWD) {
+    public void encoderPwdModify(Optional<Member> optional, Map<String, Object> formData) {
+
+        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("id").toString());
+        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("pwd").toString());
+        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("name").toString());
+        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("role").toString());
+        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("address").toString());
+        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("tel").toString());
+
+        String formDataPWD = formData.get("pwd").toString();
 
         if (optional.isPresent()) {
-            String id = optional.get().getId();
-            String pwd = optional.get().getPwd();
-            String name = optional.get().getName();
-            String role = optional.get().getRole();
-            String address = optional.get().getAddress();
-            String tel = optional.get().getTel();
+            String originPwd = optional.get().getPwd();
 
-            if (passwordEncoder.matches(formDataPWD, pwd)) {
+            String id = formData.get("id").toString();
+            String name = formData.get("name").toString();
+            String role = formData.get("role").toString();
+            String address = formData.get("address").toString();
+            String tel = formData.get("tel").toString();
+
+            if (passwordEncoder.matches(formDataPWD, originPwd)) {
                 mRepository.managementModifyNotPWD(id, name, role, address, tel);
             } else {
-                mRepository.managementModify(id, pwd, name, role, address, tel);
+                /*pwd 넘어오는거 체크할것 js 파일에서 제대로 안올 가능성 있음 */
+                mRepository.managementModify(id, formDataPWD, name, role, address, tel);
             }
+        } else {
+            System.out.println("해당 아이디 없음");
+        }
+
+        System.out.println("@@@@@@@@@@@@@@@@@");
+    }
+    public void encoderPwdModify(Optional<Member> optional, ManagementMemberForm mmForm) {
+
+        String formDataPWD = mmForm.getPwd();
+
+        if (optional.isPresent()) {
+            String originPwd = optional.get().getPwd();
+            String id = mmForm.getId();
+            String name = mmForm.getName();
+            String role = mmForm.getRole();
+            String address = mmForm.getAddress();
+            String tel = mmForm.getTel();
+
+            if (passwordEncoder.matches(formDataPWD, originPwd)) {
+                mRepository.managementModifyNotPWD(id, name, role, address, tel);
+            } else {
+                mRepository.managementModify(id, formDataPWD, name, role, address, tel);
+            }
+        } else {
+            System.out.println("해당 아이디 없음");
         }
     }
 }

@@ -1,3 +1,5 @@
+/*import {Modal} from "../assets/vendor/bootstrap/js/bootstrap.esm.js";*/
+
 const $buttonSearch = $('#button_search');
 const $searchKeyword = $('#searchKeyword');
 const $searchOption = $('#searchOption');
@@ -66,11 +68,12 @@ export function commonLink() {
         const $originPwd = formSelect.find('.recipient-pwd');
         const $modifyPwd = formSelect.find('.recipient-pwdModify');
 
-        if (!$modifyPwd.val() < 1) {
+        if (!$modifyPwd.val() > 1) {
             alert("비밀번호를 정확히 입력해주세요.");
         } else {
-            /*formSelect.find('.modal.fade').toggle();*/
+            /*const modal = new Modal(formSelect.find('.modal.fade').toggle());*/
             $originPwd.val($modifyPwd.val());
+            console.log("수정된 비밀번호 ::: " + $originPwd.val());
             let serachData = {
                 page: 0
                 , keyword: $searchKeyword.val()

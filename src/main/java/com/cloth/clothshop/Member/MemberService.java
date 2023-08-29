@@ -3,6 +3,7 @@ package com.cloth.clothshop.Member;
 import com.cloth.clothshop.Management.ManagementMemberForm;
 import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,14 +54,20 @@ public class MemberService {
         Optional<Member> member = mRepository.findMemberById(mmForm.getId());
 
         String formDataPWD = mmForm.getPwd();
-        managementRepeatCode.encoderPwdModify(member, formDataPWD);
+        managementRepeatCode.encoderPwdModify(member, mmForm);
     }
 
     public void managementMemberModify(Map<String, Object> formData) {
+        System.out.println("????????");
+        /*System.out.println("서비스 modify로 넘어온 값 :::: " + formData);*/
         Optional<Member> member = mRepository.findMemberById(formData.get("id").toString());
-
+        /*System.out.println("서비스 modify에서 member로 바꾼값 :::: " + member.get().getId());*/
         String formDataPWD = formData.get("pwd").toString();
-        managementRepeatCode.encoderPwdModify(member, formDataPWD);
+        /*System.out.println("서비스 modify에서 넘어온 pwd :::: " + formDataPWD);*/
+
+        System.out.println("%%%%%%%%%%%%%%%%%%%%");
+        managementRepeatCode.encoderPwdModify(member, formData);
+        System.out.println("*************************");
     }
 
     public Page<Member> managementGetAutoPaging(Model model, Object[] requestParamArray) {

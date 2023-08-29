@@ -4,8 +4,6 @@ import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
-import jakarta.validation.Configuration;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -106,20 +104,24 @@ public class ManagementController {
         String memberId = formData.get("id").toString();
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
 
+        Page<Member> paging = null;
+
         if (optionalMember.isPresent()) {
             String page = serachData.get("page").toString();
             String option = serachData.get("option").toString();
             String keyword = serachData.get("keyword").toString();
 
-            Object[] requestParamArray = new Object[]{page, option, keyword};
-            Page<Member> paging = mService.managementGetAutoPagingAjax(requestParamArray);
+            Object[] requestArray = new Object[]{page, option, keyword};
+            paging = mService.managementGetAutoPagingAjax(requestArray);
 
+            System.out.println(":::::::::::::$$$$$$$$$$$$$$$$$$$");
             mService.managementMemberModify(formData);
-
-            model.addAttribute("memberPaging", paging);
-            model.addAttribute("page", 0);
         }
 
+        model.addAttribute("memberPaging", paging);
+        model.addAttribute("page", 0);
+
+        System.out.println("==========최종 ==============");
         return "/management/member_management_AjaxResult";
     }
 
