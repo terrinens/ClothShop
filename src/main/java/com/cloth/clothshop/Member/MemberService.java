@@ -52,22 +52,12 @@ public class MemberService {
 
     public void managementMemberModify(ManagementMemberForm mmForm) {
         Optional<Member> member = mRepository.findMemberById(mmForm.getId());
-
-        String formDataPWD = mmForm.getPwd();
         managementRepeatCode.encoderPwdModify(member, mmForm);
     }
 
     public void managementMemberModify(Map<String, Object> formData) {
-        System.out.println("????????");
-        /*System.out.println("서비스 modify로 넘어온 값 :::: " + formData);*/
         Optional<Member> member = mRepository.findMemberById(formData.get("id").toString());
-        /*System.out.println("서비스 modify에서 member로 바꾼값 :::: " + member.get().getId());*/
-        String formDataPWD = formData.get("pwd").toString();
-        /*System.out.println("서비스 modify에서 넘어온 pwd :::: " + formDataPWD);*/
-
-        System.out.println("%%%%%%%%%%%%%%%%%%%%");
         managementRepeatCode.encoderPwdModify(member, formData);
-        System.out.println("*************************");
     }
 
     public Page<Member> managementGetAutoPaging(Model model, Object[] requestParamArray) {
@@ -80,7 +70,6 @@ public class MemberService {
     }
 
     public Page<Member> managementGetAutoPagingAjax(Object[] requestParamArray) {
-
         String targetRCN = MemberRepository.class.getName();
         String sortBenchmark = "id";
         memberPage = managementRepeatCode.autoWritePagingAjax(targetRCN, sortBenchmark, requestParamArray);
@@ -89,14 +78,12 @@ public class MemberService {
     }
 
     public Member memberSearch(String id) {
-
         Optional<Member> optionalMember = mRepository.findMemberById(id);
 
         return optionalMember.orElse(null);
     }
 
     public  void memberDelete(String id) {
-
         mRepository.delete(memberSearch(id));
     }
 }

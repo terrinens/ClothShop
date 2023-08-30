@@ -94,6 +94,7 @@ public class ManagementController {
         return "/management/member_management_AjaxResult";
     }
 
+    @SuppressWarnings("unchecked")
     @PostMapping("/member/modify")
     public String managementMemberModify(@RequestBody Map<String, Object> modifyData, Principal principal, Model model) {
         /*BindingResult bindingResult,*/
@@ -114,14 +115,12 @@ public class ManagementController {
             Object[] requestArray = new Object[]{page, option, keyword};
             paging = mService.managementGetAutoPagingAjax(requestArray);
 
-            System.out.println(":::::::::::::$$$$$$$$$$$$$$$$$$$");
             mService.managementMemberModify(formData);
         }
 
         model.addAttribute("memberPaging", paging);
         model.addAttribute("page", 0);
 
-        System.out.println("==========최종 ==============");
         return "/management/member_management_AjaxResult";
     }
 

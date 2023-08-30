@@ -4,7 +4,6 @@ import com.cloth.clothshop.Management.ManagementMemberForm;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberRepository;
 import lombok.Getter;
-import org.hibernate.query.sqm.tree.domain.SqmTreatedSimplePath;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings("CallToPrintStackTrace")
 @Configuration
 public class Management_RepeatCode {
 
@@ -184,9 +184,13 @@ public class Management_RepeatCode {
                     e.printStackTrace();
                 }
             } else if (formDataPWD.equals(originPwd)){
-                System.out.println("비번 일치함");
-                mRepository.managementModifyNotPWD(id, name, role, address, tel);
-                System.out.println("비번 일치블락 저장함");
+                try {
+                    System.out.println("비번 일치함");
+                    mRepository.managementModifyNotPWD(id, name, role, address, tel);
+                    System.out.println("비번 일치블락 저장함");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             System.out.println("해당 아이디 없음");
