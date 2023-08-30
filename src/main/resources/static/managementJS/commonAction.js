@@ -1,5 +1,3 @@
-/*import {Modal} from "../assets/vendor/bootstrap/js/bootstrap.esm.js";*/
-
 const $buttonSearch = $('#button_search');
 const $searchKeyword = $('#searchKeyword');
 const $searchOption = $('#searchOption');
@@ -67,15 +65,14 @@ export function commonLink() {
         const formData = new FormData(formSelect[0]);
         const $originPwd = formSelect.find('.recipient-pwd');
         const $modifyPwd = formSelect.find('.recipient-pwdModify');
-        const saveOrigingPwd = $originPwd.val();
+        const saveOriginPwd = $originPwd.val();
 
         if ($modifyPwd.val().length <= 3 && $modifyPwd.val().length >= 1) {
             alert("비밀번호를 정확히 입력해주세요.");
-            $originPwd.val(saveOrigingPwd.val());
+            $originPwd.val(saveOriginPwd.val());
         } else {
-            /*const modal = new Modal(formSelect.find('.modal.fade').toggle());*/
-
-            console.log("수정된 비밀번호 ::: " + $originPwd.val());
+            const $modalBackdrop = $('.modal-backdrop');
+            $modalBackdrop.remove();
             let serachData = {
                 page: 0
                 , keyword: $searchKeyword.val()
@@ -86,7 +83,6 @@ export function commonLink() {
                 , serachData: serachData
             };
             commonModifyAjax(sendData);
-            $originPwd.val(saveOrigingPwd);
         }
     });
 }

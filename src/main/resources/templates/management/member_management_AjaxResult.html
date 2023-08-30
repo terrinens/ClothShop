@@ -50,7 +50,7 @@
 </div>
 
 <div id="modifyModalBox">
-    <div th:each="member, i : ${memberPaging}" class="modal fade" th:id="'memberDetail_' + ${member.id}"
+    <div th:each="member, i : ${memberPaging}" class="modal fade modalBox" th:id="'memberDetail_' + ${member.id}"
          tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -104,7 +104,7 @@
                             </select>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary button_modify">수정하기</button>
+                        <button type="submit" class="btn btn-primary button_modify modalButtonClose">수정하기</button>
                         <button type="reset" class="btn btn-warning button_reset">값 되돌리기</button>
                         <button th:data-uri="@{|/management/member/delete/${member.getId}|}"
                                 type="button" class="call_delete_modal btn btn-outline-danger"
