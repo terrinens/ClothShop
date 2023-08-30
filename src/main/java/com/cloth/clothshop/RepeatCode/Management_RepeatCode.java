@@ -4,6 +4,7 @@ import com.cloth.clothshop.Management.ManagementMemberForm;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberRepository;
 import lombok.Getter;
+import org.hibernate.query.sqm.tree.domain.SqmTreatedSimplePath;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.*;
@@ -160,17 +161,12 @@ public class Management_RepeatCode {
 
     public void encoderPwdModify(Optional<Member> optional, Map<String, Object> formData) {
 
-        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("id").toString());
-        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("pwd").toString());
-        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("name").toString());
-        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("role").toString());
-        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("address").toString());
-        System.out.println("반복 코드에서 불러옴 ::: " + formData.get("tel").toString());
-
         String formDataPWD = formData.get("pwd").toString();
+        String formDataModifyPWD = formData.get("pwdModify").toString();
 
         if (optional.isPresent()) {
             String originPwd = optional.get().getPwd();
+            System.out.println("반복코드로 넘어온 오리진 비번 :::: "+originPwd);
 
             String id = formData.get("id").toString();
             String name = formData.get("name").toString();
@@ -178,11 +174,19 @@ public class Management_RepeatCode {
             String address = formData.get("address").toString();
             String tel = formData.get("tel").toString();
 
-            if (passwordEncoder.matches(formDataPWD, originPwd)) {
+            if (formDataModifyPWD.length() >= 4) {
+                try {
+                    System.out.println("비번 일치하지 않음");
+                    String encodePwd = passwordEncoder.encode(formDataModifyPWD);
+                    mRepository.managementModify(id, encodePwd, name, role, address, tel);
+                    System.out.println("비번 불일치블락 저장함");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (formDataPWD.equals(originPwd)){
+                System.out.println("비번 일치함");
                 mRepository.managementModifyNotPWD(id, name, role, address, tel);
-            } else {
-                /*pwd 넘어오는거 체크할것 js 파일에서 제대로 안올 가능성 있음 */
-                mRepository.managementModify(id, formDataPWD, name, role, address, tel);
+                System.out.println("비번 일치블락 저장함");
             }
         } else {
             System.out.println("해당 아이디 없음");
