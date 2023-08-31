@@ -52,8 +52,6 @@ function sendDELAjax(sendData) {
         , contentType: "application/json"
         , async: false
         , success: function (html) {
-            console.log('응답 성공');
-            console.log(html);
             $memberAjax.html(html);
         }
     })
