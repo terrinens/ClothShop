@@ -76,12 +76,35 @@ $buttonNewItem.on('click', function (evnet) {
     evnet.preventDefault();
     const newItemFormSelect = $(this).closest("form");
     const formData = new FormData(newItemFormSelect[0]);
+    const $newItemName = $('#newItemName');
+    const $newItemPrice = $('#newItemPrice');
+
+    validCheck($newItemName);
+    validCheck($newItemPrice);
+
     const searchData = {page : 0, keyword : $searchKeyword.val(), option: $searchOption.val()};
     const sendData = {
         formData : Object.fromEntries(formData.entries())
         , searchData: searchData
     };
-    console.log(sendData);
     sendNewAjax(sendData);
 })
+
+const $buttonNewItemCancel = $('#buttonNewItemCancel');
+$buttonNewItemCancel.on('click', function () {
+    $('.is-invalid').removeClass('is-invalid');
+})
+
+function validCheck(targetClass) {
+    if (targetClass.val().length === 0) {
+        targetClass.addClass('is-invalid');
+        $('.is-invalid').first().focus();
+        return false;
+    } else {
+        if (targetClass.hasClass('is-invalid')) {
+            targetClass.removeClass('is-invalid');
+        }
+        targetClass.addClass('is-valid');
+    }
+}
 

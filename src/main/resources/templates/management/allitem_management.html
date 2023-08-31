@@ -81,15 +81,15 @@
             <div class="modal-content">
                 <div class="modal-header"><h1 class="modal-title fs-5">상품 추가</h1></div>
                 <div class="modal-body">
-                    <form id="newItemForm" method="post">
-                        <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
+                    <form id="newItemForm" method="post" class="needs-validation">
                         <div class="mb-3">
                             <div class="mb-3">
                                 <label for="newItemName" class="col-form-label">상품 이름</label>
-                                <input name="name" id="newItemName" type="text" class="form-control-lg">
+                                <input name="name" id="newItemName" type="text" class="form-control">
+                                <div id="validationJSNameFeedback" class="invalid-feedback">상품 이름을 입력해주세요!</div>
                                 <div class="mb-2"></div>
                                 <label for="newItemKind" class="col-form-label">상품 분류</label>
-                                <select name="kind" id="newItemKind" class="form-control-lg">
+                                <select name="kind" id="newItemKind" class="form-control is-valid">
                                     <option value="a">반팔</option>
                                     <option value="b">긴팔</option>
                                     <option value="c">반바지</option>
@@ -102,12 +102,10 @@
                             <div class="mb-3">
                                 <label for="newItemContents" class="col-form-label">상품 설명</label>
                                 <textarea id="newItemContents" name="contents" class="form-control" rows="4"></textarea>
-                            
                             </div>
                             <div class="mb-3">
                                 <label for="newItemSizeSt" class="col-form-label">상품 최소 사이즈</label>
-                                <select name="sizeSt" id="newItemSizeSt"
-                                        class="form-control-lg">
+                                <select name="sizeSt" id="newItemSizeSt" class="form-control is-valid">
                                     <option value="XS">XS</option>
                                     <option value="S">S</option>
                                     <option value="M">M</option>
@@ -117,8 +115,7 @@
                                 </select>
                                 <div class="mb-2"></div>
                                 <label for="newItemSizeEt" class="col-form-label">상품 최대 사이즈</label>
-                                <select name="sizeEt" id="newItemSizeEt"
-                                        class="form-control-lg">
+                                <select name="sizeEt" id="newItemSizeEt" class="form-control is-valid">
                                     <option value="XXL">XXL</option>
                                     <option value="XL">XL</option>
                                     <option value="L">L</option>
@@ -128,17 +125,17 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="newItemQuantity" class="col-form-label">상품 가격</label>
-                                <label for="newItemPrice"></label><input name="price" id="newItemPrice" type="number"
-                                                                         class="form-control-lg">
-                                <div class="mb-2"></div>
+                                <label for="newItemPrice" class="col-form-label">상품 가격</label>
+                                <input name="price" id="newItemPrice" type="number" class="form-control">
+                                <div id="validationJSPriceFeedback" class="invalid-feedback">상품 가격을 입력해주세요!</div>
+                                <div class="mb-2"><!--SPACE--></div>
                                 <label for="newItemQuantity" class="col-form-label">재고 최초 등록 수량</label>
-                                <input name="quantity" id="newItemQuantity" type="number" class="form-control-lg">
-                                <div class="mb-2"></div>
-                                <label for="newItemUseyn" class="col-form-label">상품 최초 판매 여부</label>
-                                <select name="useyn" id="newItemUseyn" class="form-control-lg">
+                                <input name="quantity" id="newItemQuantity" type="number" class="form-control is-valid" th:value="0">
+                                <div class="mb-2"><!--SPACE--></div>
+                                <label for="newItemUseyn" class="col-form-label">상품 판매 여부</label>
+                                <select name="useyn" id="newItemUseyn" class="form-control is-valid">
                                     <option value="Y">Y</option>
-                                    <option value="N">N</option>
+                                    <option value="N" selected>N</option>
                                 </select>
                             </div>
                             <fieldset disabled="">
@@ -147,7 +144,7 @@
                             </fieldset>
                             <input type="hidden" name="image" value="이미지 준비중!">
                         </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-secondary" id="buttonNewItemCancel" data-bs-dismiss="modal">취소</button>
                         <button type="reset" class="btn btn-warning">리셋</button>
                         <button type="submit" class="btn btn-outline-success" id="buttonNewItem">상품 등록</button>
                     </form>
