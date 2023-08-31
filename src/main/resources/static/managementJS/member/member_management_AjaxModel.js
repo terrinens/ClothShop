@@ -5,7 +5,7 @@ const $memberAjax = $('#memberAjax');
 const token = $("meta[name='_csrf']").attr("content")
 const header = $("meta[name='_csrf_header']").attr("content");
 
-commonAction(sendAjax, sendModifyAjax);
+commonAction(sendAjax, sendModifyAjax, sendDELAjax);
 firstLodingAjax(sendAjax);
 
 function sendAjax(page, keyword, option) {
@@ -26,7 +26,6 @@ function sendAjax(page, keyword, option) {
 }
 
 function sendModifyAjax(sendData) {
-    $memberAjax.empty();
     $.ajax({
         type: 'post'
         , beforeSend: function (xhr) {
@@ -35,15 +34,27 @@ function sendModifyAjax(sendData) {
         , url: "/management/member/modify-Ajax"
         , data: JSON.stringify(sendData)
         , contentType: "application/json"
-        , async:false
+        , async: false
         , success: function (html) {
-            console.log ('응답 성공');
-            console.log (html);
             $memberAjax.html(html);
         }
     });
 }
 
-function sendDELAjax() {
-
+function sendDELAjax(sendData) {
+    $.ajax({
+        type: 'delete'
+        , beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        }
+        , url: "/management/member/delete-Ajax"
+        , data: JSON.stringify(sendData)
+        , contentType: "application/json"
+        , async: false
+        , success: function (html) {
+            console.log('응답 성공');
+            console.log(html);
+            $memberAjax.html(html);
+        }
+    })
 }

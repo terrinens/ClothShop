@@ -106,8 +106,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                         <button type="submit" class="btn btn-primary button_modify modalButtonClose">수정하기</button>
                         <button type="reset" class="btn btn-warning button_reset">값 되돌리기</button>
-                        <button th:data-uri="@{|/management/member/delete/${member.getId}|}"
-                                type="button" class="call_delete_modal btn btn-outline-danger"
+                        <button th:data-id="${member.getId}" type="button" class="call_delete_modal btn btn-outline-danger"
                                 id="call_delete_modal" data-bs-toggle="modal" data-bs-target="#delete_modal">
                             해당 유저 삭제
                         </button>

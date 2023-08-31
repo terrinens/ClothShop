@@ -4,7 +4,7 @@ const $searchOption = $('#searchOption');
 
 let commonAjax = null;
 let commonModifyAjax = null;
-let commonDELAjax = null
+let commonDELAjax = null;
 
 /**검색시 공통적으로 사용되는 키 맵핑*/
 export function commonAction(sendAjax, sendModifyAjax, sendDELAjax) {
@@ -36,19 +36,31 @@ export function commonAction(sendAjax, sendModifyAjax, sendDELAjax) {
 }
 
 
-/**commonAction에 할당된것들에 의존한다. Ajax가 불러들이는 html에서 import할것*/
+// noinspection JSUnusedGlobalSymbols
+/**commonAction에 할당된것들에 의존한다. 컨트롤에서 보내는 html에서 import할것*/
 export function commonLink() {
-    let uri = null;
+    let targetId = null;
     $('.call_delete_modal').on('click', function () {
-        uri = $(this).data('uri');
+        targetId = $(this).data('id');
     });
 
-    $('.button_delete').on('click', function () {
-        location.href = uri;
+    $('.button_delete').on('click', function (event) {
+        event.preventDefault();
+        const $modalBackdrop = $('.modal-backdrop');
+        $modalBackdrop.remove();
+        let serachData = {
+            page: 0
+            , keyword: $searchKeyword.val()
+            , option: $searchOption.val()
+        };
+        const sendData = {
+            targetId: targetId
+            , serachData: serachData
+        };
+        commonDELAjax(sendData);
     });
 
     const $pageLink = $('.page-link');
-
     $pageLink.on('click', function () {
         const page = $(this).data('page');
         const keyword = $searchKeyword.val();
@@ -58,7 +70,6 @@ export function commonLink() {
     });
 
     const $buttonModify = $('.button_modify');
-
     $buttonModify.on('click', function (event) {
         event.preventDefault();
         const formSelect = $(this).closest("form")

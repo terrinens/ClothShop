@@ -81,7 +81,9 @@ public class ManagementController {
         return "management/member_management";
     }
 
-    /**현재 사용하는데 이전 member 컨트롤의 값의 의존하고 있음. 해결할것.*/
+    /**
+     * 현재 사용하는데 이전 member 컨트롤의 값의 의존하고 있음. 해결할것.
+     */
     @GetMapping("/member-Ajax")
     public String managementMemberAjax(
             Model model,
@@ -98,7 +100,8 @@ public class ManagementController {
     }
 
     @SuppressWarnings("unchecked")
-    @PostMapping("/member/modify-Ajax") @Transactional
+    @PostMapping("/member/modify-Ajax")
+    @Transactional
     public String managementMemberModify(@RequestBody Map<String, Object> modifyData, Principal principal, Model model) {
         /*BindingResult bindingResult,*/
 
@@ -109,25 +112,40 @@ public class ManagementController {
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
 
         if (optionalMember.isPresent()) {
-                String originPwd = optionalMember.get().getPwd();
-                mService.managementMemberModify(formData, originPwd);
-                entityManager.clear();
+            String originPwd = optionalMember.get().getPwd();
+            mService.managementMemberModify(formData, originPwd);
+            entityManager.clear();
 
-                int page = Integer.parseInt(serachData.get("page").toString());
-                String option = serachData.get("option").toString();
-                String keyword = serachData.get("keyword").toString();
+            int page = Integer.parseInt(serachData.get("page").toString());
+            String option = serachData.get("option").toString();
+            String keyword = serachData.get("keyword").toString();
 
-                Page<Member> paging = mService.managementGetPaging(page, option, keyword);
-                model.addAttribute("memberPaging", paging);
-                model.addAttribute("page", 0);
+            Page<Member> paging = mService.managementGetPaging(page, option, keyword);
+            model.addAttribute("memberPaging", paging);
+            model.addAttribute("page", 0);
         }
         return "/management/member_management_AjaxResult";
     }
 
-    @PostMapping("/member/delete-Ajax")
-    public String managementMemberDelete(@PathVariable String id) {
-        mService.memberDelete(id);
-        return "redirect:/management/member";
+    @SuppressWarnings("unchecked")
+    @DeleteMapping("/member/delete-Ajax")
+    public String managementMemberDelete(@RequestBody Map<String, Object> delData, Model model) {
+        String targetId = delData.get("targetId").toString();
+        Map<String, Object> serachData = (Map<String, Object>) delData.get("serachData");
+
+        Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(targetId));
+        if (optionalMember.isPresent()) {
+            mService.memberDelete(targetId);
+
+            int page = Integer.parseInt(serachData.get("page").toString());
+            String option = serachData.get("option").toString();
+            String keyword = serachData.get("keyword").toString();
+
+            Page<Member> paging = mService.managementGetPaging(page, option, keyword);
+            model.addAttribute("memberPaging", paging);
+            model.addAttribute("page", 0);
+        }
+        return "/management/member_management_AjaxResult";
     }
 
     @GetMapping("/order")
