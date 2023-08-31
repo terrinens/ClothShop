@@ -8,6 +8,7 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
     <input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
+    <script type="module" th:src="@{/managementJS/allitem/item_management_AjaxModel.js}"></script>
     <main id="main">
         <nav class="navbar bg-light justify-content-center">
             <div class="btn-group filters" id="filters" role="group" aria-label="Basic outlined example">
