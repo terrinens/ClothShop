@@ -88,7 +88,7 @@ $buttonNewItem.on('click', function (evnet) {
         , searchData: searchData
     };
     sendNewAjax(sendData);
-    sucessNewItem();
+    newItemInputValueEmpty();
 })
 
 const $buttonNewItemCancel = $('#buttonNewItemCancel');
@@ -110,7 +110,7 @@ function validCheck(targetClass) {
 }
 
 const newItemBoxModal = new bootstrap.Modal($('#newItemBox'));
-function sucessNewItem() {
+function newItemInputValueEmpty() {
     newItemBoxModal.hide();
     $newItemName.removeClass('is-valid');
     $newItemName.val(null);
