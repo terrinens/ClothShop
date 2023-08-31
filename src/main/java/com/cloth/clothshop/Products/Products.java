@@ -44,9 +44,7 @@ public class Products {
     private ProductsKind kind;
 
     public void setKind(char kind) {
-
         ProductsKind productsKind = ProductsKind.fromChar(kind);
-
         this.kind = productsKind;
     }
 
@@ -78,7 +76,6 @@ public class Products {
     private Date indate;
 
     public Products managementNewItemSave(ManagementNewItemForm newItemForm) {
-
         this.name = newItemForm.getName();
         this.kind = ProductsKind.fromChar(newItemForm.getKind());
         this.price = newItemForm.getPrice();

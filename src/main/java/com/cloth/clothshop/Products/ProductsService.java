@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,12 +35,18 @@ public class ProductsService {
         return pRepository.findByKindList(kindOption1, kindOption2, pageable);
     }
 
-    public Page<Products> managementGetAutoPaging(Model model, Object[] requestParamArray) {
+    public Page<Products> managementGetPaging(Model model, int page, String keyword, String option) {
+        Pageable pageable = PageRequest.of(page, 15, Sort.by("kind").ascending());
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("option", option);
+        return pRepository.findByOptionAndKeyword(option, keyword, pageable);
+    }
 
-        String targetRCN = ProductsRepository.class.getName();
-        String sortBenchmark = "products_kind";
-
-        return managementRepeatCode.autoWritePaging(model, targetRCN, sortBenchmark, requestParamArray);
+    public Page<Products> managementGetDefaultPaging(Model model) {
+        Pageable pageable= PageRequest.of(0, 15, Sort.by("kind").ascending());
+        model.addAttribute("keyword", "");
+        model.addAttribute("option", "all");
+        return pRepository.findByOptionAndKeyword("all", "", pageable);
     }
 
     public void managementNewProductsItem(ManagementNewItemForm newItemForm) {

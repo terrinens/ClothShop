@@ -26,18 +26,9 @@ public class ManagementController {
     private final EntityManager entityManager;
 
     @GetMapping("/allitem")
-    public String managementProudcts(Model model, ManagementNewItemForm managementNewItemForm,
-                                     @RequestParam(value = "page", defaultValue = "0") String page,
-                                     @RequestParam(value = "option", defaultValue = "") String option,
-                                     @RequestParam(value = "keyword", defaultValue = "") String keyword
-    ) {
-
-        Object[] requestParam = new Object[]{page, option, keyword};
-        Page<Products> paging = pService.managementGetAutoPaging(model, requestParam);
-
+    public String managementProudcts(Model model) {
+        Page<Products> paging = pService.managementGetDefaultPaging(model);
         model.addAttribute("itemPaging", paging);
-        model.addAttribute("itemForm", managementNewItemForm);
-
         return "management/allitem_management";
     }
 
@@ -47,10 +38,7 @@ public class ManagementController {
                                          @RequestParam(value = "option", defaultValue = "") String option,
                                          @RequestParam(value = "keyword", defaultValue = "") String keyword
     ) {
-
-        Object[] requestParam = new Object[]{page, option, keyword};
-        Page<Products> paging = pService.managementGetAutoPaging(model, requestParam);
-
+        Page<Products> paging = pService.managementGetPaging(model, Integer.parseInt(page), keyword, option);
         model.addAttribute("itemPaging", paging);
         model.addAttribute("itemForm", managementNewItemForm);
 
