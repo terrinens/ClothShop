@@ -1,8 +1,8 @@
 package com.cloth.clothshop.Member;
 
 /*import com.cloth.clothshop.Member.MemberQueryDSL.MemberRepostitoryCustom;*/
+
 import com.cloth.clothshop.Member.MemberQueryDSL.MemberRepositoryCustom;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,7 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, String>
 
     Optional<Member> findMemberByName(String name);
 
-    @Modifying @Transactional
+    @Modifying
     @Query("UPDATE Member "
             + "SET name = :name, role = :role, address = :address, tel = :tel "
             + "WHERE id = :id"
@@ -35,7 +35,7 @@ public interface MemberRepository extends JpaRepository<Member, String>
             @Param("tel") String tel
             );
 
-    @Modifying @Transactional
+    @Modifying
     @Query("UPDATE Member "
             + "SET pwd = :pwd, name = :name, role = :role, address = :address, tel = :tel "
             + "WHERE id = :id"

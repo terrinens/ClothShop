@@ -4,6 +4,8 @@ import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ public class ManagementController {
 
     private final MemberService mService;
     private final ProductsService pService;
+    private final EntityManager entityManager;
 
     @GetMapping("/allitem")
     public String managementProudcts(Model model, ManagementNewItemForm managementNewItemForm,
@@ -37,11 +40,12 @@ public class ManagementController {
 
         return "management/allitem_management";
     }
+
     @GetMapping("/allitem-Ajax")
     public String managementProudctsAjax(Model model, ManagementNewItemForm managementNewItemForm,
-                                     @RequestParam(value = "page", defaultValue = "0") String page,
-                                     @RequestParam(value = "option", defaultValue = "") String option,
-                                     @RequestParam(value = "keyword", defaultValue = "") String keyword
+                                         @RequestParam(value = "page", defaultValue = "0") String page,
+                                         @RequestParam(value = "option", defaultValue = "") String option,
+                                         @RequestParam(value = "keyword", defaultValue = "") String keyword
     ) {
 
         Object[] requestParam = new Object[]{page, option, keyword};
@@ -95,7 +99,7 @@ public class ManagementController {
     }
 
     @SuppressWarnings("unchecked")
-    @PostMapping("/member/modify")
+    @PostMapping("/member/modify-Ajax") @Transactional
     public String managementMemberModify(@RequestBody Map<String, Object> modifyData, Principal principal, Model model) {
         /*BindingResult bindingResult,*/
 
@@ -104,23 +108,29 @@ public class ManagementController {
 
         String memberId = formData.get("id").toString();
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
-
-        Page<Member> paging = null;
+        Object[] requestArray = null;
 
         if (optionalMember.isPresent()) {
+            System.out.print("컨트롤에서 수정하기 서비스 시작 { ");
+            mService.managementMemberModify(formData);
+            entityManager.flush();
+            entityManager.clear();
+            System.out.println(" } 컨트롤에서 수정하기 서비스 끝");
+
             String page = serachData.get("page").toString();
             String option = serachData.get("option").toString();
             String keyword = serachData.get("keyword").toString();
 
-            Object[] requestArray = new Object[]{page, option, keyword};
-            paging = mService.managementGetAutoPagingAjax(requestArray);
-
-            mService.managementMemberModify(formData);
+            System.out.println("컨트롤에서 페이징 서비스 시작 { ");
+            requestArray = new Object[]{page, option, keyword};
+            mService.managementGetAutoPagingAjax(requestArray);
+            System.out.println(" } 컨트롤에서 페이징 서비스 끝");
+            /*System.out.println("컨트롤에서 페이징 처리 결과값 { " + paging.getContent().get(2).getName() + " }");*/
         }
 
+        Page<Member> paging = mService.managementGetAutoPagingAjax(requestArray);
         model.addAttribute("memberPaging", paging);
         model.addAttribute("page", 0);
-
         return "/management/member_management_AjaxResult";
     }
 

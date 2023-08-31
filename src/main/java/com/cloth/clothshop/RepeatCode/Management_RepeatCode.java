@@ -108,6 +108,7 @@ public class Management_RepeatCode {
         }
     }
 
+    /**쓰다보니 복잡하기만하고 쓸모없음. 쓰지말것.*/
     public <T> Page<T> autoWritePagingAjax(String targetRCN, String sortBenchmark, Object[] requestParamArray) {
 
         int page = 0;
@@ -144,6 +145,7 @@ public class Management_RepeatCode {
             Object result = method.invoke(repositoryInstance, arguments);
             if (result instanceof Page<?>) {
                 autoPaging = (Page<T>) result;
+                System.out.println("반복코드에서 페이징 처리 결과값 { " + autoPaging.getContent().get(2).toString() + " }");
                 return autoPaging;
             } else {
                 throw new RuntimeException("Unexpected result type :::: ");
@@ -160,13 +162,11 @@ public class Management_RepeatCode {
     }
 
     public void encoderPwdModify(Optional<Member> optional, Map<String, Object> formData) {
-
         String formDataPWD = formData.get("pwd").toString();
         String formDataModifyPWD = formData.get("pwdModify").toString();
 
         if (optional.isPresent()) {
             String originPwd = optional.get().getPwd();
-            System.out.println("반복코드로 넘어온 오리진 비번 :::: "+originPwd);
 
             String id = formData.get("id").toString();
             String name = formData.get("name").toString();
@@ -176,30 +176,21 @@ public class Management_RepeatCode {
 
             if (formDataModifyPWD.length() >= 4) {
                 try {
-                    System.out.println("비번 일치하지 않음");
                     String encodePwd = passwordEncoder.encode(formDataModifyPWD);
                     mRepository.managementModify(id, encodePwd, name, role, address, tel);
-                    System.out.println("비번 불일치블락 저장함");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (formDataPWD.equals(originPwd)){
                 try {
-                    System.out.println("비번 일치함");
                     mRepository.managementModifyNotPWD(id, name, role, address, tel);
-                    System.out.println("비번 일치블락 저장함");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        } else {
-            System.out.println("해당 아이디 없음");
         }
-
-        System.out.println("@@@@@@@@@@@@@@@@@");
     }
     public void encoderPwdModify(Optional<Member> optional, ManagementMemberForm mmForm) {
-
         String formDataPWD = mmForm.getPwd();
 
         if (optional.isPresent()) {
@@ -215,8 +206,6 @@ public class Management_RepeatCode {
             } else {
                 mRepository.managementModify(id, formDataPWD, name, role, address, tel);
             }
-        } else {
-            System.out.println("해당 아이디 없음");
         }
     }
 }

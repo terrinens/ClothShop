@@ -26,16 +26,19 @@ function sendAjax(page, keyword, option) {
 }
 
 function sendModifyAjax(sendData) {
-    console.log(sendData);
+    $memberAjax.empty();
     $.ajax({
         type: 'post'
         , beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         }
-        , url: "/management/member/modify"
+        , url: "/management/member/modify-Ajax"
         , data: JSON.stringify(sendData)
         , contentType: "application/json"
+        , async:false
         , success: function (html) {
+            console.log ('응답 성공');
+            console.log (html);
             $memberAjax.html(html);
         }
     });
