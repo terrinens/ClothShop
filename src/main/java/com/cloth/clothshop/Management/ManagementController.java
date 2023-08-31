@@ -72,7 +72,6 @@ public class ManagementController {
                                    @RequestParam(value = "option", defaultValue = "") String option,
                                    @RequestParam(value = "keyword", defaultValue = "") String keyword
     ) {
-
         Object[] requestParam = new Object[]{page, option, keyword};
         Page<Member> paging = mService.managementGetAutoPaging(model, requestParam);
 
@@ -82,6 +81,7 @@ public class ManagementController {
         return "management/member_management";
     }
 
+    /**현재 사용하는데 이전 member 컨트롤의 값의 의존하고 있음. 해결할것.*/
     @GetMapping("/member-Ajax")
     public String managementMemberAjax(
             Model model,
@@ -89,8 +89,7 @@ public class ManagementController {
             @RequestParam(value = "option", defaultValue = "") String option,
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
-        Object[] requestParamArray = new Object[]{page, option, keyword};
-        Page<Member> paging = mService.managementGetAutoPagingAjax(requestParamArray);
+        Page<Member> paging = mService.managementGetPagingAjax(Integer.parseInt(page), option, keyword);
 
         model.addAttribute("memberPaging", paging);
         model.addAttribute("page", page);
@@ -108,29 +107,20 @@ public class ManagementController {
 
         String memberId = formData.get("id").toString();
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
-        Object[] requestArray = null;
 
         if (optionalMember.isPresent()) {
-            System.out.print("컨트롤에서 수정하기 서비스 시작 { ");
-            mService.managementMemberModify(formData);
-            entityManager.flush();
+            String originPwd = optionalMember.get().getPwd();
+            mService.managementMemberModify(formData, originPwd);
             entityManager.clear();
-            System.out.println(" } 컨트롤에서 수정하기 서비스 끝");
 
-            String page = serachData.get("page").toString();
+            int page = Integer.parseInt(serachData.get("page").toString());
             String option = serachData.get("option").toString();
             String keyword = serachData.get("keyword").toString();
 
-            System.out.println("컨트롤에서 페이징 서비스 시작 { ");
-            requestArray = new Object[]{page, option, keyword};
-            mService.managementGetAutoPagingAjax(requestArray);
-            System.out.println(" } 컨트롤에서 페이징 서비스 끝");
-            /*System.out.println("컨트롤에서 페이징 처리 결과값 { " + paging.getContent().get(2).getName() + " }");*/
+            Page<Member> paging = mService.managementGetPagingAjax(page, option, keyword);
+            model.addAttribute("memberPaging", paging);
+            model.addAttribute("page", 0);
         }
-
-        Page<Member> paging = mService.managementGetAutoPagingAjax(requestArray);
-        model.addAttribute("memberPaging", paging);
-        model.addAttribute("page", 0);
         return "/management/member_management_AjaxResult";
     }
 

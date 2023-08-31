@@ -62,12 +62,11 @@ public class MemberService {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public void managementMemberModify(Map<String, Object> formData) {
-        Optional<Member> member = mRepository.findMemberById(formData.get("id").toString());
-        System.out.println(formData.get("name").toString());
-        managementRepeatCode.encoderPwdModify(member, formData);
+    public void managementMemberModify(Map<String, Object> formData, String originPwd) {
+        managementRepeatCode.encoderPwdModify(formData, originPwd);
     }
 
+    /**쓰다보니 만든 코드는 복잡하기만 하고 쓸모 없으니 삭제하고 로직을 변경할것.*/
     public Page<Member> managementGetAutoPaging(Model model, Object[] requestParamArray) {
         String targetRCN = MemberRepository.class.getName();
         String sortBenchmark = "id";
@@ -76,15 +75,9 @@ public class MemberService {
     }
 
     @Transactional
-    public Page<Member> managementGetAutoPagingAjax(Object[] requestParamArray) {
-        int page = Integer.parseInt(requestParamArray[0].toString());
-        String option = requestParamArray[1].toString();
-        String keyword = requestParamArray[2].toString();
+    public Page<Member> managementGetPagingAjax(int page, String option, String keyword) {
         Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
-
         memberPage = mRepository.findByOptionAndKeyword(option, keyword, pageable);
-
-        System.out.println("서비스에서 페이징 처리 결과값 { " + memberPage.getContent().get(2).getName() + " }");
         return memberPage;
     }
 

@@ -46,12 +46,13 @@ public class Management_RepeatCode {
      * QueryDsl로 커스텀한 메소드 이름 <strong>findByOptionAndKeyword</stroing>에서만 작동이 가능합니다. <br>
      * <h4>ex : Page<T> findByOptionAndKeyword(String searchOption, String searchKeyword, {@link Pageable} pageable);</h4>
      * 모든것이 올바르게 변수가 지정되었다면 자동으로 해당되는 레파지토리에서 메소드를 찾아 사용하여 페이징을 진행합니다.
-     * @author DongChuel Kim
-     * @param targetRCN 사용할 레파지토리 클래스 이름을 넣습니다. <br>
-     *                  ex : String targetRCN = EntityRepository.class.getName(); <br>
-     * @param sortBenchmark 엔티티 테이블에서 정렬에 기준이될 이름을 넣습니다. <br>
+     *
+     * @param targetRCN         사용할 레파지토리 클래스 이름을 넣습니다. <br>
+     *                          ex : String targetRCN = EntityRepository.class.getName(); <br>
+     * @param sortBenchmark     엔티티 테이블에서 정렬에 기준이될 이름을 넣습니다. <br>
      * @param requestParamArray 파라메터값을 배열화해서 넣습니다. 하지만 page, option, keyword값만 가능합니다. <br>
      * @return Page<T> autoPaging <br> model.option <br> model.keyword <br>
+     * @author DongChuel Kim
      */
 
     @SuppressWarnings("unchecked")
@@ -108,7 +109,9 @@ public class Management_RepeatCode {
         }
     }
 
-    /**쓰다보니 복잡하기만하고 쓸모없음. 쓰지말것.*/
+    /**
+     * 쓰다보니 복잡하기만하고 쓸모없음. 쓰지말것.
+     */
     public <T> Page<T> autoWritePagingAjax(String targetRCN, String sortBenchmark, Object[] requestParamArray) {
 
         int page = 0;
@@ -161,35 +164,32 @@ public class Management_RepeatCode {
         }
     }
 
-    public void encoderPwdModify(Optional<Member> optional, Map<String, Object> formData) {
+    public void encoderPwdModify(Map<String, Object> formData, String originPwd) {
         String formDataPWD = formData.get("pwd").toString();
         String formDataModifyPWD = formData.get("pwdModify").toString();
 
-        if (optional.isPresent()) {
-            String originPwd = optional.get().getPwd();
+        String id = formData.get("id").toString();
+        String name = formData.get("name").toString();
+        String role = formData.get("role").toString();
+        String address = formData.get("address").toString();
+        String tel = formData.get("tel").toString();
 
-            String id = formData.get("id").toString();
-            String name = formData.get("name").toString();
-            String role = formData.get("role").toString();
-            String address = formData.get("address").toString();
-            String tel = formData.get("tel").toString();
-
-            if (formDataModifyPWD.length() >= 4) {
-                try {
-                    String encodePwd = passwordEncoder.encode(formDataModifyPWD);
-                    mRepository.managementModify(id, encodePwd, name, role, address, tel);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (formDataPWD.equals(originPwd)){
-                try {
-                    mRepository.managementModifyNotPWD(id, name, role, address, tel);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        if (formDataModifyPWD.length() >= 4) {
+            try {
+                String encodePwd = passwordEncoder.encode(formDataModifyPWD);
+                mRepository.managementModify(id, encodePwd, name, role, address, tel);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (formDataPWD.equals(originPwd)) {
+            try {
+                mRepository.managementModifyNotPWD(id, name, role, address, tel);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
+
     public void encoderPwdModify(Optional<Member> optional, ManagementMemberForm mmForm) {
         String formDataPWD = mmForm.getPwd();
 
