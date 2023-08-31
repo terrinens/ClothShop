@@ -11,7 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Key;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Optional;
@@ -40,18 +42,25 @@ public class ManagementController {
     ) {
         Page<Products> paging = pService.managementGetPaging(model, Integer.parseInt(page), keyword, option);
         model.addAttribute("itemPaging", paging);
-        model.addAttribute("itemForm", managementNewItemForm);
 
         return "management/allitem_management_AjaxResult";
     }
 
-    @GetMapping("/item/new-Ajax")
-    public String managementNewItem(ManagementNewItemForm mnewItemForm) {
+    @SuppressWarnings("unchecked")
+    @PostMapping("/item/new-Ajax")
+    public String managementNewItem(@RequestBody Map<String, Object> newItemData, Model model) {
+        Map<String, Object> itemData = (Map<String, Object>) newItemData.get("formData");
+        Map<String, Object> searchData = (Map<String, Object>) newItemData.get("searchData");
 
-        pService.managementNewProductsItem(mnewItemForm);
-        System.out.println("컨트롤 :::: " + mnewItemForm.getKind());
+        int page = Integer.parseInt(searchData.get("page").toString());
+        String keyword = searchData.get("keyword").toString();
+        String option = searchData.get("option").toString();
 
-        return "redirect:/management/allitem";
+        pService.managementNewProductsItem(itemData);
+        Page<Products> paging = pService.managementGetPaging(model ,page, keyword, option);
+        model.addAttribute("itemPaging", paging);
+
+        return "management/allitem_management_AjaxResult";
     }
 
     @PutMapping("/item/modify-Ajax")

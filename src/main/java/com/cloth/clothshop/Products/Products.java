@@ -11,6 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Date;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Setter
 @Getter
@@ -44,8 +45,7 @@ public class Products {
     private ProductsKind kind;
 
     public void setKind(char kind) {
-        ProductsKind productsKind = ProductsKind.fromChar(kind);
-        this.kind = productsKind;
+        this.kind = ProductsKind.fromChar(kind);
     }
 
     @Column(name = "products_price", length = 10)
@@ -87,5 +87,9 @@ public class Products {
         this.useyn = newItemForm.getUseyn();
 
         return this;
+    }
+
+    public String kindName() {
+       return this.kind.toString();
     }
 }

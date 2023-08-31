@@ -1,6 +1,7 @@
 const $buttonSearch = $('#button_search');
 const $searchKeyword = $('#searchKeyword');
 const $searchOption = $('#searchOption');
+export {$searchKeyword, $searchOption};
 
 let commonAjax = null;
 let commonModifyAjax = null;
@@ -90,11 +91,7 @@ export function memberButtonModify() {
         } else {
             const $modalBackdrop = $('.modal-backdrop');
             $modalBackdrop.remove();
-            serachData = {
-                page: 0
-                , keyword: $searchKeyword.val()
-                , option: $searchOption.val()
-            };
+            serachData = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
             sendData = {
                 formData: Object.fromEntries(formData.entries())
                 , serachData: serachData

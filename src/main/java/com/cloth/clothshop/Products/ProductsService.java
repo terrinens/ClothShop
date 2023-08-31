@@ -14,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -26,37 +29,43 @@ public class ProductsService {
     @Value("{img.dir}")
     private String imgDir;
     private final ProductsImgStorageRepository pImgStorageRepository;
+    private final Products products = new Products();
 
     public Page<Products> getlistCloth(char kindOption1, char kindOption2, int page
     ) {
-
         Pageable pageable = PageRequest.of(page, 15);
 
         return pRepository.findByKindList(kindOption1, kindOption2, pageable);
     }
 
     public Page<Products> managementGetPaging(Model model, int page, String keyword, String option) {
-        Pageable pageable = PageRequest.of(page, 15, Sort.by("kind").ascending());
+        //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("indate").ascending());
+        model.addAttribute("page", 0);
         model.addAttribute("keyword", keyword);
         model.addAttribute("option", option);
         return pRepository.findByOptionAndKeyword(option, keyword, pageable);
     }
 
     public Page<Products> managementGetDefaultPaging(Model model) {
-        Pageable pageable= PageRequest.of(0, 15, Sort.by("kind").ascending());
+        //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("indate").ascending());
         model.addAttribute("keyword", "");
         model.addAttribute("option", "all");
         return pRepository.findByOptionAndKeyword("all", "", pageable);
     }
 
     public void managementNewProductsItem(ManagementNewItemForm newItemForm) {
-
-        Products products = new Products().managementNewItemSave(newItemForm);
-
+        products.managementNewItemSave(newItemForm);
         pRepository.save(products);
     }
 
-    public Long saveFile(MultipartFile files) throws IOException {
+    public void managementNewProductsItem(Map<String, Object> itemData) {
+        products.managementNewItemSave(mapDataConversionNewItemForm(itemData));
+        pRepository.save(products);
+    }
+
+    private Long saveFile(MultipartFile files) throws IOException {
         if (files.isEmpty()) {
             return null;
         } else {
@@ -77,5 +86,20 @@ public class ProductsService {
 
             return savedImg.getId();
         }
+    }
+
+    private ManagementNewItemForm mapDataConversionNewItemForm(Map<String, Object> data) {
+        ManagementNewItemForm newItemForm = new ManagementNewItemForm();
+        newItemForm.setName(data.get("name").toString());
+        newItemForm.setKind(data.get("kind").toString().charAt(0));
+        newItemForm.setPrice(data.get("price").toString());
+        newItemForm.setContents(data.get("contents").toString());
+        newItemForm.setImage(data.get("image").toString());
+        newItemForm.setSizeSt(data.get("sizeSt").toString());
+        newItemForm.setSizeEt(data.get("sizeEt").toString());
+        newItemForm.setQuantity(Integer.parseInt(data.get("quantity").toString()));
+        newItemForm.setUseyn(data.get("useyn").toString().charAt(0));
+        newItemForm.setIndate(Date.valueOf(LocalDateTime.now().toLocalDate()));
+        return newItemForm;
     }
 }

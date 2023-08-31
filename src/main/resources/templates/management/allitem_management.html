@@ -81,8 +81,7 @@
             <div class="modal-content">
                 <div class="modal-header"><h1 class="modal-title fs-5">상품 추가</h1></div>
                 <div class="modal-body">
-                    <form id="newItemForm"
-                          method="get">
+                    <form id="newItemForm" method="post">
                         <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
                         <div class="mb-3">
                             <div class="mb-3">
@@ -150,7 +149,7 @@
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                         <button type="reset" class="btn btn-warning">리셋</button>
-                        <button type="submit" class="btn btn-outline-success">상품 등록</button>
+                        <button type="submit" class="btn btn-outline-success" id="buttonNewItem">상품 등록</button>
                     </form>
                 </div>
             </div>

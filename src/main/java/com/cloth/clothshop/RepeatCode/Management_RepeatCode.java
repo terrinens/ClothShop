@@ -108,8 +108,6 @@ public class Management_RepeatCode {
         }
     }
 
-
-
     public void encoderPwdModify(Map<String, Object> formData, String originPwd) {
         String formDataPWD = formData.get("pwd").toString();
         String formDataModifyPWD = formData.get("pwdModify").toString();
