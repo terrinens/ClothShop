@@ -116,13 +116,7 @@ public class ManagementController {
             mService.managementMemberModify(formData, originPwd);
             entityManager.clear();
 
-            int page = Integer.parseInt(serachData.get("page").toString());
-            String option = serachData.get("option").toString();
-            String keyword = serachData.get("keyword").toString();
-
-            Page<Member> paging = mService.managementGetPaging(page, option, keyword);
-            model.addAttribute("memberPaging", paging);
-            model.addAttribute("page", 0);
+            modelAajxCommonPaging(serachData, model);
         }
         return "/management/member_management_AjaxResult";
     }
@@ -136,14 +130,7 @@ public class ManagementController {
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(targetId));
         if (optionalMember.isPresent()) {
             mService.memberDelete(targetId);
-
-            int page = Integer.parseInt(serachData.get("page").toString());
-            String option = serachData.get("option").toString();
-            String keyword = serachData.get("keyword").toString();
-
-            Page<Member> paging = mService.managementGetPaging(page, option, keyword);
-            model.addAttribute("memberPaging", paging);
-            model.addAttribute("page", 0);
+            modelAajxCommonPaging(serachData, model);
         }
         return "/management/member_management_AjaxResult";
     }
@@ -158,5 +145,16 @@ public class ManagementController {
     public String managementRecommended() {
 
         return "management/recommended_management";
+    }
+
+    /**반드시 Ajax로 넘겨받은 Object에서 추출한 serachData를 Object로 변환시켜 넘길것*/
+    private void modelAajxCommonPaging(Map<String, Object> serachData, Model model) {
+        int page = Integer.parseInt(serachData.get("page").toString());
+        String option = serachData.get("option").toString();
+        String keyword = serachData.get("keyword").toString();
+
+        Page<Member> paging = mService.managementGetPaging(page, option, keyword);
+        model.addAttribute("memberPaging", paging);
+        model.addAttribute("page", 0);
     }
 }

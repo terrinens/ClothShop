@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.Map;
 import java.util.Optional;
@@ -58,7 +59,7 @@ public class MemberService {
         managementRepeatCode.encoderPwdModify(formData, originPwd);
     }
 
-    @Transactional
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public Page<Member> managementGetPaging(int page, String option, String keyword) {
         Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
         return mRepository.findByOptionAndKeyword(option, keyword, pageable);
