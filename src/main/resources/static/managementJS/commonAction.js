@@ -42,6 +42,7 @@ export function commonLink() {
     let targetId = null;
     $('.call_delete_modal').on('click', function () {
         targetId = $(this).data('id');
+        $(this).off('click');
     });
 
     $('.button_delete').on('click', function (event) {
@@ -58,6 +59,7 @@ export function commonLink() {
             , serachData: serachData
         };
         commonDELAjax(sendData);
+        $(this).off('click');
     });
 
     const $pageLink = $('.page-link');
@@ -68,7 +70,9 @@ export function commonLink() {
 
         commonAjax(page, keyword, option);
     });
+}
 
+export function memberButtonModify() {
     const $buttonModify = $('.button_modify');
     $buttonModify.on('click', function (event) {
         event.preventDefault();
@@ -77,6 +81,8 @@ export function commonLink() {
         const $originPwd = formSelect.find('.recipient-pwd');
         const $modifyPwd = formSelect.find('.recipient-pwdModify');
         const saveOriginPwd = $originPwd.val();
+        let serachData = null;
+        let sendData = null;
 
         if ($modifyPwd.val().length <= 3 && $modifyPwd.val().length >= 1) {
             alert("비밀번호를 정확히 입력해주세요.");
@@ -84,16 +90,17 @@ export function commonLink() {
         } else {
             const $modalBackdrop = $('.modal-backdrop');
             $modalBackdrop.remove();
-            let serachData = {
+            serachData = {
                 page: 0
                 , keyword: $searchKeyword.val()
                 , option: $searchOption.val()
             };
-            const sendData = {
+            sendData = {
                 formData: Object.fromEntries(formData.entries())
                 , serachData: serachData
             };
             commonModifyAjax(sendData);
+            $buttonModify.off();
         }
     });
 }

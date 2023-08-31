@@ -57,13 +57,23 @@ public class ManagementController {
         return "management/allitem_management_AjaxResult";
     }
 
-    @GetMapping("/item/new")
+    @GetMapping("/item/new-Ajax")
     public String managementNewItem(ManagementNewItemForm mnewItemForm) {
 
         pService.managementNewProductsItem(mnewItemForm);
         System.out.println("컨트롤 :::: " + mnewItemForm.getKind());
 
         return "redirect:/management/allitem";
+    }
+
+    @PutMapping("/item/modify-Ajax")
+    public String managementModifyItem() {
+        return "management/allitem_management_AjaxResult";
+    }
+
+    @DeleteMapping("/item/Delete-Ajax")
+    public String managementDeleteItem() {
+        return "management/allitem_management_AjaxResult";
     }
 
     @GetMapping("/member")
@@ -80,9 +90,7 @@ public class ManagementController {
         return "management/member_management";
     }
 
-    /**
-     * 현재 사용하는데 이전 member 컨트롤의 값의 의존하고 있음. 해결할것.
-     */
+    /**현재 사용하는데 이전 member 컨트롤의 값의 의존하고 있음. 해결할것.*/
     @GetMapping("/member-Ajax")
     public String managementMemberAjax(
             Model model,
@@ -99,7 +107,7 @@ public class ManagementController {
     }
 
     @SuppressWarnings("unchecked")
-    @PostMapping("/member/modify-Ajax")
+    @PutMapping("/member/modify-Ajax")
     @Transactional
     public String managementMemberModify(@RequestBody Map<String, Object> modifyData, Principal principal, Model model) {
         /*BindingResult bindingResult,*/
@@ -146,7 +154,8 @@ public class ManagementController {
         return "management/recommended_management";
     }
 
-    /**반드시 Ajax로 넘겨받은 Object에서 추출한 serachData를 Object로 변환시켜 넘길것*/
+    /**반드시 Ajax로 넘겨받은 Object에서 추출한 serachData를 Object로 변환시켜 넘길것
+     * Transactional문제로 컨트롤에서 작성함*/
     private void modelAajxCommonPaging(Map<String, Object> serachData, Model model) {
         int page = Integer.parseInt(serachData.get("page").toString());
         String option = serachData.get("option").toString();

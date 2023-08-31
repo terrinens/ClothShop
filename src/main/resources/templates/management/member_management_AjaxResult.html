@@ -3,9 +3,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <body>
 <!--suppress JSFileReferences -->
-<script type="module">
+<script type="module" id="commonActionScriptBlock">
     import {commonLink} from "/managementJS/commonAction.js";
+    import {memberButtonModify} from "/managementJS/commonAction.js";
     commonLink();
+    memberButtonModify();
 </script>
 <table class="table table-hover container-xxl">
     <thead>
@@ -58,7 +60,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:object="${MMForm}" class="modifyForm" method="post">
+                    <form class="modifyForm" method="post">
                         <div class="mb-3">
                             <fieldset disabled="">
                                 <label for="recipient-id_view" class="col-form-label">ID(수정불가)</label>

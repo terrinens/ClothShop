@@ -5,6 +5,9 @@
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content" sec:authorize="hasRole('ROLE_ADMIN')">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
     <main id="main">
         <nav class="navbar bg-light justify-content-center">
             <div class="btn-group filters" id="filters" role="group" aria-label="Basic outlined example">
@@ -25,6 +28,7 @@
         </nav>
     </main>
     
+    <!--no-->
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
@@ -38,14 +42,18 @@
         <button class="btn btn-outline-success" type="submit" id="button_search" style="border-radius: 0em">검색</button>
     </div>
     
-    <form th:action="@{/management/allitem}" method="get" id="searchForm">
+    <!--no-->
+    <form method="get" id="searchForm">
         <input type="hidden" id="page" name="page" th:value="${itemPaging.number}">
         <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
         <input type="hidden" id="option" name="option" th:value="${option}">
     </form>
     
     <div id="allItemAjax">
+        <!--Ajax 수신 블록-->
     </div>
+    
+    <!--no-->
     <div class="modal fade" id="delete_modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -65,13 +73,14 @@
         </div>
     </div>
     
+    <!--no 아이템 추가하는 부분. 따로 처리할것-->
     <div class="modal fade modal-xl" id="newItemBox"
          tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header"><h1 class="modal-title fs-5">상품 추가</h1></div>
                 <div class="modal-body">
-                    <form th:action="@{/management/item/new}" th:object="${mnewItemForm}" id="newItemForm"
+                    <form id="newItemForm"
                           method="get">
                         <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
                         <div class="mb-3">

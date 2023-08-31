@@ -1,4 +1,4 @@
-<!--suppress HtmlRequiredLangAttribute, ThymeleafVariablesResolveInspection -->
+<!--suppress HtmlRequiredLangAttribute, ThymeleafVariablesResolveInspection, CssRedundantUnit -->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
@@ -8,6 +8,8 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
     <input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
+    <script type="module" th:src="@{/managementJS/member/member_management_AjaxModel.js}"></script>
+    
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
@@ -31,8 +33,6 @@
     <div id="memberAjax">
         <!--Aajx 결과값 수신 블록-->
     </div>
-    
-    <script type="module" th:src="@{/managementJS/member/member_management_AjaxModel.js}"></script>
     
     <div class="modal fade" id="delete_modal">
         <div class="modal-dialog">

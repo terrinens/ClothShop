@@ -27,7 +27,7 @@ function sendAjax(page, keyword, option) {
 
 function sendModifyAjax(sendData) {
     $.ajax({
-        type: 'post'
+        type: 'put'
         , beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         }
