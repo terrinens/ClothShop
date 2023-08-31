@@ -71,14 +71,13 @@ function sendNewAjax(sendData) {
     });
 }
 
-const newItemBoxModal = new bootstrap.Modal($('#newItemBox'));
 const $buttonNewItem = $('#buttonNewItem');
+const $newItemName = $('#newItemName');
+const $newItemPrice = $('#newItemPrice');
 $buttonNewItem.on('click', function (evnet) {
     evnet.preventDefault();
     const newItemFormSelect = $(this).closest("form");
     const formData = new FormData(newItemFormSelect[0]);
-    const $newItemName = $('#newItemName');
-    const $newItemPrice = $('#newItemPrice');
 
     validCheck($newItemName);
     validCheck($newItemPrice);
@@ -89,7 +88,7 @@ $buttonNewItem.on('click', function (evnet) {
         , searchData: searchData
     };
     sendNewAjax(sendData);
-    newItemBoxModal.hide();
+    sucessNewItem();
 })
 
 const $buttonNewItemCancel = $('#buttonNewItemCancel');
@@ -108,5 +107,14 @@ function validCheck(targetClass) {
         }
         targetClass.addClass('is-valid');
     }
+}
+
+const newItemBoxModal = new bootstrap.Modal($('#newItemBox'));
+function sucessNewItem() {
+    newItemBoxModal.hide();
+    $newItemName.removeClass('is-valid');
+    $newItemName.val(null);
+    $newItemPrice.removeClass('is-valid');
+    $newItemPrice.val(null);
 }
 
