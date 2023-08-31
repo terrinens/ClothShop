@@ -116,5 +116,6 @@ function sucessNewItem() {
     $newItemName.val(null);
     $newItemPrice.removeClass('is-valid');
     $newItemPrice.val(null);
+    $('#newItemContents').val(null);
 }
 
