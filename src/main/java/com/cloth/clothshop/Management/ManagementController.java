@@ -72,8 +72,7 @@ public class ManagementController {
                                    @RequestParam(value = "option", defaultValue = "") String option,
                                    @RequestParam(value = "keyword", defaultValue = "") String keyword
     ) {
-        Object[] requestParam = new Object[]{page, option, keyword};
-        Page<Member> paging = mService.managementGetAutoPaging(model, requestParam);
+        Page<Member> paging = mService.managementGetPaging(Integer.parseInt(page), option, keyword);
 
         model.addAttribute("memberPaging", paging);
         model.addAttribute("MMForm", managementMemberForm);
@@ -89,7 +88,7 @@ public class ManagementController {
             @RequestParam(value = "option", defaultValue = "") String option,
             @RequestParam(value = "keyword", defaultValue = "") String keyword) {
 
-        Page<Member> paging = mService.managementGetPagingAjax(Integer.parseInt(page), option, keyword);
+        Page<Member> paging = mService.managementGetPaging(Integer.parseInt(page), option, keyword);
 
         model.addAttribute("memberPaging", paging);
         model.addAttribute("page", page);
@@ -117,7 +116,7 @@ public class ManagementController {
             String option = serachData.get("option").toString();
             String keyword = serachData.get("keyword").toString();
 
-            Page<Member> paging = mService.managementGetPagingAjax(page, option, keyword);
+            Page<Member> paging = mService.managementGetPaging(page, option, keyword);
             model.addAttribute("memberPaging", paging);
             model.addAttribute("page", 0);
         }

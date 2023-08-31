@@ -61,21 +61,14 @@ public class MemberService {
         managementRepeatCode.encoderPwdModify(member, mmForm);
     }
 
+    /**반드시 Optional로 체크한 Password값을 넘길것*/
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void managementMemberModify(Map<String, Object> formData, String originPwd) {
         managementRepeatCode.encoderPwdModify(formData, originPwd);
     }
 
-    /**쓰다보니 만든 코드는 복잡하기만 하고 쓸모 없으니 삭제하고 로직을 변경할것.*/
-    public Page<Member> managementGetAutoPaging(Model model, Object[] requestParamArray) {
-        String targetRCN = MemberRepository.class.getName();
-        String sortBenchmark = "id";
-        memberPage = managementRepeatCode.autoWritePaging(model, targetRCN, sortBenchmark, requestParamArray);
-        return memberPage;
-    }
-
     @Transactional
-    public Page<Member> managementGetPagingAjax(int page, String option, String keyword) {
+    public Page<Member> managementGetPaging(int page, String option, String keyword) {
         Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
         memberPage = mRepository.findByOptionAndKeyword(option, keyword, pageable);
         return memberPage;
