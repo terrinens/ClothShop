@@ -71,6 +71,7 @@ function sendNewAjax(sendData) {
     });
 }
 
+const newItemBoxModal = new bootstrap.Modal($('#newItemBox'));
 const $buttonNewItem = $('#buttonNewItem');
 $buttonNewItem.on('click', function (evnet) {
     evnet.preventDefault();
@@ -88,6 +89,7 @@ $buttonNewItem.on('click', function (evnet) {
         , searchData: searchData
     };
     sendNewAjax(sendData);
+    newItemBoxModal.hide();
 })
 
 const $buttonNewItemCancel = $('#buttonNewItemCancel');
