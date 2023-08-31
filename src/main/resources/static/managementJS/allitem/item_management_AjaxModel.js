@@ -74,6 +74,8 @@ function sendNewAjax(sendData) {
 const $buttonNewItem = $('#buttonNewItem');
 const $newItemName = $('#newItemName');
 const $newItemPrice = $('#newItemPrice');
+
+/**새상품 등록 버튼 맵핑*/
 $buttonNewItem.on('click', function (evnet) {
     evnet.preventDefault();
     const newItemFormSelect = $(this).closest("form");
@@ -87,6 +89,7 @@ $buttonNewItem.on('click', function (evnet) {
         formData : Object.fromEntries(formData.entries())
         , searchData: searchData
     };
+
     sendNewAjax(sendData);
     newItemInputValueEmpty();
 })
@@ -96,20 +99,22 @@ $buttonNewItemCancel.on('click', function () {
     $('.is-invalid').removeClass('is-invalid');
 })
 
-function validCheck(targetClass) {
-    if (targetClass.val().length === 0) {
-        targetClass.addClass('is-invalid');
+/**타겟 class OR id 값에 유효성 검사추가*/
+function validCheck(targetSelector) {
+    if (targetSelector.val().length === 0) {
+        targetSelector.addClass('is-invalid');
         $('.is-invalid').first().focus();
         return false;
     } else {
-        if (targetClass.hasClass('is-invalid')) {
-            targetClass.removeClass('is-invalid');
+        if (targetSelector.hasClass('is-invalid')) {
+            targetSelector.removeClass('is-invalid');
         }
-        targetClass.addClass('is-valid');
+        targetSelector.addClass('is-valid');
     }
 }
 
 const newItemBoxModal = new bootstrap.Modal($('#newItemBox'));
+/**상품 등록 성공시 기존 값들을 없애기 위한 메서드*/
 function newItemInputValueEmpty() {
     newItemBoxModal.hide();
     $newItemName.removeClass('is-valid');
