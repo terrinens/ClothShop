@@ -1,5 +1,6 @@
 package com.cloth.clothshop.Management;
 
+import com.cloth.clothshop.DataNotFoundException;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
@@ -108,17 +109,17 @@ public class ManagementController {
         Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
 
         if (optionalMember.isPresent()) {
-            String originPwd = optionalMember.get().getPwd();
-            mService.managementMemberModify(formData, originPwd);
-            entityManager.clear();
+                String originPwd = optionalMember.get().getPwd();
+                mService.managementMemberModify(formData, originPwd);
+                entityManager.clear();
 
-            int page = Integer.parseInt(serachData.get("page").toString());
-            String option = serachData.get("option").toString();
-            String keyword = serachData.get("keyword").toString();
+                int page = Integer.parseInt(serachData.get("page").toString());
+                String option = serachData.get("option").toString();
+                String keyword = serachData.get("keyword").toString();
 
-            Page<Member> paging = mService.managementGetPaging(page, option, keyword);
-            model.addAttribute("memberPaging", paging);
-            model.addAttribute("page", 0);
+                Page<Member> paging = mService.managementGetPaging(page, option, keyword);
+                model.addAttribute("memberPaging", paging);
+                model.addAttribute("page", 0);
         }
         return "/management/member_management_AjaxResult";
     }

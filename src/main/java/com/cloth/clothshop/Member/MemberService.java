@@ -10,9 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.event.TransactionalEventListener;
-import org.springframework.ui.Model;
 
 import java.util.Map;
 import java.util.Optional;
@@ -24,12 +21,9 @@ public class MemberService {
     private final MemberRepository mRepository;
     private final PasswordEncoder pEncoder;
     private final Management_RepeatCode managementRepeatCode;
-    private Page<Member> memberPage;
+    private final Member member = new Member();
 
     public void memberSignup(String id, String pwd, String name, String address, String tel) {
-
-        Member member = new Member();
-
         /*member.setZipcode(zipcode);*/
         member.setId(id);
         member.setPwd(pEncoder.encode(pwd));
@@ -41,9 +35,6 @@ public class MemberService {
     }
 
     public void adminSignup(String id, String pwd, String name, String address, String tel, String role) {
-
-        Member member = new Member();
-
         /*member.setZipcode(zipcode);*/
         member.setId(id);
         member.setPwd(pEncoder.encode(pwd));
@@ -70,8 +61,7 @@ public class MemberService {
     @Transactional
     public Page<Member> managementGetPaging(int page, String option, String keyword) {
         Pageable pageable = PageRequest.of(page, 15, Sort.by("id").ascending());
-        memberPage = mRepository.findByOptionAndKeyword(option, keyword, pageable);
-        return memberPage;
+        return mRepository.findByOptionAndKeyword(option, keyword, pageable);
     }
 
     public Member memberSearch(String id) {
