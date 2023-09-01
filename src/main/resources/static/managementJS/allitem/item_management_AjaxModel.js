@@ -116,6 +116,8 @@ export function itemButtonModifyMppaing() {
         const sendData = {
             formData: Object.fromEntries(formData.entries()), searchData: searchData
         };
+        const $modalBackdrop = $('.modal-backdrop');
+        $modalBackdrop.remove();
         sendModifyAjax(sendData);
     })
 }
