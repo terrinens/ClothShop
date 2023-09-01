@@ -121,7 +121,6 @@ export function itemButtonModifyMppaing() {
 
 
 const newItemBoxModal = new bootstrap.Modal($('#newItemBox'));
-
 /**상품 등록 성공시 기존 값들을 없애기 위한 메서드*/
 function newItemInputValueEmpty() {
     newItemBoxModal.hide();

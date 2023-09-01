@@ -34,6 +34,20 @@ export function commonAction(sendAjax, sendModifyAjax, sendDELAjax) {
     btn_reset.on('click', function () {
         $('#modifyForm')[0].reset();
     });
+
+    /**삭제시 빠른작업을 위해 Esc 혹은 Enter이벤트 추가*/
+    const $delete_modal = $('#delete_modal');
+    const $button_delete = $delete_modal.find($('.button_delete'));
+    const $button_cancel = $delete_modal.find($('.button_cancel'));
+    $delete_modal.on('keydown', function (event) {
+        if (event.key === 'Enter') {
+            $button_delete.focus();
+            $button_delete.click();
+        } else if (event.key === 'Escape') {
+            $button_cancel.focus();
+            $button_cancel.click();
+        }
+    })
 }
 
 
@@ -104,7 +118,8 @@ export function memberButtonModify() {
 }
 
 export let validCount = 0;
-/**타겟 class OR id 값에 유효성 검사추가 validCount를 활용해 brack코드 작성할것*/
+
+/**타겟 class OR id 값에 유효성 검사추가 validCount를 활용해 brack코드 작성할것 limtMinlenth의 디폴트값은 0*/
 export function validCheck(targetSelector, limtMinlenth) {
     let minlenth;
     if (limtMinlenth == null) {
