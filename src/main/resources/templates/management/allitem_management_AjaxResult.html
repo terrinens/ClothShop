@@ -101,7 +101,7 @@
                     
                     <div class="mb-3">
                         <label for="recipient-contents" class="col-form-label">상품 설명</label>
-                        <textarea id="recipient-contents" name="contents" class="form-control recipient-contents" rows="4"></textarea>
+                        <textarea id="recipient-contents" name="contents" class="form-control recipient-contents" rows="4" th:text="${item.getContents()}"></textarea>
                     </div>
                     
                     <div class="mb-3">
