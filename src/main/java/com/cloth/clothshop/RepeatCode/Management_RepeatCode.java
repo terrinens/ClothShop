@@ -1,6 +1,6 @@
 package com.cloth.clothshop.RepeatCode;
 
-import com.cloth.clothshop.Management.ManagementMemberForm;
+import com.cloth.clothshop.Management.Form.ManagementMemberForm;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberRepository;
 import lombok.Getter;
@@ -31,6 +31,7 @@ public class Management_RepeatCode {
         this.mRepository = memberRepository;
     }
 
+    /**@deprecated 삭제할 예정*/
     @Getter
     public static class CustomPage<T> extends PageImpl<T> {
 
@@ -42,18 +43,7 @@ public class Management_RepeatCode {
         }
     }
 
-    /**
-     * QueryDsl로 커스텀한 메소드 이름 <strong>findByOptionAndKeyword</stroing>에서만 작동이 가능합니다. <br>
-     * <h4>ex : Page<T> findByOptionAndKeyword(String searchOption, String searchKeyword, {@link Pageable} pageable);</h4>
-     * 모든것이 올바르게 변수가 지정되었다면 자동으로 해당되는 레파지토리에서 메소드를 찾아 사용하여 페이징을 진행합니다.
-     * @author DongChuel Kim
-     * @param targetRCN 사용할 레파지토리 클래스 이름을 넣습니다. <br>
-     *                  ex : String targetRCN = EntityRepository.class.getName(); <br>
-     * @param sortBenchmark 엔티티 테이블에서 정렬에 기준이될 이름을 넣습니다. <br>
-     * @param requestParamArray 파라메터값을 배열화해서 넣습니다. 하지만 page, option, keyword값만 가능합니다. <br>
-     * @return Page<T> autoPaging <br> model.option <br> model.keyword <br>
-     */
-
+    /**@deprecated 삭제할 예정 복잡하기만하고 쓸모없음.*/
     @SuppressWarnings("unchecked")
     public <T> Page<T> autoWritePaging(Model model, String targetRCN, String sortBenchmark, Object[] requestParamArray) {
 
@@ -133,6 +123,7 @@ public class Management_RepeatCode {
                 }
             }
         }
+
     public void encoderPwdModify(Optional<Member> optional, ManagementMemberForm mmForm) {
         String formDataPWD = mmForm.getPwd();
 
