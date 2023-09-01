@@ -7,7 +7,6 @@ import jakarta.persistence.Converter;
 @Converter
 public class ProductsKindConverter implements AttributeConverter<ProductsKind, Character> {
 
-
     @Override
     public Character convertToDatabaseColumn(ProductsKind attribute) {
 

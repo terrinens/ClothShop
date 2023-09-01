@@ -36,6 +36,7 @@ class ProductsTest {
                 product.setSizeEt("XL");
                 product.setQuantity(random.nextInt(100) + 1);
                 product.setUseyn('Y');
+                product.setProductsRecsStatus(0);
                 productsRepository.save(product);
             }
             c++;

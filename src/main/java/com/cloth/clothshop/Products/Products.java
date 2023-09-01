@@ -3,6 +3,7 @@ package com.cloth.clothshop.Products;
 import com.cloth.clothshop.Management.Form.ManagementItemForm;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKindConverter;
+import com.cloth.clothshop.Products.ProductsSetting.ProductsRecsStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -75,6 +76,15 @@ public class Products {
     @CreationTimestamp
     private Date indate;
 
+    /**prodRecsStatus = ProductRecommendationsStatus 0 OR 1 Only*/
+    @Column
+    @Enumerated(EnumType.ORDINAL)
+    private ProductsRecsStatus prodRecsStatus;
+    public void setProductsRecsStatus(int status) {
+        this.prodRecsStatus = ProductsRecsStatus.fromStatus(status);
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
     public Products managementNewItemSave(ManagementItemForm newItemForm) {
         this.name = newItemForm.getName();
         this.kind = ProductsKind.fromChar(newItemForm.getKind());
@@ -85,11 +95,6 @@ public class Products {
         this.sizeEt = newItemForm.getSizeEt();
         this.quantity = newItemForm.getQuantity();
         this.useyn = newItemForm.getUseyn();
-
         return this;
-    }
-
-    public String kindName() {
-       return this.kind.toString();
     }
 }

@@ -11,7 +11,6 @@ public enum ProductsKind {
     private final char kind;
 
     ProductsKind(char kind) {
-
         this.kind = kind;
     }
 
