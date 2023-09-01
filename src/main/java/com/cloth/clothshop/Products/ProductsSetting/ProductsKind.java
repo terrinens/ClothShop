@@ -15,12 +15,10 @@ public enum ProductsKind {
         this.kind = kind;
     }
 
+    /**Enum 타입에 맞는 값 리턴 시켜주는 메서드*/
     public static ProductsKind getKind(char kind) {
-
         for (ProductsKind productsKind : ProductsKind.values()) {
-
             if (Character.toUpperCase(productsKind.getKind()) == Character.toUpperCase(kind)) {
-
                 return productsKind;
             }
         }
@@ -28,14 +26,14 @@ public enum ProductsKind {
     }
 
     public static ProductsKind fromChar(char kind) {
-        switch (Character.toUpperCase(kind)) {
-            case 'A': return A;
-            case 'B': return B;
-            case 'C': return C;
-            case 'D': return D;
-            case 'E': return E;
-            case 'F': return F;
-            default: throw new DataNotFoundException("찾는 kind값 없음");
-        }
+        return switch (Character.toUpperCase(kind)) {
+            case 'A' -> A;
+            case 'B' -> B;
+            case 'C' -> C;
+            case 'D' -> D;
+            case 'E' -> E;
+            case 'F' -> F;
+            default -> throw new DataNotFoundException("찾는 kind값 없음");
+        };
     }
 }

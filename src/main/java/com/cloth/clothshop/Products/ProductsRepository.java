@@ -24,7 +24,7 @@ public interface ProductsRepository extends JpaRepository<Products, String>, Pro
             ", price = :price, quantity = :quantity" +
             ", useyn = :useyn, image = :img" +
             ", indate = :indate  WHERE code = :code")
-    Optional<Products> modifyItem(
+    void modifyItem(
             @Param("code") String code
             , @Param("kind") ProductsKind kind
             , @Param("name") String name

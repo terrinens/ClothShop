@@ -57,7 +57,7 @@ public class ManagementController {
         int page = Integer.parseInt(searchData.get("page").toString());
         String keyword = searchData.get("keyword").toString();
         String option = searchData.get("option").toString();
-        Page<Products> paging = pService.managementGetPaging(model ,page, keyword, option);
+        Page<Products> paging = pService.managementGetPaging(model, page, keyword, option);
 
         model.addAttribute("itemPaging", paging);
 
@@ -67,6 +67,7 @@ public class ManagementController {
     @PutMapping("/item/modify-Ajax")
     public String managementModifyItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
         pService.managementModifyProductsItem(itemMapDTO.getFormData());
+        entityManager.clear();
 
         int page = itemMapDTO.getSearchDataPage();
         String keyword = itemMapDTO.getSearchDataKeyword();
@@ -81,21 +82,15 @@ public class ManagementController {
     @SuppressWarnings("unchecked")
     @DeleteMapping("/item/Delete-Ajax")
     public String managementDeleteItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
-        System.out.println(" { " + "컨트롤에서 삭제시작" + " }");
         String targetCode = itemMapDTO.getTargetId();
-        System.out.println(" { " + "스트링 주입완료" + " }");
-        if (pService.productsItemSearch(targetCode).isPresent()){
-            System.out.println(" { " + "해당 코드 존재함 삭제 시작" + " }");
+        if (pService.productsItemSearch(targetCode).isPresent()) {
             pService.managementDeleteProductsItem(targetCode);
-            System.out.println(" { " + "삭제 성공" + " }");
-            
+
             int page = itemMapDTO.getSearchDataPage();
             String option = itemMapDTO.getSearchDataOption();
             String Keyword = itemMapDTO.getSearchDataKeyword();
-            System.out.println(" { " + "페이징을 위한 값들 추출 밎 주입 성공" + " }");
 
             Page<Products> paging = pService.managementGetPaging(model, page, Keyword, option);
-            System.out.println(" { " + "페이징 처리 성공" + " }");
             model.addAttribute("itemPaging", paging);
             return "management/allitem_management_AjaxResult";
         } else {
@@ -117,7 +112,9 @@ public class ManagementController {
         return "management/member_management";
     }
 
-    /**현재 사용하는데 이전 member 컨트롤의 값의 의존하고 있음. 해결할것.*/
+    /**
+     * 현재 사용하는데 이전 member 컨트롤의 값의 의존하고 있음. 해결할것.
+     */
     @GetMapping("/member-Ajax")
     public String managementMemberAjax(
             Model model,
@@ -181,8 +178,10 @@ public class ManagementController {
         return "management/recommended_management";
     }
 
-    /**반드시 Ajax로 넘겨받은 Object에서 추출한 serachData를 Object로 변환시켜 넘길것
-     * Transactional문제로 컨트롤에서 작성함*/
+    /**
+     * 반드시 Ajax로 넘겨받은 Object에서 추출한 serachData를 Object로 변환시켜 넘길것
+     * Transactional문제로 컨트롤에서 작성함
+     */
     private void modelAajxCommonPaging(Map<String, Object> serachData, Model model) {
         int page = Integer.parseInt(serachData.get("page").toString());
         String option = serachData.get("option").toString();

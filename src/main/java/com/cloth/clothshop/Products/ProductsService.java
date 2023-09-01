@@ -1,7 +1,9 @@
 package com.cloth.clothshop.Products;
 
 import com.cloth.clothshop.Management.Form.ManagementItemForm;
+import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
 import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -26,7 +28,6 @@ import java.util.UUID;
 public class ProductsService {
 
     private final ProductsRepository pRepository;
-    private final Management_RepeatCode managementRepeatCode;
     @Value("{img.dir}")
     private String imgDir;
     private final ProductsImgStorageRepository pImgStorageRepository;
@@ -65,18 +66,18 @@ public class ProductsService {
         pRepository.save(products);
     }
 
-    /**Map 데이터를 전달시 Optional로 검사후 수정함*/
+    /**Map 데이터를 전달시 Optional로 검사후 수정함 만약 여러 Service를 사용시 반드시 entityManager.clear(); 할것*/
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void managementModifyProductsItem(Map<String, Object> itemData) {
-        Optional<Products> productsOptional = pRepository.findById(mapDataConversionModifyItemForm(itemData).getCode());
+        Optional<Products> productsOptional = pRepository.findById(mapDataConversionNewItemForm(itemData).getCode());
         if (productsOptional.isPresent()) {
-            Products ifProduct = productsOptional.get();
+            ManagementItemForm newItemForm = mapDataConversionNewItemForm(itemData);
             pRepository.modifyItem(
-                    ifProduct.getCode(), ifProduct.getKind(), ifProduct.getName()
-                    , ifProduct.getContents(), ifProduct.getSizeSt(), ifProduct.getSizeEt()
-                    , ifProduct.getPrice(), ifProduct.getQuantity(), ifProduct.getUseyn()
-                    , ifProduct.getImage(), ifProduct.getIndate()
+                    newItemForm.getCode(), ProductsKind.getKind(newItemForm.getKind()), newItemForm.getName()
+                    , newItemForm.getContents(), newItemForm.getSizeSt(), newItemForm.getSizeEt()
+                    , newItemForm.getPrice(), newItemForm.getQuantity(), newItemForm.getUseyn()
+                    , newItemForm.getImage(), newItemForm.getIndate()
             );
-
         }
     }
 
@@ -87,6 +88,7 @@ public class ProductsService {
         pRepository.deleteById(code);
     }
 
+    @SuppressWarnings("unused")
     private Long saveFile(MultipartFile files) throws IOException {
         if (files.isEmpty()) {
             return null;
@@ -112,22 +114,21 @@ public class ProductsService {
 
     private ManagementItemForm mapDataConversionNewItemForm(Map<String, Object> data) {
         ManagementItemForm newItemForm = new ManagementItemForm();
+        if (data.get("code_origin") != null) {
+            newItemForm.setCode(data.get("code_origin").toString());
+        }
         newItemForm.setName(data.get("name").toString());
         newItemForm.setKind(data.get("kind").toString().charAt(0));
         newItemForm.setPrice(data.get("price").toString());
         newItemForm.setContents(data.get("contents").toString());
-        newItemForm.setImage(data.get("image").toString());
+        if (data.get("image") != null) {
+            newItemForm.setImage(data.get("image").toString());
+        }
         newItemForm.setSizeSt(data.get("sizeSt").toString());
         newItemForm.setSizeEt(data.get("sizeEt").toString());
         newItemForm.setQuantity(Integer.parseInt(data.get("quantity").toString()));
         newItemForm.setUseyn(data.get("useyn").toString().charAt(0));
         newItemForm.setIndate(Date.valueOf(LocalDateTime.now().toLocalDate()));
-        return newItemForm;
-    }
-
-    private ManagementItemForm mapDataConversionModifyItemForm(Map<String, Object> data) {
-        ManagementItemForm newItemForm = mapDataConversionNewItemForm(data);
-        newItemForm.setCode(data.get("code").toString());
         return newItemForm;
     }
 }
