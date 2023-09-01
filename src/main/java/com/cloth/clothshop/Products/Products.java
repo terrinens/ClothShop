@@ -1,6 +1,6 @@
 package com.cloth.clothshop.Products;
 
-import com.cloth.clothshop.Management.ManagementNewItemForm;
+import com.cloth.clothshop.Management.Form.ManagementItemForm;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKindConverter;
 import jakarta.persistence.*;
@@ -75,7 +75,7 @@ public class Products {
     @CreationTimestamp
     private Date indate;
 
-    public Products managementNewItemSave(ManagementNewItemForm newItemForm) {
+    public Products managementNewItemSave(ManagementItemForm newItemForm) {
         this.name = newItemForm.getName();
         this.kind = ProductsKind.fromChar(newItemForm.getKind());
         this.price = newItemForm.getPrice();

@@ -1,12 +1,13 @@
 package com.cloth.clothshop.Management;
 
+import com.cloth.clothshop.Management.Form.ManagementMemberForm;
+import com.cloth.clothshop.Management.Form.ManagementItemForm;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class ManagementController {
     }
 
     @GetMapping("/allitem-Ajax")
-    public String managementProudctsAjax(Model model, ManagementNewItemForm managementNewItemForm,
+    public String managementProudctsAjax(Model model, ManagementItemForm managementItemForm,
                                          @RequestParam(value = "page", defaultValue = "0") String page,
                                          @RequestParam(value = "option", defaultValue = "") String option,
                                          @RequestParam(value = "keyword", defaultValue = "") String keyword
@@ -51,12 +52,13 @@ public class ManagementController {
         Map<String, Object> itemData = (Map<String, Object>) newItemData.get("formData");
         Map<String, Object> searchData = (Map<String, Object>) newItemData.get("searchData");
 
+        pService.managementNewProductsItem(itemData);
+
         int page = Integer.parseInt(searchData.get("page").toString());
         String keyword = searchData.get("keyword").toString();
         String option = searchData.get("option").toString();
-
-        pService.managementNewProductsItem(itemData);
         Page<Products> paging = pService.managementGetPaging(model ,page, keyword, option);
+
         model.addAttribute("itemPaging", paging);
 
         return "management/allitem_management_AjaxResult";
@@ -64,26 +66,36 @@ public class ManagementController {
 
     @PutMapping("/item/modify-Ajax")
     public String managementModifyItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
-        Map<String, Object> itemData = itemMapDTO.getFormData();
-        System.out.println(" { " + itemData + " }");
-        Map<String, Object> searchData = itemMapDTO.getSearchData();
-        System.out.println(" { " + searchData + " }");
+        pService.managementModifyProductsItem(itemMapDTO.getFormData());
+
+        int page = itemMapDTO.getSearchDataPage();
+        String keyword = itemMapDTO.getSearchDataKeyword();
+        String option = itemMapDTO.getSearchDataOption();
+        Page<Products> paging = pService.managementGetPaging(model, page, keyword, option);
+
+        model.addAttribute("itemPaging", paging);
+
         return "management/allitem_management_AjaxResult";
     }
 
     @SuppressWarnings("unchecked")
     @DeleteMapping("/item/Delete-Ajax")
-    public String managementDeleteItem(@RequestBody Map<String, Object> delData, Model model) {
-        String targetCode = delData.get("targetId").toString();
-        Map<String, Object> serachData = (Map<String, Object>) delData.get("serachData");
+    public String managementDeleteItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
+        System.out.println(" { " + "컨트롤에서 삭제시작" + " }");
+        String targetCode = itemMapDTO.getTargetId();
+        System.out.println(" { " + "스트링 주입완료" + " }");
         if (pService.productsItemSearch(targetCode).isPresent()){
-            pService.productsItemDelete(targetCode);
-
-            int page = Integer.parseInt(serachData.get("page").toString());
-            String option = serachData.get("option").toString();
-            String Keyword = serachData.get("keyword").toString();
+            System.out.println(" { " + "해당 코드 존재함 삭제 시작" + " }");
+            pService.managementDeleteProductsItem(targetCode);
+            System.out.println(" { " + "삭제 성공" + " }");
+            
+            int page = itemMapDTO.getSearchDataPage();
+            String option = itemMapDTO.getSearchDataOption();
+            String Keyword = itemMapDTO.getSearchDataKeyword();
+            System.out.println(" { " + "페이징을 위한 값들 추출 밎 주입 성공" + " }");
 
             Page<Products> paging = pService.managementGetPaging(model, page, Keyword, option);
+            System.out.println(" { " + "페이징 처리 성공" + " }");
             model.addAttribute("itemPaging", paging);
             return "management/allitem_management_AjaxResult";
         } else {

@@ -1,4 +1,4 @@
-package com.cloth.clothshop.Management;
+package com.cloth.clothshop.Management.Form;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

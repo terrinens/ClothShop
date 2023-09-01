@@ -98,6 +98,12 @@
                         <input th:name="price" th:value="${item.getPrice()}" class="form-control is-valid recipient-price" id="recipient-price">
                         <div id="validationJSPriceFeedback" class="invalid-feedback">상품 가격은 빈값이 허용되지 않습니다!</div>
                     </div>
+                    
+                    <div class="mb-3">
+                        <label for="recipient-contents" class="col-form-label">상품 설명</label>
+                        <textarea id="recipient-contents" name="contents" class="form-control recipient-contents" rows="4"></textarea>
+                    </div>
+                    
                     <div class="mb-3">
                         <label for="recipient-sizeSt">최소 사이즈</label>
                         <select name="sizeSt" id="recipient-sizeSt" class="form-control-lg recipient-sizeSt">
@@ -129,11 +135,17 @@
                             <option value="Y" th:selected="${item.getUseyn() == 'Y'}">Y</option>
                             <option value="N" th:selected="${item.getUseyn() == 'N'}">N</option>
                         </select>
+                        
+                        <fieldset disabled="">
+                            <label for="recipient-img" class="col-form-label">상품 이미지 수정(구현중)</label>
+                            <input name="img" type="file" class="form-control recipient-img" id="recipient-img">
+                            <input type="hidden" name="image" value="이미지 준비중!">
+                        </fieldset>
                     </div>
                     
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="submit" class="btn btn-primary item_button_modify">수정하기</button>
-                    <button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>
+                    <button type="submit" class="btn btn-primary item_button_modify">수정</button>
+                    <button type="reset" class="btn btn-warning" id="button_reset">리셋</button>
                     <button th:data-id="${item.getCode}"
                             type="button" class="call_delete_modal btn btn-outline-danger"
                             id="call_delete_modal"

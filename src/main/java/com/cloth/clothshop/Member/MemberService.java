@@ -1,6 +1,6 @@
 package com.cloth.clothshop.Member;
 
-import com.cloth.clothshop.Management.ManagementMemberForm;
+import com.cloth.clothshop.Management.Form.ManagementMemberForm;
 import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.Map;
 import java.util.Optional;

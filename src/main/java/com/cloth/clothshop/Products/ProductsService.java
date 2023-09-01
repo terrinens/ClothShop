@@ -1,6 +1,6 @@
 package com.cloth.clothshop.Products;
 
-import com.cloth.clothshop.Management.ManagementNewItemForm;
+import com.cloth.clothshop.Management.Form.ManagementItemForm;
 import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,9 +56,8 @@ public class ProductsService {
         return pRepository.findByOptionAndKeyword("all", "", pageable);
     }
 
-    public void managementNewProductsItem(ManagementNewItemForm newItemForm) {
-        products.managementNewItemSave(newItemForm);
-        pRepository.save(products);
+    public Optional<Products> productsItemSearch(String code) {
+        return pRepository.findById(code);
     }
 
     public void managementNewProductsItem(Map<String, Object> itemData) {
@@ -66,12 +65,25 @@ public class ProductsService {
         pRepository.save(products);
     }
 
-    public Optional<Products> productsItemSearch(String code) {
-        return pRepository.findById(code);
+    /**Map 데이터를 전달시 Optional로 검사후 수정함*/
+    public void managementModifyProductsItem(Map<String, Object> itemData) {
+        Optional<Products> productsOptional = pRepository.findById(mapDataConversionModifyItemForm(itemData).getCode());
+        if (productsOptional.isPresent()) {
+            Products ifProduct = productsOptional.get();
+            pRepository.modifyItem(
+                    ifProduct.getCode(), ifProduct.getKind(), ifProduct.getName()
+                    , ifProduct.getContents(), ifProduct.getSizeSt(), ifProduct.getSizeEt()
+                    , ifProduct.getPrice(), ifProduct.getQuantity(), ifProduct.getUseyn()
+                    , ifProduct.getImage(), ifProduct.getIndate()
+            );
+
+        }
     }
 
-    /**Optional 검사를 거친후 사용할것*/
-    public void productsItemDelete(String code) {
+    /**
+     * Optional 검사를 거친후 사용할것
+     */
+    public void managementDeleteProductsItem(String code) {
         pRepository.deleteById(code);
     }
 
@@ -98,8 +110,8 @@ public class ProductsService {
         }
     }
 
-    private ManagementNewItemForm mapDataConversionNewItemForm(Map<String, Object> data) {
-        ManagementNewItemForm newItemForm = new ManagementNewItemForm();
+    private ManagementItemForm mapDataConversionNewItemForm(Map<String, Object> data) {
+        ManagementItemForm newItemForm = new ManagementItemForm();
         newItemForm.setName(data.get("name").toString());
         newItemForm.setKind(data.get("kind").toString().charAt(0));
         newItemForm.setPrice(data.get("price").toString());
@@ -110,6 +122,12 @@ public class ProductsService {
         newItemForm.setQuantity(Integer.parseInt(data.get("quantity").toString()));
         newItemForm.setUseyn(data.get("useyn").toString().charAt(0));
         newItemForm.setIndate(Date.valueOf(LocalDateTime.now().toLocalDate()));
+        return newItemForm;
+    }
+
+    private ManagementItemForm mapDataConversionModifyItemForm(Map<String, Object> data) {
+        ManagementItemForm newItemForm = mapDataConversionNewItemForm(data);
+        newItemForm.setCode(data.get("code").toString());
         return newItemForm;
     }
 }

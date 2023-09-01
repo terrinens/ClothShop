@@ -45,14 +45,19 @@
                     <strong>정말로 삭제하시겠습니까?</strong> 한번 더 다시 확인 해주세요!
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="button_cancel btn btn-secondary" data-bs-dismiss="modal"><strong>ESC</strong> 돌아가기</button>
-                    <button type="button" class="button_delete btn btn-danger" data-uri="" data-bs-dismiss="modal"><strong>Enter</strong> 네. 삭제하겠습니다.</button>
+                    <button type="button" class="button_cancel btn btn-secondary" data-bs-dismiss="modal">
+                        <strong>ESC</strong> 돌아가기
+                    </button>
+                    <button type="button" class="button_delete btn btn-danger" data-uri="" data-bs-dismiss="modal">
+                        <strong>Enter</strong> 네. 삭제하겠습니다.
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="modal fade modal-xl" id="newItemBox" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade modal-xl" id="newItemBox" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header"><h1 class="modal-title fs-5">상품 추가</h1></div>
@@ -60,10 +65,6 @@
                     <form id="newItemForm" method="post">
                         <div class="mb-3">
                             <div class="mb-3">
-                                <label for="newItemName" class="col-form-label">상품 이름</label>
-                                <input name="name" id="newItemName" type="text" class="form-control">
-                                <div id="validationJSNameFeedback" class="invalid-feedback">상품 이름을 입력해주세요!</div>
-                                <div class="mb-2"></div>
                                 <label for="newItemKind" class="col-form-label">상품 분류</label>
                                 <select name="kind" id="newItemKind" class="form-control is-valid">
                                     <option value="a">반팔</option>
@@ -73,12 +74,16 @@
                                     <option value="e">짧은치마</option>
                                     <option value="f">긴치마</option>
                                 </select>
-                            
+                                <label for="newItemName" class="col-form-label">상품 이름</label>
+                                <input name="name" id="newItemName" type="text" class="form-control">
+                                <div id="validationJSNameFeedback" class="invalid-feedback">상품 이름을 입력해주세요!</div>
                             </div>
+                            
                             <div class="mb-3">
                                 <label for="newItemContents" class="col-form-label">상품 설명</label>
                                 <textarea id="newItemContents" name="contents" class="form-control" rows="4"></textarea>
                             </div>
+                            
                             <div class="mb-3">
                                 <label for="newItemSizeSt" class="col-form-label">상품 최소 사이즈</label>
                                 <select name="sizeSt" id="newItemSizeSt" class="form-control is-valid">
@@ -89,7 +94,6 @@
                                     <option value="XL">XL</option>
                                     <option value="XXL">XXL</option>
                                 </select>
-                                <div class="mb-2"></div>
                                 <label for="newItemSizeEt" class="col-form-label">상품 최대 사이즈</label>
                                 <select name="sizeEt" id="newItemSizeEt" class="form-control is-valid">
                                     <option value="XXL">XXL</option>
@@ -100,13 +104,15 @@
                                     <option value="XS">XS</option>
                                 </select>
                             </div>
+                            
                             <div class="mb-3">
                                 <label for="newItemPrice" class="col-form-label">상품 가격</label>
                                 <input name="price" id="newItemPrice" type="number" class="form-control">
                                 <div id="validationJSPriceFeedback" class="invalid-feedback">상품 가격을 입력해주세요!</div>
                                 <div class="mb-2"><!--SPACE--></div>
                                 <label for="newItemQuantity" class="col-form-label">재고 최초 등록 수량</label>
-                                <input name="quantity" id="newItemQuantity" type="number" class="form-control is-valid" th:value="0">
+                                <input name="quantity" id="newItemQuantity" type="number" class="form-control is-valid"
+                                       th:value="0">
                                 <div class="mb-2"><!--SPACE--></div>
                                 <label for="newItemUseyn" class="col-form-label">상품 판매 여부</label>
                                 <select name="useyn" id="newItemUseyn" class="form-control is-valid">
@@ -114,13 +120,16 @@
                                     <option value="N" selected>N</option>
                                 </select>
                             </div>
+                            
                             <fieldset disabled="">
                                 <label for="newItemImg" class="col-form-label">상품 이미지 추가(구현중)</label>
                                 <input name="newItemImg" type="file" class="form-control" id="newItemImg">
                             </fieldset>
                             <input type="hidden" name="image" value="이미지 준비중!">
                         </div>
-                        <button type="button" class="btn btn-secondary" id="buttonNewItemCancel" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-secondary" id="buttonNewItemCancel"
+                                data-bs-dismiss="modal">취소
+                        </button>
                         <button type="reset" class="btn btn-warning">리셋</button>
                         <button type="submit" class="btn btn-outline-success" id="buttonNewItem">상품 등록</button>
                     </form>
