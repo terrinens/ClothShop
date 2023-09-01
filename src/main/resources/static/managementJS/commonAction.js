@@ -103,16 +103,26 @@ export function memberButtonModify() {
     });
 }
 
-/**타겟 class OR id 값에 유효성 검사추가*/
-export function validCheck(targetSelector) {
-    if (targetSelector.val().length === 0) {
+export let validCount = 0;
+/**타겟 class OR id 값에 유효성 검사추가 validCount를 활용해 brack코드 작성할것*/
+export function validCheck(targetSelector, limtMinlenth) {
+    let minlenth;
+    if (limtMinlenth == null) {
+        minlenth = Number(0);
+    } else {
+        minlenth = Number(limtMinlenth);
+    }
+
+    if (targetSelector.val().length <= minlenth) {
         targetSelector.addClass('is-invalid');
         $('.is-invalid').first().focus();
-        return false;
+        return validCount++;
     } else {
         if (targetSelector.hasClass('is-invalid')) {
             targetSelector.removeClass('is-invalid');
         }
         targetSelector.addClass('is-valid');
+        return validCount = 0;
     }
 }
+

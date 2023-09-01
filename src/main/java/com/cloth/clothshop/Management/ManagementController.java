@@ -6,6 +6,7 @@ import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -62,7 +63,11 @@ public class ManagementController {
     }
 
     @PutMapping("/item/modify-Ajax")
-    public String managementModifyItem() {
+    public String managementModifyItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
+        Map<String, Object> itemData = itemMapDTO.getFormData();
+        System.out.println(" { " + itemData + " }");
+        Map<String, Object> searchData = itemMapDTO.getSearchData();
+        System.out.println(" { " + searchData + " }");
         return "management/allitem_management_AjaxResult";
     }
 
@@ -175,4 +180,8 @@ public class ManagementController {
         model.addAttribute("memberPaging", paging);
         model.addAttribute("page", 0);
     }
+
+    /*public String managementModifyItem(@RequestBody Map<String, Object> modifyItemData, Model model) {
+        Map<String, Object> itemData = (Map<String, Object>) modifyItemData.get("formData");
+        Map<String, Object> searchData = (Map<String, Object>) modifyItemData.get("searchData");*/
 }
