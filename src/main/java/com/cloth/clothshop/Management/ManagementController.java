@@ -78,7 +78,7 @@ public class ManagementController {
             String option = serachData.get("option").toString();
             String Keyword = serachData.get("keyword").toString();
 
-            Page<Products> paging = pService.managementGetPaging(model, page, option, Keyword);
+            Page<Products> paging = pService.managementGetPaging(model, page, Keyword, option);
             model.addAttribute("itemPaging", paging);
             return "management/allitem_management_AjaxResult";
         } else {

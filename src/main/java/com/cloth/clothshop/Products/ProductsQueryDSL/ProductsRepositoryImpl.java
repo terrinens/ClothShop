@@ -32,17 +32,11 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
             condition = products.kind.eq(ProductsKind.valueOf(searchKeyword.toUpperCase()));
         } else if ("all".equals(searchOption)) {
             //noinspection ConstantValue
-            if (searchOption.length() <= 1) {
-                try {
-                    condition = products.code.like(likeKeyword)
-                            .or(products.name.like(likeKeyword))
-                            .or(products.kind.eq(ProductsKind.valueOf(searchKeyword.toUpperCase())))
-                    ;
-                } catch (RuntimeException e) {
-                    condition = products.code.like(likeKeyword)
-                            .or(products.name.like(likeKeyword))
-                    ;
-                }
+            if (searchKeyword.length() == 1) {
+                condition = products.code.like(likeKeyword)
+                        .or(products.name.like(likeKeyword))
+                        .or(products.kind.eq(ProductsKind.valueOf(searchKeyword.toUpperCase())))
+                ;
             } else {
                 condition = products.code.like(likeKeyword)
                         .or(products.name.like(likeKeyword))
