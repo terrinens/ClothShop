@@ -2,7 +2,6 @@ package com.cloth.clothshop.Products.ProductsSetting;
 
 import lombok.Getter;
 
-@Getter
 public enum ProductsRecsStatus {
     notRecommend(0), Recommend(1);
     private final int status;
@@ -17,5 +16,9 @@ public enum ProductsRecsStatus {
             case 1 -> Recommend;
             default -> throw new IllegalStateException("Unexpected value: " + status);
         };
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

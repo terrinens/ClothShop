@@ -25,7 +25,7 @@
     <tbody>
     <tr th:each="item, i : ${itemPaging}" class="table-light" data-bs-toggle="modal"
         th:attr="data-bs-target='#itemDetail_' + ${item.getCode()}">
-        <th></th>
+        <th th:text="${item.getProdRecsStatus()}">admin추천여부</th>
         <th th:text="${item.getKind()}" scope="row">상품분류</th>
         <th th:text="${#strings.substring(item.getCode(), 0, 5) + '...'}" scope="row">상품코드</th>
         <th th:text="${item.getName()}" scope="row">상품이름</th>
