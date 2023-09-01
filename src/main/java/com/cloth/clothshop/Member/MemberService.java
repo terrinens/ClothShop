@@ -65,13 +65,14 @@ public class MemberService {
         return mRepository.findByOptionAndKeyword(option, keyword, pageable);
     }
 
-    public Member memberSearch(String id) {
-        Optional<Member> optionalMember = mRepository.findMemberById(id);
-        return optionalMember.orElse(null);
+    public Optional<Member> memberSearch(String id) {
+        return mRepository.findMemberById(id);
     }
 
     public  void memberDelete(String id) {
-        mRepository.delete(memberSearch(id));
+        if (memberSearch(id).isPresent()){
+            mRepository.delete(memberSearch(id).get());
+        }
     }
 }
 

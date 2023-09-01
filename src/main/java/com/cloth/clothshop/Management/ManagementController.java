@@ -11,9 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Key;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Optional;
@@ -68,9 +66,24 @@ public class ManagementController {
         return "management/allitem_management_AjaxResult";
     }
 
+    @SuppressWarnings("unchecked")
     @DeleteMapping("/item/Delete-Ajax")
-    public String managementDeleteItem() {
-        return "management/allitem_management_AjaxResult";
+    public String managementDeleteItem(@RequestBody Map<String, Object> delData, Model model) {
+        String targetCode = delData.get("targetId").toString();
+        Map<String, Object> serachData = (Map<String, Object>) delData.get("serachData");
+        if (pService.productsItemSearch(targetCode).isPresent()){
+            pService.productsItemDelete(targetCode);
+
+            int page = Integer.parseInt(serachData.get("page").toString());
+            String option = serachData.get("option").toString();
+            String Keyword = serachData.get("keyword").toString();
+
+            Page<Products> paging = pService.managementGetPaging(model, page, option, Keyword);
+            model.addAttribute("itemPaging", paging);
+            return "management/allitem_management_AjaxResult";
+        } else {
+            return null;
+        }
     }
 
     @GetMapping("/member")
@@ -113,7 +126,7 @@ public class ManagementController {
         Map<String, Object> serachData = (Map<String, Object>) modifyData.get("serachData");
 
         String memberId = formData.get("id").toString();
-        Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(memberId));
+        Optional<Member> optionalMember = mService.memberSearch(memberId);
 
         if (optionalMember.isPresent()) {
             String originPwd = optionalMember.get().getPwd();
@@ -131,7 +144,7 @@ public class ManagementController {
         String targetId = delData.get("targetId").toString();
         Map<String, Object> serachData = (Map<String, Object>) delData.get("serachData");
 
-        Optional<Member> optionalMember = Optional.ofNullable(mService.memberSearch(targetId));
+        Optional<Member> optionalMember = mService.memberSearch(targetId);
         if (optionalMember.isPresent()) {
             mService.memberDelete(targetId);
             modelAajxCommonPaging(serachData, model);

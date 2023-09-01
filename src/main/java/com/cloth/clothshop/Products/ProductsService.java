@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -63,6 +64,15 @@ public class ProductsService {
     public void managementNewProductsItem(Map<String, Object> itemData) {
         products.managementNewItemSave(mapDataConversionNewItemForm(itemData));
         pRepository.save(products);
+    }
+
+    public Optional<Products> productsItemSearch(String code) {
+        return pRepository.findById(code);
+    }
+
+    /**Optional 검사를 거친후 사용할것*/
+    public void productsItemDelete(String code) {
+        pRepository.deleteById(code);
     }
 
     private Long saveFile(MultipartFile files) throws IOException {
