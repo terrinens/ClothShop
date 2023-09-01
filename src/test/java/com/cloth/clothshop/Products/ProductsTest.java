@@ -14,14 +14,13 @@ class ProductsTest {
 
     @Test
     void tempProducts2() {
-
         char[] kindValue = {'a', 'b', 'c', 'd', 'e', 'f'};
         String[] productName = {"반팔", "긴팔", "반바지", "긴바지", "짧은치마", "긴치마"};
 
         Random random = new Random();
-
+        int c = 1;
         for (int t = 0; t < 20; t++) {
-            for (int i = 0, c = 1; i < kindValue.length; i++) {
+            for (int i = 0; i < kindValue.length; i++) {
                 Products product = new Products();
 
                 product.setName(productName[i] + c);
@@ -37,10 +36,9 @@ class ProductsTest {
                 product.setSizeEt("XL");
                 product.setQuantity(random.nextInt(100) + 1);
                 product.setUseyn('Y');
-
                 productsRepository.save(product);
-                c++;
             }
+            c++;
         }
     }
 
