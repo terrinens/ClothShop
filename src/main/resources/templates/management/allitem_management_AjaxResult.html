@@ -5,6 +5,8 @@
 <script type="module">
     import {commonLink} from "/managementJS/commonAction.js";
     commonLink();
+    import {itemButtonModifyMppaing} from "/managementJS/allitem/item_management_AjaxModel.js";
+    itemButtonModifyMppaing();
 </script>
 <table class="table table-hover container-xxl">
     <thead>
@@ -20,8 +22,8 @@
     </thead>
     
     <tbody>
-    <tr th:each="item, i : ${itemPaging}"
-        class="table-light" data-bs-toggle="modal" th:attr="data-bs-target='#itemDetail_' + ${item.getCode()}">
+    <tr th:each="item, i : ${itemPaging}" class="table-light" data-bs-toggle="modal"
+        th:attr="data-bs-target='#itemDetail_' + ${item.getCode()}">
         <th th:text="${item.getKind()}" scope="row">상품분류</th>
         <th th:text="${item.getCode()}" scope="row">상품코드</th>
         <th th:text="${item.getName()}" scope="row">상품이름</th>
@@ -67,11 +69,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="modifyForm" method="post">
+                <form class="modifyForm" id="modifyForm" method="post">
                     <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
                     <div class="mb-3">
                         <label for="recipient-kindSelect" class="col-form-label">상품분류</label>
-                        <select th:name="kind" class="form-control" id="recipient-kindSelect">
+                        <select th:name="kind" class="form-control is-valid recipient-kindSelect" id="recipient-kindSelect">
                             <option value="A" th:selected="${item.getKind() == 'A'}">A(반팔)</option>
                             <option value="B" th:selected="${item.getKind() == 'B'}">B(긴팔)</option>
                             <option value="C" th:selected="${item.getKind() == 'C'}">C(반바지)</option>
@@ -81,22 +83,24 @@
                         </select>
                         
                         <fieldset disabled="">
-                            <label for="recipient-id_view" class="col-form-label">상품코드(수정불가)</label>
-                            <input th:name="code_view" type="text" class="form-control" id="recipient-id_view"
+                            <label for="recipient-id_view" class="col-form-label is-valid">상품코드(수정불가)</label>
+                            <input th:name="code_view" type="text" class="form-control recipient-id_view" id="recipient-id_view"
                                    th:value="${item.getCode()}">
                         </fieldset>
                         <input th:name="code_origin" type="hidden" th:value="${item.getCode()}">
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name">상품 이름 수정</label>
-                        <input th:name="name" th:value="${item.getName()}" class="form-control" id="recipient-name">
+                        <input th:name="name" th:value="${item.getName()}" class="form-control is-valid recipient-name" id="recipient-name">
+                        <div id="validationJSNameFeedback" class="invalid-feedback">상품 이름은 빈값이 허용되지 않습니다!</div>
                         
                         <label for="recipient-price">상품 가격 수정</label>
-                        <input th:name="price" th:value="${item.getPrice()}" class="form-control" id="recipient-price">
+                        <input th:name="price" th:value="${item.getPrice()}" class="form-control is-valid recipient-price" id="recipient-price">
+                        <div id="validationJSPriceFeedback" class="invalid-feedback">상품 가격은 빈값이 허용되지 않습니다!</div>
                     </div>
                     <div class="mb-3">
                         <label for="recipient-sizeSt">최소 사이즈</label>
-                        <select name="sizeSt" id="recipient-sizeSt" class="form-control-lg">
+                        <select name="sizeSt" id="recipient-sizeSt" class="form-control-lg recipient-sizeSt">
                             <option value="XS" th:selected="${item.getSizeSt() == 'XS'}">XS</option>
                             <option value="S" th:selected="${item.getSizeSt() == 'S'}">S</option>
                             <option value="M" th:selected="${item.getSizeSt() == 'M'}">M</option>
@@ -106,7 +110,7 @@
                         </select>
                         
                         <label for="recipient-sizeEt">최대 사이즈</label>
-                        <select name="sizeEt" id="recipient-sizeEt" class="form-control-lg">
+                        <select name="sizeEt" id="recipient-sizeEt" class="form-control-lg recipient-sizeEt">
                             <option value="XS" th:selected="${item.getSizeSt() != 'XS'}">XS</option>
                             <option value="S" th:selected="${item.getSizeSt() != 'S'}">S</option>
                             <option value="M" th:selected="${item.getSizeSt() != 'M'}">M</option>
@@ -118,17 +122,17 @@
                     
                     <div class="mb-3">
                         <label for="recipient-quantity">상품 수량</label>
-                        <input th:name="quantity" th:value="${item.getQuantity()}" class="form-control" id="recipient-quantity">
+                        <input th:name="quantity" th:value="${item.getQuantity()}" class="form-control is-valid recipient-quantity" id="recipient-quantity">
                         
                         <label for="recipient-useyn">품절 여부 및 전시 여부</label>
-                        <select name="useyn" class="form-control" id="recipient-useyn">
+                        <select name="useyn" class="form-control is-valid recipient-useyn" id="recipient-useyn">
                             <option value="Y" th:selected="${item.getUseyn() == 'Y'}">Y</option>
                             <option value="N" th:selected="${item.getUseyn() == 'N'}">N</option>
                         </select>
                     </div>
                     
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="submit" class="btn btn-primary" id="button_modify">수정하기</button>
+                    <button type="submit" class="btn btn-primary item_button_modify">수정하기</button>
                     <button type="reset" class="btn btn-warning" id="button_reset">값 되돌리기</button>
                     <button th:data-id="${item.getCode}"
                             type="button" class="call_delete_modal btn btn-outline-danger"

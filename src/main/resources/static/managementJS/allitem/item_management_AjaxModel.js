@@ -1,5 +1,5 @@
 import {firstLodingAjax} from "../firstLodingAjax.js";
-import {$searchKeyword, $searchOption, commonAction} from "../commonAction.js";
+import {$searchKeyword, $searchOption, commonAction, validCheck} from "../commonAction.js";
 
 const $allItemAjax = $('#allItemAjax');
 const token = $("meta[name='_csrf']").attr("content")
@@ -99,19 +99,21 @@ $buttonNewItemCancel.on('click', function () {
     $('.is-invalid').removeClass('is-invalid');
 })
 
-/**타겟 class OR id 값에 유효성 검사추가*/
-function validCheck(targetSelector) {
-    if (targetSelector.val().length === 0) {
-        targetSelector.addClass('is-invalid');
-        $('.is-invalid').first().focus();
-        return false;
-    } else {
-        if (targetSelector.hasClass('is-invalid')) {
-            targetSelector.removeClass('is-invalid');
-        }
-        targetSelector.addClass('is-valid');
-    }
+/*allitem Ajax html에서 import 할것**/
+export function itemButtonModifyMppaing() {
+    const $item_button_modify = $('.item_button_modify');
+    $item_button_modify.on('click', function (event) {
+        event.preventDefault();
+        const $modifyForm = $(this).parent($('.modifyForm'));
+        const $recipientName = $modifyForm.find($('.recipient-name'));
+        const $recipientPrice = $modifyForm.find($('.recipient-price'));
+        validCheck($recipientName);
+        validCheck($recipientPrice);
+        console.log($recipientName.val().length);
+        console.log($recipientPrice.val().length);
+    })
 }
+
 
 const newItemBoxModal = new bootstrap.Modal($('#newItemBox'));
 /**상품 등록 성공시 기존 값들을 없애기 위한 메서드*/

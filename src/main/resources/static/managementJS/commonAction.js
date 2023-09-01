@@ -73,6 +73,7 @@ export function commonLink() {
     });
 }
 
+/**오류로 인해 임시적으로 commonaAction에 할당함 멤버 페이지에서만 사용할것*/
 export function memberButtonModify() {
     const $buttonModify = $('.button_modify');
     $buttonModify.on('click', function (event) {
@@ -100,4 +101,18 @@ export function memberButtonModify() {
             $buttonModify.off();
         }
     });
+}
+
+/**타겟 class OR id 값에 유효성 검사추가*/
+export function validCheck(targetSelector) {
+    if (targetSelector.val().length === 0) {
+        targetSelector.addClass('is-invalid');
+        $('.is-invalid').first().focus();
+        return false;
+    } else {
+        if (targetSelector.hasClass('is-invalid')) {
+            targetSelector.removeClass('is-invalid');
+        }
+        targetSelector.addClass('is-valid');
+    }
 }

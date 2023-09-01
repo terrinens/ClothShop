@@ -9,27 +9,7 @@
     <meta name="_csrf" th:content="${_csrf.token}">
     <input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
     <script type="module" th:src="@{/managementJS/allitem/item_management_AjaxModel.js}"></script>
-    <main id="main">
-        <nav class="navbar bg-light justify-content-center">
-            <div class="btn-group filters" id="filters" role="group" aria-label="Basic outlined example">
-                <!--첫번째 버튼과 마지막버튼의 style을 건드리지 말것 : 부트스트랩 속성으로 인해 테두리 끝의 radius가 값이 있음.-->
-                <button style="border-radius: 0em;" class="btn btn-outline-success me-2" type="button">
-                    <a data-filter="*">모두</a>
-                </button>
-                <button class="btn btn-outline-success me-2" type="button">
-                    <a data-filter=".a, .b">상의</a>
-                </button>
-                <button class="btn btn-outline-success me-2" type="button">
-                    <a data-filter=".c, .d">하의</a>
-                </button>
-                <button style="border-radius: 0em;" class="btn btn-outline-success me-2" type="button">
-                    <a data-filter=".e, .f">치마</a>
-                </button>
-            </div>
-        </nav>
-    </main>
     
-    <!--no-->
     <div class="input-group container-xxl">
         <input style="border: 1px solid #b5cdf7" class="form-control me-2" type="search" placeholder="Search"
                aria-label="Search" name="searchKeyword" id="searchKeyword" th:value="${keyword}">
@@ -43,7 +23,6 @@
         <button class="btn btn-outline-success" type="submit" id="button_search" style="border-radius: 0em">검색</button>
     </div>
     
-    <!--no-->
     <form method="get" id="searchForm">
         <input type="hidden" id="page" name="page" th:value="${itemPaging.number}">
         <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
@@ -54,7 +33,6 @@
         <!--Ajax 수신 블록-->
     </div>
     
-    <!--no-->
     <div class="modal fade" id="delete_modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -74,7 +52,6 @@
         </div>
     </div>
     
-    <!--no 아이템 추가하는 부분. 따로 처리할것-->
     <div class="modal fade modal-xl" id="newItemBox" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
