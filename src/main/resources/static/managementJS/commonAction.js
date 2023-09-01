@@ -64,14 +64,14 @@ export function commonLink() {
         event.preventDefault();
         const $modalBackdrop = $('.modal-backdrop');
         $modalBackdrop.remove();
-        let serachData = {
+        let searchData = {
             page: 0
             , keyword: $searchKeyword.val()
             , option: $searchOption.val()
         };
         const sendData = {
             targetId: targetId
-            , serachData: serachData
+            , searchData: searchData
         };
         commonDELAjax(sendData);
         $(this).off('click');
@@ -97,7 +97,7 @@ export function memberButtonModify() {
         const $originPwd = formSelect.find('.recipient-pwd');
         const $modifyPwd = formSelect.find('.recipient-pwdModify');
         const saveOriginPwd = $originPwd.val();
-        let serachData = null;
+        let searchData;
         let sendData = null;
 
         if ($modifyPwd.val().length <= 3 && $modifyPwd.val().length >= 1) {
@@ -106,10 +106,10 @@ export function memberButtonModify() {
         } else {
             const $modalBackdrop = $('.modal-backdrop');
             $modalBackdrop.remove();
-            serachData = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
+            searchData = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
             sendData = {
                 formData: Object.fromEntries(formData.entries())
-                , serachData: serachData
+                , searchData
             };
             commonModifyAjax(sendData);
             $buttonModify.off();

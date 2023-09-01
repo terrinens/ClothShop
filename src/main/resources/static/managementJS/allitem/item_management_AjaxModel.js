@@ -100,6 +100,7 @@ $buttonNewItemCancel.on('click', function () {
     $('.is-invalid').removeClass('is-invalid');
 })
 
+// noinspection JSUnusedGlobalSymbols
 /**allitem Ajax html에서 import 할것 아이템 수정을 위한 버튼*/
 export function itemButtonModifyMppaing() {
     const $item_button_modify = $('.item_button_modify');
