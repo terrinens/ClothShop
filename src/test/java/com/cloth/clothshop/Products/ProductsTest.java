@@ -8,38 +8,40 @@ import java.util.Random;
 
 @SpringBootTest
 class ProductsTest {
-	
-	@Autowired
-	ProductsRepository productsRepository;
-	
-	@Test
-	void tempProducts2() {
 
-		char[] kindValue = {'a', 'b', 'c', 'd', 'e', 'f'};
-		String[] productName = {"반팔", "긴팔", "반바지", "긴바지", "짧은치마", "긴치마"};
+    @Autowired
+    ProductsRepository productsRepository;
 
-		Random random = new Random();
+    @Test
+    void tempProducts2() {
 
-		for (int i = 0; i < kindValue.length; i++) {
+        char[] kindValue = {'a', 'b', 'c', 'd', 'e', 'f'};
+        String[] productName = {"반팔", "긴팔", "반바지", "긴바지", "짧은치마", "긴치마"};
 
-			Products product = new Products();
+        Random random = new Random();
 
-			product.setName(productName[i]);
-			product.setKind(kindValue[i]);
-			product.setContents("평범한 " + productName[i] + "입니다.");
+        for (int t = 0; t < 20; t++) {
+            for (int i = 0, c = 1; i < kindValue.length; i++) {
+                Products product = new Products();
 
-			int priceThousand = random.nextInt(81) + 20;
-			String price = String.format("%d000", priceThousand);
-			product.setPrice(price);
+                product.setName(productName[i] + c);
+                product.setKind(kindValue[i]);
+                product.setContents("평범한 " + productName[i] + c + "입니다.");
 
-			product.setImage("이미지 준비중!");
-			product.setSizeSt("XS");
-			product.setSizeEt("XL");
-			product.setQuantity(random.nextInt(100) + 1);
-			product.setUseyn('Y');
+                int priceThousand = random.nextInt(81) + 20;
+                String price = String.format("%d000", priceThousand);
+                product.setPrice(price);
 
-			productsRepository.save(product);
-		}
-	}
+                product.setImage("이미지 준비중!");
+                product.setSizeSt("XS");
+                product.setSizeEt("XL");
+                product.setQuantity(random.nextInt(100) + 1);
+                product.setUseyn('Y');
+
+                productsRepository.save(product);
+                c++;
+            }
+        }
+    }
 
 }
