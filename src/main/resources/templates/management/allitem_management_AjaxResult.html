@@ -126,6 +126,11 @@
                             <option value="XL" th:selected="${item.getSizeSt() != 'XL'}">XL</option>
                             <option value="XXL" th:selected="${item.getSizeSt() != 'XXL'}">XXL</option>
                         </select>
+                        
+                        <label for="recipient-productsRecsStatus">추천 상품 등록</label>
+                        <select name="productsRecsStatus" id="recipient-productsRecsStatus" class="form-control-sm recipient-productsRecsStatus">
+                            <option value=""></option>
+                        </select>
                     </div>
                     
                     <div class="mb-3">
