@@ -63,7 +63,7 @@ public class ManagementController {
         return "management/allitem_management_AjaxResult";
     }
 
-    @PutMapping("/item/modify-Ajax")
+    @GetMapping("/item/modify-Ajax")
     public String managementModifyItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
         pService.managementModifyProductsItem(itemMapDTO.getFormData());
         entityManager.clear();

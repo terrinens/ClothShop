@@ -4,8 +4,10 @@
 <!--suppress JSFileReferences -->
 <script type="module">
     import {commonLink} from "/managementJS/commonAction.js";
+
     commonLink();
     import {itemButtonModifyMppaing} from "/managementJS/allitem/item_management_AjaxModel.js";
+
     itemButtonModifyMppaing();
 </script>
 <table class="table table-hover container-xxl">
@@ -71,11 +73,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="modifyForm" id="modifyForm" method="post">
+                <form class="modifyForm" id="modifyForm" method="post" enctype="multipart/form-data">>
                     <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
                     <div class="mb-3">
                         <label for="recipient-kindSelect" class="col-form-label">상품분류</label>
-                        <select th:name="kind" class="form-control is-valid recipient-kindSelect" id="recipient-kindSelect">
+                        <select th:name="kind" class="form-control is-valid recipient-kindSelect"
+                                id="recipient-kindSelect">
                             <option value="A" th:selected="${item.getKind() == 'A'}">A(반팔)</option>
                             <option value="B" th:selected="${item.getKind() == 'B'}">B(긴팔)</option>
                             <option value="C" th:selected="${item.getKind() == 'C'}">C(반바지)</option>
@@ -86,24 +89,28 @@
                         
                         <fieldset disabled="">
                             <label for="recipient-id_view" class="col-form-label is-valid">상품코드(수정불가)</label>
-                            <input th:name="code_view" type="text" class="form-control recipient-id_view" id="recipient-id_view"
+                            <input th:name="code_view" type="text" class="form-control recipient-id_view"
+                                   id="recipient-id_view"
                                    th:value="${item.getCode()}">
                         </fieldset>
                         <input th:name="code_origin" type="hidden" th:value="${item.getCode()}">
                     </div>
                     <div class="mb-3">
                         <label for="recipient-name">상품 이름 수정</label>
-                        <input th:name="name" th:value="${item.getName()}" class="form-control is-valid recipient-name" id="recipient-name">
+                        <input th:name="name" th:value="${item.getName()}" class="form-control is-valid recipient-name"
+                               id="recipient-name">
                         <div id="validationJSNameFeedback" class="invalid-feedback">상품 이름은 빈값이 허용되지 않습니다!</div>
                         
                         <label for="recipient-price">상품 가격 수정</label>
-                        <input th:name="price" th:value="${item.getPrice()}" class="form-control is-valid recipient-price" id="recipient-price">
+                        <input th:name="price" th:value="${item.getPrice()}"
+                               class="form-control is-valid recipient-price" id="recipient-price">
                         <div id="validationJSPriceFeedback" class="invalid-feedback">상품 가격은 빈값이 허용되지 않습니다!</div>
                     </div>
                     
                     <div class="mb-3">
                         <label for="recipient-contents" class="col-form-label">상품 설명</label>
-                        <textarea id="recipient-contents" name="contents" class="form-control recipient-contents" rows="4" th:text="${item.getContents()}"></textarea>
+                        <textarea id="recipient-contents" name="contents" class="form-control recipient-contents"
+                                  rows="4" th:text="${item.getContents()}"></textarea>
                     </div>
                     
                     <div class="mb-3">
@@ -130,7 +137,8 @@
                     
                     <div class="mb-3">
                         <label for="recipient-productsRecsStatus">추천상품</label>
-                        <select name="productsRecsStatus" id="recipient-productsRecsStatus" class="form-control-sm recipient-productsRecsStatus">
+                        <select name="productsRecsStatus" id="recipient-productsRecsStatus"
+                                class="form-control-sm recipient-productsRecsStatus">
                             <option value="1" th:selected="${item.getProdRecsStatus() == 'Yes'}">Yes</option>
                             <option value="0" th:selected="${item.getProdRecsStatus() == 'No'}">No</option>
                         </select>
@@ -144,13 +152,11 @@
                     
                     <div class="mb-3">
                         <label for="recipient-quantity">상품 수량</label>
-                        <input th:name="quantity" th:value="${item.getQuantity()}" class="form-control is-valid recipient-quantity" id="recipient-quantity">
+                        <input th:name="quantity" th:value="${item.getQuantity()}"
+                               class="form-control is-valid recipient-quantity" id="recipient-quantity">
                         
-                        <fieldset disabled="">
-                            <label for="recipient-img" class="col-form-label">상품 이미지 수정(구현중)</label>
-                            <input name="img" type="file" class="form-control recipient-img" id="recipient-img">
-                            <input type="hidden" name="image" value="이미지 준비중!">
-                        </fieldset>
+                        <label for="recipient-img" class="col-form-label">상품 이미지 수정(구현중)</label>
+                        <input th:name="img" type="file" accept=".jpg, .jpeg, .png, .gif" class="form-control recipient-img" id="recipient-img">
                     </div>
                     
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>

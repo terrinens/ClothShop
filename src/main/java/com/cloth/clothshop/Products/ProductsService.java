@@ -1,8 +1,9 @@
 package com.cloth.clothshop.Products;
 
 import com.cloth.clothshop.Management.Form.ManagementItemForm;
+import com.cloth.clothshop.Products.ImgSetting.ProductsImgStorage;
+import com.cloth.clothshop.Products.ImgSetting.ProductsImgStorageRepository;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
-import com.cloth.clothshop.RepeatCode.Management_RepeatCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -93,23 +94,28 @@ public class ProductsService {
         if (files.isEmpty()) {
             return null;
         } else {
-            String originName = files.getOriginalFilename();
-            String uuid = UUID.randomUUID().toString();
-            String extend = Objects.requireNonNull(originName).substring(originName.lastIndexOf("."));
-            String savedName = uuid + extend;
-            String savedPath = imgDir + savedName;
+            try {
+                String originName = files.getOriginalFilename();
+                String uuid = UUID.randomUUID().toString();
+                String extend = Objects.requireNonNull(originName).substring(originName.lastIndexOf("."));
+                String savedName = uuid + extend;
+                String savedPath = imgDir + savedName;
 
-            ProductsImgStorage storage = ProductsImgStorage.builder()
-                    .originUploadName(originName)
-                    .savedName(savedName)
-                    .savedPath(savedPath)
-                    .build();
+                ProductsImgStorage storage = ProductsImgStorage.builder()
+                        .originUploadName(originName)
+                        .savedName(savedName)
+                        .savedPath(savedPath)
+                        .build();
 
-            files.transferTo(new File(savedPath));
-            ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
+                files.transferTo(new File(savedPath));
+                ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
 
-            return savedImg.getId();
+                return savedImg.getId();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
         }
+        return null;
     }
 
     private ManagementItemForm mapDataConversionNewItemForm(Map<String, Object> data) {

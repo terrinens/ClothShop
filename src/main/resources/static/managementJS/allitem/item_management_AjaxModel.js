@@ -113,8 +113,9 @@ export function itemButtonModifyMppaing() {
         const $recipientName = $modifyForm.find($('.recipient-name'));
         const $recipientPrice = $modifyForm.find($('.recipient-price'));
         const searchDataArray = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
-        const $imgInput = $modifyForm.find($('.recipient-img'));
-        console.log($imgInput.attr('class'));
+        const $imgInput = $modifyForm.find($('.recipient-img')).first();
+        console.log($imgInput.attr('accept'));
+        console.log($imgInput.length);
         const sendData = conversionCommonFormData($modifyForm, searchDataArray, $imgInput);
 
         validCheck($recipientName);
@@ -143,11 +144,27 @@ function newItemInputValueEmpty() {
 function conversionCommonFormData(targetFormClass, searchDataArray, imgInputClass) {
     let formData = new FormData(targetFormClass[0]);
     formData.delete('img');
-    const imgData = imgInputClass[0].files;
+    const imgBase64 = convertImageToBase64(imgInputClass);
+    console.log(imgBase64);
     return {
         formData: Object.fromEntries(formData.entries())
         , searchData: searchDataArray
-        , imgData: imgData
+        , imgBase64 : imgBase64
     };
+}
+
+function convertImageToBase64(imgInputClass) {
+    const imgData = imgInputClass[0].files;
+    console.log("클래스 넘버 지정하기")
+    console.log(imgData);
+    const imgDataA = imgData[0];
+    console.log("해당 클래스 이미지 가져오기")
+    console.log(imgDataA);
+    const reader = new FileReader();
+    reader.readAsDataURL(imgDataA);
+    reader.onload = function (convert) {
+        //콜백 함수로 바꿔볼것.
+        return convert.target.result;
+    }
 }
 

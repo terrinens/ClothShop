@@ -1,4 +1,4 @@
-package com.cloth.clothshop.Products;
+package com.cloth.clothshop.Products.ImgSetting;
 
 import jakarta.persistence.*;
 import lombok.Builder;
