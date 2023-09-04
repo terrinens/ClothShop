@@ -54,35 +54,38 @@ export function commonAction(sendAjax, sendModifyAjax, sendDELAjax) {
 // noinspection JSUnusedGlobalSymbols
 /**commonAction에 할당된것들에 의존한다. 컨트롤에서 보내는 html에서 import할것*/
 export function commonLink() {
+    const $button_delete = $('.button_delete');
     let targetId = null;
     $('.call_delete_modal').on('click', function () {
         targetId = $(this).data('id');
         $(this).off('click');
     });
 
-    $('.button_delete').on('click', function (event) {
-        event.preventDefault();
-        const $modalBackdrop = $('.modal-backdrop');
-        $modalBackdrop.remove();
-        let searchData = {
-            page: 0
-            , keyword: $searchKeyword.val()
-            , option: $searchOption.val()
-        };
-        const sendData = {
-            targetId: targetId
-            , searchData: searchData
-        };
-        commonDELAjax(sendData);
-        $(this).off('click');
+    $button_delete.off('click');
+    $button_delete.on('click', function (event) {
+            event.preventDefault();
+            const $modalBackdrop = $('.modal-backdrop');
+            $modalBackdrop.remove();
+            let searchData = null;
+            searchData = {
+                page: 0
+                , keyword: $searchKeyword.val()
+                , option: $searchOption.val()
+            };
+            let sendData = null;
+            sendData = {
+                targetId: targetId
+                , searchData: searchData
+            };
+            commonDELAjax(sendData);
     });
 
     const $pageLink = $('.page-link');
+    $pageLink.off('click');
     $pageLink.on('click', function () {
         const page = $(this).data('page');
         const keyword = $searchKeyword.val();
         const option = $searchOption.val();
-
         commonAjax(page, keyword, option);
     });
 }

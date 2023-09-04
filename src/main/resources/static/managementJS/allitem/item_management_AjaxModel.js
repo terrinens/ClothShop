@@ -9,6 +9,7 @@ commonAction(sendAjax, sendModifyAjax, sendDELAjax);
 firstLodingAjax(sendAjax);
 
 function sendAjax(page, keyword, option) {
+    $allItemAjax.empty();
     if (page === null) {
         page = 0
     }
@@ -26,6 +27,7 @@ function sendAjax(page, keyword, option) {
 }
 
 function sendModifyAjax(sendData) {
+    $allItemAjax.empty();
     $.ajax({
         type: 'put',
         beforeSend: function (xhr) {
@@ -42,13 +44,18 @@ function sendModifyAjax(sendData) {
 }
 
 function sendDELAjax(sendData) {
+    console.log("상품 삭제 call");
+    console.log("전달받은 데이터 값들 ::: " + sendData);
+    let receiveData = null;
+    receiveData = sendData;
+    $allItemAjax.empty();
     $.ajax({
         type: 'delete',
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
         url: "/management/item/Delete-Ajax",
-        data: JSON.stringify(sendData),
+        data: JSON.stringify(receiveData),
         contentType: "application/json",
         success: function (html) {
             $allItemAjax.html(html);
@@ -57,6 +64,7 @@ function sendDELAjax(sendData) {
 }
 
 function sendNewAjax(sendData) {
+    $allItemAjax.empty();
     $.ajax({
         type: 'post',
         beforeSend: function (xhr) {
