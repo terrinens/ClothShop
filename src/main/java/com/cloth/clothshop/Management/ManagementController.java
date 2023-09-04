@@ -170,12 +170,6 @@ public class ManagementController {
         return "management/order_management";
     }
 
-    @GetMapping("/recommended")
-    public String managementRecommended() {
-
-        return "management/recommended_management";
-    }
-
     /**
      * 반드시 Ajax로 넘겨받은 Object에서 추출한 serachData를 Object로 변환시켜 넘길것
      * Transactional문제로 컨트롤에서 작성함
@@ -189,8 +183,4 @@ public class ManagementController {
         model.addAttribute("memberPaging", paging);
         model.addAttribute("page", 0);
     }
-
-    /*public String managementModifyItem(@RequestBody Map<String, Object> modifyItemData, Model model) {
-        Map<String, Object> itemData = (Map<String, Object>) modifyItemData.get("formData");
-        Map<String, Object> searchData = (Map<String, Object>) modifyItemData.get("searchData");*/
 }

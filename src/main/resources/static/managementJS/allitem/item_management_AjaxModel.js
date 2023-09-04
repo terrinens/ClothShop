@@ -44,8 +44,6 @@ function sendModifyAjax(sendData) {
 }
 
 function sendDELAjax(sendData) {
-    console.log("상품 삭제 call");
-    console.log("전달받은 데이터 값들 ::: " + sendData);
     let receiveData = null;
     receiveData = sendData;
     $allItemAjax.empty();
