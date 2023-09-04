@@ -36,7 +36,6 @@ function sendModifyAjax(sendData) {
         url: "/management/item/modify-Ajax",
         data: JSON.stringify(sendData),
         contentType: "application/json",
-        async: false,
         success: function (html) {
             $allItemAjax.html(html);
         }
@@ -44,8 +43,6 @@ function sendModifyAjax(sendData) {
 }
 
 function sendDELAjax(sendData) {
-    let receiveData = null;
-    receiveData = sendData;
     $allItemAjax.empty();
     $.ajax({
         type: 'delete',
@@ -53,7 +50,7 @@ function sendDELAjax(sendData) {
             xhr.setRequestHeader(header, token);
         },
         url: "/management/item/Delete-Ajax",
-        data: JSON.stringify(receiveData),
+        data: JSON.stringify(sendData),
         contentType: "application/json",
         success: function (html) {
             $allItemAjax.html(html);
@@ -113,17 +110,19 @@ export function itemButtonModifyMppaing() {
     $item_button_modify.on('click', function (event) {
         event.preventDefault();
         const $modifyForm = $(this).parent($('.modifyForm'));
-        const formData = new FormData($modifyForm[0]);
         const $recipientName = $modifyForm.find($('.recipient-name'));
         const $recipientPrice = $modifyForm.find($('.recipient-price'));
+        const searchDataArray = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
+        const $imgInput = $modifyForm.find($('.recipient-img'));
+        console.log($imgInput.attr('class'));
+        const sendData = conversionCommonFormData($modifyForm, searchDataArray, $imgInput);
+
         validCheck($recipientName);
         validCheck($recipientPrice);
-        const searchData = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
-        const sendData = {
-            formData: Object.fromEntries(formData.entries()), searchData: searchData
-        };
+
         const $modalBackdrop = $('.modal-backdrop');
         $modalBackdrop.remove();
+        console.log(sendData);
         sendModifyAjax(sendData);
     })
 }
@@ -138,5 +137,17 @@ function newItemInputValueEmpty() {
     $newItemPrice.removeClass('is-valid');
     $newItemPrice.val(null);
     $('#newItemContents').val(null);
+}
+
+/**이미지 파일을 따로 처리하기 위한 코드*/
+function conversionCommonFormData(targetFormClass, searchDataArray, imgInputClass) {
+    let formData = new FormData(targetFormClass[0]);
+    formData.delete('img');
+    const imgData = imgInputClass[0].files;
+    return {
+        formData: Object.fromEntries(formData.entries())
+        , searchData: searchDataArray
+        , imgData: imgData
+    };
 }
 
