@@ -7,15 +7,18 @@ import com.cloth.clothshop.Products.ProductsSetting.ProductsRecsStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Date;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
-@Entity
-@Setter
-@Getter
+@Entity @Setter @Getter
+@DynamicInsert
+@DynamicUpdate
 public class Products {
 
 /*	@Id
@@ -77,7 +80,7 @@ public class Products {
     private Date indate;
 
     /**prodRecsStatus = ProductRecommendationsStatus 0 OR 1 Only*/
-    @Column
+    @Column @ColumnDefault("'0'")
     @Enumerated(EnumType.ORDINAL)
     private ProductsRecsStatus prodRecsStatus;
     public void setProductsRecsStatus(int status) {
@@ -95,6 +98,7 @@ public class Products {
         this.sizeEt = newItemForm.getSizeEt();
         this.quantity = newItemForm.getQuantity();
         this.useyn = newItemForm.getUseyn();
+        this.prodRecsStatus = ProductsRecsStatus.fromStatus(newItemForm.getProdRecsStatus());
         return this;
     }
 }

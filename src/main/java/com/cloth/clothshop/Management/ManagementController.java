@@ -35,10 +35,10 @@ public class ManagementController {
     }
 
     @GetMapping("/allitem-Ajax")
-    public String managementProudctsAjax(Model model, ManagementItemForm managementItemForm,
-                                         @RequestParam(value = "page", defaultValue = "0") String page,
-                                         @RequestParam(value = "option", defaultValue = "") String option,
-                                         @RequestParam(value = "keyword", defaultValue = "") String keyword
+    public String managementProudctsAjax(Model model
+                                         , @RequestParam(value = "page", defaultValue = "0") String page
+                                         , @RequestParam(value = "option", defaultValue = "") String option
+                                         , @RequestParam(value = "keyword", defaultValue = "") String keyword
     ) {
         Page<Products> paging = pService.managementGetPaging(model, Integer.parseInt(page), keyword, option);
         model.addAttribute("itemPaging", paging);
@@ -79,7 +79,6 @@ public class ManagementController {
         return "management/allitem_management_AjaxResult";
     }
 
-    @SuppressWarnings("unchecked")
     @DeleteMapping("/item/Delete-Ajax")
     public String managementDeleteItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
         String targetCode = itemMapDTO.getTargetId();

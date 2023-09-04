@@ -3,7 +3,7 @@ package com.cloth.clothshop.Products.ProductsSetting;
 import lombok.Getter;
 
 public enum ProductsRecsStatus {
-    no(0), yes(1);
+    No(0), Yes(1);
     private final int status;
 
     ProductsRecsStatus(int status) {
@@ -12,8 +12,8 @@ public enum ProductsRecsStatus {
 
     public static ProductsRecsStatus fromStatus(int status) {
         return switch (status) {
-            case 0 -> no;
-            case 1 -> yes;
+            case 0 -> No;
+            case 1 -> Yes;
             default -> throw new IllegalStateException("Unexpected value: " + status);
         };
     }

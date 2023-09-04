@@ -29,4 +29,6 @@ public class ManagementItemForm {
     private String image;
 
     private Date indate;
+
+    private int prodRecsStatus;
 }

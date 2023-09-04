@@ -107,8 +107,8 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="recipient-sizeSt">최소 사이즈</label>
-                        <select name="sizeSt" id="recipient-sizeSt" class="form-control-lg recipient-sizeSt">
+                        <label for="recipient-sizeSt">최소 size</label>
+                        <select name="sizeSt" id="recipient-sizeSt" class="form-control-sm recipient-sizeSt">
                             <option value="XS" th:selected="${item.getSizeSt() == 'XS'}">XS</option>
                             <option value="S" th:selected="${item.getSizeSt() == 'S'}">S</option>
                             <option value="M" th:selected="${item.getSizeSt() == 'M'}">M</option>
@@ -117,8 +117,8 @@
                             <option value="XXL" th:selected="${item.getSizeSt() == 'XXL'}">XXL</option>
                         </select>
                         
-                        <label for="recipient-sizeEt">최대 사이즈</label>
-                        <select name="sizeEt" id="recipient-sizeEt" class="form-control-lg recipient-sizeEt">
+                        <label for="recipient-sizeEt">최대 size</label>
+                        <select name="sizeEt" id="recipient-sizeEt" class="form-control-sm recipient-sizeEt">
                             <option value="XS" th:selected="${item.getSizeSt() != 'XS'}">XS</option>
                             <option value="S" th:selected="${item.getSizeSt() != 'S'}">S</option>
                             <option value="M" th:selected="${item.getSizeSt() != 'M'}">M</option>
@@ -126,22 +126,25 @@
                             <option value="XL" th:selected="${item.getSizeSt() != 'XL'}">XL</option>
                             <option value="XXL" th:selected="${item.getSizeSt() != 'XXL'}">XXL</option>
                         </select>
-                        
-                        <label for="recipient-productsRecsStatus">추천 상품 등록</label>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="recipient-productsRecsStatus">추천상품</label>
                         <select name="productsRecsStatus" id="recipient-productsRecsStatus" class="form-control-sm recipient-productsRecsStatus">
-                            <option value=""></option>
+                            <option value="1" th:selected="${item.getProdRecsStatus() == 'Yes'}">Yes</option>
+                            <option value="0" th:selected="${item.getProdRecsStatus() == 'No'}">No</option>
+                        </select>
+                        
+                        <label for="recipient-useyn">품절 여부 및 전시 여부</label>
+                        <select name="useyn" class="form-control-sm is-valid recipient-useyn" id="recipient-useyn">
+                            <option value="Y" th:selected="${item.getUseyn() == 'Y'}">Y</option>
+                            <option value="N" th:selected="${item.getUseyn() == 'N'}">N</option>
                         </select>
                     </div>
                     
                     <div class="mb-3">
                         <label for="recipient-quantity">상품 수량</label>
                         <input th:name="quantity" th:value="${item.getQuantity()}" class="form-control is-valid recipient-quantity" id="recipient-quantity">
-                        
-                        <label for="recipient-useyn">품절 여부 및 전시 여부</label>
-                        <select name="useyn" class="form-control is-valid recipient-useyn" id="recipient-useyn">
-                            <option value="Y" th:selected="${item.getUseyn() == 'Y'}">Y</option>
-                            <option value="N" th:selected="${item.getUseyn() == 'N'}">N</option>
-                        </select>
                         
                         <fieldset disabled="">
                             <label for="recipient-img" class="col-form-label">상품 이미지 수정(구현중)</label>

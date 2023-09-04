@@ -129,6 +129,7 @@ public class ProductsService {
         newItemForm.setQuantity(Integer.parseInt(data.get("quantity").toString()));
         newItemForm.setUseyn(data.get("useyn").toString().charAt(0));
         newItemForm.setIndate(Date.valueOf(LocalDateTime.now().toLocalDate()));
+        newItemForm.setProdRecsStatus(Integer.parseInt(data.get("productsRecsStatus").toString()));
         return newItemForm;
     }
 }
