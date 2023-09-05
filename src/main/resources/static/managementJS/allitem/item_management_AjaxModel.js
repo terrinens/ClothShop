@@ -29,13 +29,15 @@ function sendAjax(page, keyword, option) {
 function sendModifyAjax(sendData) {
     $allItemAjax.empty();
     $.ajax({
-        type: 'put',
+        type: 'post',
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
         url: "/management/item/modify-Ajax",
-        data: JSON.stringify(sendData),
-        contentType: "application/json",
+        data: sendData,
+        /*contentType: "application/json",*/
+        processData: false,
+        contentType: false,
         success: function (html) {
             $allItemAjax.html(html);
         }
@@ -112,24 +114,26 @@ export function itemButtonModifyMppaing() {
         const $modifyForm = $(this).parent($('.modifyForm'));
         const $recipientName = $modifyForm.find($('.recipient-name'));
         const $recipientPrice = $modifyForm.find($('.recipient-price'));
-        const searchDataArray = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
-        const $imgInput = $modifyForm.find($('.recipient-img')).first();
-        console.log($imgInput.attr('accept'));
-        console.log($imgInput.length);
-        const sendData = conversionCommonFormData($modifyForm, searchDataArray, $imgInput);
+        const searchDataObject = {page: "0", keyword: $searchKeyword.val(), option: $searchOption.val()};
+        const $imgInput = $modifyForm.find($('.recipient-img'));
+        const sendData = conversionCommonFormData($modifyForm, searchDataObject, $imgInput);
 
         validCheck($recipientName);
         validCheck($recipientPrice);
 
+        if (validCount >= 1) {
+            return false;
+        }
+
         const $modalBackdrop = $('.modal-backdrop');
         $modalBackdrop.remove();
-        console.log(sendData);
         sendModifyAjax(sendData);
     })
 }
 
 
 const newItemBoxModal = new bootstrap.Modal($('#newItemBox'));
+
 /**상품 등록 성공시 기존 값들을 없애기 위한 메서드*/
 function newItemInputValueEmpty() {
     newItemBoxModal.hide();
@@ -140,31 +144,47 @@ function newItemInputValueEmpty() {
     $('#newItemContents').val(null);
 }
 
-/**이미지 파일을 따로 처리하기 위한 코드*/
-function conversionCommonFormData(targetFormClass, searchDataArray, imgInputClass) {
-    let formData = new FormData(targetFormClass[0]);
-    formData.delete('img');
-    const imgBase64 = convertImageToBase64(imgInputClass);
-    console.log(imgBase64);
-    return {
-        formData: Object.fromEntries(formData.entries())
-        , searchData: searchDataArray
-        , imgBase64 : imgBase64
-    };
-}
+/**이미지 파일을 따로 처리하기 위한 코드 form Class의 경우 FormData로 변환 시켜 넘길것
+ * null처리를 완벽하게 구현 못했으니 컨트롤에서 Optional로 받을것.*/
+function conversionCommonFormData(targetFormClass, searchDataObject, targetInputClass) {
+    function conversionJsonToBlob(targetData) {
+        let form = new FormData;
+        if (!(targetData instanceof FormData) && targetData instanceof Object) {
+            let conversionNewForm = new FormData();
+            for (const key in targetData) {
+                conversionNewForm.append(key, targetData[key])
+                form = conversionNewForm;
+            }
+        } else {
+            if (formData.has("img")) {
+                formData.delete("img");
+            }
+            form = targetData;
+        }
 
-function convertImageToBase64(imgInputClass) {
-    const imgData = imgInputClass[0].files;
-    console.log("클래스 넘버 지정하기")
-    console.log(imgData);
-    const imgDataA = imgData[0];
-    console.log("해당 클래스 이미지 가져오기")
-    console.log(imgDataA);
-    const reader = new FileReader();
-    reader.readAsDataURL(imgDataA);
-    reader.onload = function (convert) {
-        //콜백 함수로 바꿔볼것.
-        return convert.target.result;
+        let object = {};
+        form.forEach((value, key) => {
+            object[key] = value;
+        });
+        return new Blob([JSON.stringify(object)], {type: 'application/json'});
     }
+
+    let formData = new FormData(targetFormClass[0]);
+    let formDataBlob = conversionJsonToBlob(formData);
+    let searchDataBlob = conversionJsonToBlob(searchDataObject);
+
+    let partSendForm = new FormData();
+    partSendForm.append("formData", formDataBlob, 'data.json');
+    partSendForm.append("searchData", searchDataBlob, 'data.json');
+
+    if (targetInputClass[0] && targetInputClass[0].files[0]) {
+        console.log("파일 찾음");
+        console.log(targetInputClass[0].files[0]);
+        partSendForm.append("imgData", targetInputClass[0].files[0]);
+    } else {
+        console.log("파일 찾지 못함");
+    }
+
+    return partSendForm;
 }
 
