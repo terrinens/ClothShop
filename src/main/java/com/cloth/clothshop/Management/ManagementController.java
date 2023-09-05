@@ -5,13 +5,17 @@ import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.Map;
@@ -63,16 +67,29 @@ public class ManagementController {
         return "management/allitem_management_AjaxResult";
     }
 
-    @GetMapping("/item/modify-Ajax")
-    public String managementModifyItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
-        pService.managementModifyProductsItem(itemMapDTO.getFormData());
-        entityManager.clear();
+    /*pService.managementModifyProductsItem(itemMapDTO.getFormData());
+entityManager.clear();
 
-        int page = itemMapDTO.getSearchDataPage();
-        String keyword = itemMapDTO.getSearchDataKeyword();
-        String option = itemMapDTO.getSearchDataOption();
-        Page<Products> paging = pService.managementGetPaging(model, page, keyword, option);
+int page = itemMapDTO.getSearchDataPage();
+String keyword = itemMapDTO.getSearchDataKeyword();
+String option = itemMapDTO.getSearchDataOption();
+Page<Products> paging = pService.managementGetPaging(model, page, keyword, option);
+*/
 
+    @SneakyThrows
+    @PostMapping("/item/modify-Ajax")
+    public String managementModifyItem(@RequestPart("formData") String formData ,
+                                       @RequestPart("searchData") String searchData ,
+                                       @RequestPart("imgData") Optional<MultipartFile> imgData ,
+                                       Model model) {
+
+        ManagmentItemMapDTO.FormData toFormData = ManagmentItemMapDTO.stringDataToFormData(formData);
+        ManagmentItemMapDTO.SearchData toSearchData = ManagmentItemMapDTO.stringSearchDataToSearchData(searchData);
+        System.out.println(" { " + toFormData.getCode_origin() + " }");
+        System.out.println(" { " + toSearchData.getOption() + " }");
+        
+        
+        Page<Products> paging = pService.managementGetDefaultPaging(model);
         model.addAttribute("itemPaging", paging);
 
         return "management/allitem_management_AjaxResult";
