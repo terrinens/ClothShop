@@ -29,7 +29,7 @@ import java.util.UUID;
 public class ProductsService {
 
     private final ProductsRepository pRepository;
-    @Value("{img.dir}")
+    @Value("${img.dir}")
     private String imgDir;
     private final ProductsImgStorageRepository pImgStorageRepository;
     private final Products products = new Products();
@@ -89,8 +89,8 @@ public class ProductsService {
         pRepository.deleteById(code);
     }
 
-    @SuppressWarnings("unused")
-    private Long saveFile(MultipartFile files) throws IOException {
+    public String saveFile(MultipartFile files) {
+        System.out.println(" { " + imgDir + " }");
         if (files.isEmpty()) {
             return null;
         } else {
@@ -107,15 +107,14 @@ public class ProductsService {
                         .savedPath(savedPath)
                         .build();
 
-                files.transferTo(new File(savedPath));
+                files.transferTo(new File(String.valueOf(savedPath)));
                 ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
-
-                return savedImg.getId();
-            } catch (RuntimeException e) {
+                return savedImg.getSavedPath();
+            } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }
-        return null;
     }
 
     private ManagementItemForm mapDataConversionNewItemForm(Map<String, Object> data) {

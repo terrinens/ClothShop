@@ -5,14 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @ToString
-public class ManagmentItemMapDTO {
+public class ManagmentItemDTO {
 
     FormData formData;
+    //이것도 dto로 바꿀것
     Map<String, Object> searchData;
     /**
      * 삭제 메서드를 위한 id값 이니 삭제하지 말것

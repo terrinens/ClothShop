@@ -1,12 +1,11 @@
 package com.cloth.clothshop.Management;
 
+import com.cloth.clothshop.Management.Form.ManagementItemForm;
 import com.cloth.clothshop.Management.Form.ManagementMemberForm;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberService;
 import com.cloth.clothshop.Products.Products;
 import com.cloth.clothshop.Products.ProductsService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -67,15 +66,7 @@ public class ManagementController {
         return "management/allitem_management_AjaxResult";
     }
 
-    /*pService.managementModifyProductsItem(itemMapDTO.getFormData());
-entityManager.clear();
-
-int page = itemMapDTO.getSearchDataPage();
-String keyword = itemMapDTO.getSearchDataKeyword();
-String option = itemMapDTO.getSearchDataOption();
-Page<Products> paging = pService.managementGetPaging(model, page, keyword, option);
-*/
-
+    /**반드시 MulitpartFile을 Optional 처리 할것!!!!!*/
     @SneakyThrows
     @PostMapping("/item/modify-Ajax")
     public String managementModifyItem(@RequestPart("formData") String formData ,
@@ -83,12 +74,17 @@ Page<Products> paging = pService.managementGetPaging(model, page, keyword, optio
                                        @RequestPart("imgData") Optional<MultipartFile> imgData ,
                                        Model model) {
 
-        ManagmentItemMapDTO.FormData toFormData = ManagmentItemMapDTO.stringDataToFormData(formData);
-        ManagmentItemMapDTO.SearchData toSearchData = ManagmentItemMapDTO.stringSearchDataToSearchData(searchData);
+        String path = null;
+        ManagmentItemDTO.FormData toFormData = ManagmentItemDTO.stringDataToFormData(formData);
+        ManagmentItemDTO.SearchData toSearchData = ManagmentItemDTO.stringSearchDataToSearchData(searchData);
         System.out.println(" { " + toFormData.getCode_origin() + " }");
         System.out.println(" { " + toSearchData.getOption() + " }");
-        
-        
+
+        if (imgData.isPresent()) {
+            path = pService.saveFile(imgData.get());
+        }
+        System.out.println("path값? { " + path + " }");
+        //이미지 path값 저장 로직 작성할것
         Page<Products> paging = pService.managementGetDefaultPaging(model);
         model.addAttribute("itemPaging", paging);
 
@@ -96,7 +92,7 @@ Page<Products> paging = pService.managementGetPaging(model, page, keyword, optio
     }
 
     @DeleteMapping("/item/Delete-Ajax")
-    public String managementDeleteItem(@RequestBody ManagmentItemMapDTO itemMapDTO, Model model) {
+    public String managementDeleteItem(@RequestBody ManagmentItemDTO itemMapDTO, Model model) {
         String targetCode = itemMapDTO.getTargetId();
         if (pService.productsItemSearch(targetCode).isPresent()) {
             pService.managementDeleteProductsItem(targetCode);
