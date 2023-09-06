@@ -1,5 +1,6 @@
 package com.cloth.clothshop.Management.Form;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +14,16 @@ public class ManagementItemForm {
 
     private String code;
 
+    public String getCode() {
+        if (!code_origin.isEmpty()) {
+            return code = code_origin;
+        } else {
+            return code;
+        }
+    }
+
     /**DTO 통합을 위해 추가함*/
+    @Getter(AccessLevel.NONE)
     private String code_origin;
 
     private String name;
