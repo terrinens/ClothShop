@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+/**@deprecated 삭제할 예정. 우편 번호 검색api를 사용할 예정*/
 @Entity @Setter @Getter
 public class tb_Zipcode {
 	
