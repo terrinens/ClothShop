@@ -74,17 +74,18 @@ public class ManagementController {
                                        @RequestPart("imgData") Optional<MultipartFile> imgData ,
                                        Model model) {
 
-        String path = null;
-        ManagmentItemDTO.FormData toFormData = ManagmentItemDTO.stringDataToFormData(formData);
+        String path = "이미지 준비중!";
+        ManagementItemForm itemForm = ManagmentItemDTO.stringDataToFormData(formData);
         ManagmentItemDTO.SearchData toSearchData = ManagmentItemDTO.stringSearchDataToSearchData(searchData);
-        System.out.println(" { " + toFormData.getCode_origin() + " }");
-        System.out.println(" { " + toSearchData.getOption() + " }");
 
+        System.out.println(" { " + itemForm.toString() + " }");
+        System.out.println(" { " + toSearchData.getOption() + " }");
         if (imgData.isPresent()) {
             path = pService.saveFile(imgData.get());
         }
         System.out.println("path값? { " + path + " }");
         //이미지 path값 저장 로직 작성할것
+
         Page<Products> paging = pService.managementGetDefaultPaging(model);
         model.addAttribute("itemPaging", paging);
 
