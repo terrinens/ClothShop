@@ -20,11 +20,14 @@ public class ProductsImgStorage {
 
     private String savedPath;
 
+    private String absolutePath;
+
     @Builder
-    public ProductsImgStorage(long id, String originUploadName, String savedName, String savedPath) {
+    public ProductsImgStorage(long id, String originUploadName, String savedName, String savedPath, String absolutePath) {
         this.id = id;
         this.originUploadName = originUploadName;
         this.savedName = savedName;
         this.savedPath = savedPath;
+        this.absolutePath = absolutePath;
     }
 }

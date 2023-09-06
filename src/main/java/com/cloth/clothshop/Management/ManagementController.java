@@ -74,19 +74,13 @@ public class ManagementController {
                                        @RequestPart("imgData") Optional<MultipartFile> imgData ,
                                        Model model) {
 
-        String path = "이미지 준비중!";
         ManagementItemForm itemForm = ManagmentItemDTO.stringDataToFormData(formData);
         ManagmentItemDTO.SearchData toSearchData = ManagmentItemDTO.stringSearchDataToSearchData(searchData);
 
-        System.out.println(" { " + itemForm.toString() + " }");
-        System.out.println(" { " + toSearchData.getOption() + " }");
-        if (imgData.isPresent()) {
-            path = pService.saveFile(imgData.get());
-        }
-        System.out.println("path값? { " + path + " }");
-        //이미지 path값 저장 로직 작성할것
+        imgData.ifPresent(file -> itemForm.setImage(pService.saveFile(file)));
+        pService.managementModifyProductsItem(itemForm);
 
-        Page<Products> paging = pService.managementGetDefaultPaging(model);
+        Page<Products> paging = pService.managementGetPaging(model, toSearchData.getPage(), toSearchData.getKeyword(), toSearchData.getOption());
         model.addAttribute("itemPaging", paging);
 
         return "management/allitem_management_AjaxResult";

@@ -28,9 +28,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductsService {
 
+    @Value("${pimgsave.dir}")
+    private String imgSaveDir;
+    @Value("${pimgloot.dir}")
+    private String imgLootDir;
     private final ProductsRepository pRepository;
-    @Value("${img.dir}")
-    private String imgDir;
     private final ProductsImgStorageRepository pImgStorageRepository;
     private final Products products = new Products();
 
@@ -82,6 +84,20 @@ public class ProductsService {
         }
     }
 
+    /**wOptional로 검사후 수정함 만약 여러 Service를 사용시 반드시 entityManager.clear(); 할것*/
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public void managementModifyProductsItem(ManagementItemForm itemForm) {
+        Optional<Products> productsOptional = pRepository.findById(itemForm.getCode());
+        if (productsOptional.isPresent()) {
+            pRepository.modifyItem(
+                    itemForm.getCode(), ProductsKind.getKind(itemForm.getKind()), itemForm.getName()
+                    , itemForm.getContents(), itemForm.getSizeSt(), itemForm.getSizeEt()
+                    , itemForm.getPrice(), itemForm.getQuantity(), itemForm.getUseyn()
+                    , itemForm.getImage(), itemForm.getIndate()
+            );
+        }
+    }
+
     /**
      * Optional 검사를 거친후 사용할것
      */
@@ -90,7 +106,7 @@ public class ProductsService {
     }
 
     public String saveFile(MultipartFile files) {
-        System.out.println(" { " + imgDir + " }");
+        System.out.println(" { " + imgSaveDir + " }");
         if (files.isEmpty()) {
             return null;
         } else {
@@ -99,15 +115,19 @@ public class ProductsService {
                 String uuid = UUID.randomUUID().toString();
                 String extend = Objects.requireNonNull(originName).substring(originName.lastIndexOf("."));
                 String savedName = uuid + extend;
-                String savedPath = imgDir + savedName;
+                String savedPath = imgLootDir + savedName;
+                String absolutePath = imgSaveDir + savedName;
+                
+                System.out.println(" { " + savedPath + " }");
 
                 ProductsImgStorage storage = ProductsImgStorage.builder()
                         .originUploadName(originName)
                         .savedName(savedName)
                         .savedPath(savedPath)
+                        .absolutePath(absolutePath)
                         .build();
 
-                files.transferTo(new File(String.valueOf(savedPath)));
+                files.transferTo(new File(absolutePath));
                 ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
                 return savedImg.getSavedPath();
             } catch (IOException e) {

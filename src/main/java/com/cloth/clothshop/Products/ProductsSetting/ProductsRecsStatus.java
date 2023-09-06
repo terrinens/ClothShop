@@ -2,6 +2,7 @@ package com.cloth.clothshop.Products.ProductsSetting;
 
 import lombok.Getter;
 
+@Getter
 public enum ProductsRecsStatus {
     No(0), Yes(1);
     private final int status;
@@ -16,9 +17,5 @@ public enum ProductsRecsStatus {
             case 1 -> Yes;
             default -> throw new IllegalStateException("Unexpected value: " + status);
         };
-    }
-
-    public int getStatus() {
-        return this.status;
     }
 }

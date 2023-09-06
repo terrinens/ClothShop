@@ -19,6 +19,8 @@ public class QProductsImgStorage extends EntityPathBase<ProductsImgStorage> {
 
     public static final QProductsImgStorage productsImgStorage = new QProductsImgStorage("productsImgStorage");
 
+    public final StringPath absolutePath = createString("absolutePath");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath originUploadName = createString("originUploadName");
