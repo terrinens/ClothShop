@@ -98,27 +98,28 @@ public class ProductsService {
         }
     }
 
-    /**
-     * Optional 검사를 거친후 사용할것
-     */
+    /**Optional 검사를 거친후 사용할것*/
     public void managementDeleteProductsItem(String code) {
         pRepository.deleteById(code);
     }
 
     public String saveFile(MultipartFile files) {
-        System.out.println(" { " + imgSaveDir + " }");
         if (files.isEmpty()) {
             return null;
         } else {
             try {
                 String originName = files.getOriginalFilename();
                 String uuid = UUID.randomUUID().toString();
-                String extend = Objects.requireNonNull(originName).substring(originName.lastIndexOf("."));
+                String extend;
+                if (Objects.requireNonNull(originName).lastIndexOf(".") != -1) {
+                    extend = Objects.requireNonNull(originName).substring(originName.lastIndexOf("."));
+                } else {
+                    extend = files.getContentType();
+                }
+
                 String savedName = uuid + extend;
                 String savedPath = imgLootDir + savedName;
                 String absolutePath = imgSaveDir + savedName;
-                
-                System.out.println(" { " + savedPath + " }");
 
                 ProductsImgStorage storage = ProductsImgStorage.builder()
                         .originUploadName(originName)
