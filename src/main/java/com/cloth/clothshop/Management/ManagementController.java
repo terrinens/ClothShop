@@ -31,7 +31,7 @@ public class ManagementController {
 
     @GetMapping("/allitem")
     public String managementProudcts(Model model) {
-        Page<Products> paging = pService.managementGetDefaultPaging(model);
+        Page<Products> paging = pService.managementGetPaging(model);
         model.addAttribute("itemPaging", paging);
         return "management/allitem_management";
     }

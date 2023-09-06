@@ -19,10 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,13 +33,11 @@ public class ProductsService {
     private final ProductsImgStorageRepository pImgStorageRepository;
     private final Products products = new Products();
 
-    public Page<Products> getlistCloth(char kindOption1, char kindOption2, int page
-    ) {
-        Pageable pageable = PageRequest.of(page, 15);
-
-        return pRepository.findByKindList(kindOption1, kindOption2, pageable);
+    public List<Products> indexGetList() {
+        return pRepository.findByRecommendations();
     }
 
+    /**검색 후 페이징*/
     public Page<Products> managementGetPaging(Model model, int page, String keyword, String option) {
         //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(page, 10, Sort.by("indate").ascending());
@@ -52,7 +47,8 @@ public class ProductsService {
         return pRepository.findByOptionAndKeyword(option, keyword, pageable);
     }
 
-    public Page<Products> managementGetDefaultPaging(Model model) {
+    /**모든 값 가져오는 페이징*/
+    public Page<Products> managementGetPaging(Model model) {
         //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(0, 10, Sort.by("indate").ascending());
         model.addAttribute("keyword", "");

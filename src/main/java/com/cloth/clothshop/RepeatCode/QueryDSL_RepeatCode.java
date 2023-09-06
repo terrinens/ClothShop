@@ -32,7 +32,6 @@ public class QueryDSL_RepeatCode {
                     .limit(pageable.getPageSize())
                     .fetch();
         } else {
-
             page = query
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
