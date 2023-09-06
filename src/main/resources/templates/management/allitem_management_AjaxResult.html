@@ -4,10 +4,8 @@
 <!--suppress JSFileReferences -->
 <script type="module">
     import {commonLink} from "/managementJS/commonAction.js";
-
     commonLink();
     import {itemButtonModifyMppaing} from "/managementJS/allitem/item_management_AjaxModel.js";
-
     itemButtonModifyMppaing();
 </script>
 <table class="table table-hover container-xxl">
@@ -155,8 +153,32 @@
                         <input th:name="quantity" th:value="${item.getQuantity()}"
                                class="form-control is-valid recipient-quantity" id="recipient-quantity">
                         
-                        <label for="recipient-img" class="col-form-label">상품 이미지 수정(구현중)</label>
-                        <input th:name="img" type="file" accept=".jpg, .jpeg, .png, .gif" class="form-control recipient-img" id="recipient-img">
+                        <label for="recipient-img" class="col-form-label">상품 이미지 수정</label>
+                        <input th:name="img" type="file" accept=".jpg, .jpeg, .png, .gif"
+                               class="form-control recipient-img" id="recipient-img">
+                        
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="false"
+                                            aria-controls="collapseOne">
+                                        기존/수정된 이미지 보기
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <img th:if="${!item.getImage().startsWith('/pimg/')}" th:src="@{/noimg.png}" class="noImg img-thumbnail rounded mx-auto d-block">
+                                        <div th:if="${item.getImage().startsWith('/pimg/')}" class="trueValueImgBox align-content-center justify-content-center">
+                                            <img th:src="${item.getImage()}" class="savedImg rounded img-fluid img-thumbnail" style="width: 45%">
+                                            <img th:src="@{/arrow-bar-right.svg}">
+                                            <img th:src="${item.getImage()}" class="moidfyImg rounded img-fluid img-thumbnail" style="width: 45%">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
