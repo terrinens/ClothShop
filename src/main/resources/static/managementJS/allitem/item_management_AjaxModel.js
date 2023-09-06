@@ -140,7 +140,7 @@ export function itemButtonModifyMppaing() {
             let reader = new FileReader();
             reader.readAsDataURL(imgInput.files[0]);
             reader.onload = function (event) {
-                if ($modifyImg.hasClass('moidfyImg')) {
+                if ($modifyImg.length > 0) {
                     $modifyImg.attr('src', event.target.result);
                 } else {
                     $falseValueImgBox.empty();
