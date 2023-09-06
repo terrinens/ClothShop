@@ -79,6 +79,7 @@ public class ManagementController {
 
         imgData.ifPresent(file -> itemForm.setImage(pService.saveFile(file)));
         pService.managementModifyProductsItem(itemForm);
+        entityManager.clear();
 
         Page<Products> paging = pService.managementGetPaging(model, toSearchData.getPage(), toSearchData.getKeyword(), toSearchData.getOption());
         model.addAttribute("itemPaging", paging);
@@ -178,10 +179,8 @@ public class ManagementController {
         return "management/order_management";
     }
 
-    /**
-     * 반드시 Ajax로 넘겨받은 Object에서 추출한 serachData를 Object로 변환시켜 넘길것
-     * Transactional문제로 컨트롤에서 작성함
-     */
+    /**반드시 Ajax로 넘겨받은 Object에서 추출한 serachData를 Object로 변환시켜 넘길것
+     * Transactional문제로 컨트롤에서 작성함*/
     private void modelAajxCommonPaging(Map<String, Object> serachData, Model model) {
         int page = Integer.parseInt(serachData.get("page").toString());
         String option = serachData.get("option").toString();
