@@ -154,8 +154,7 @@
                                class="form-control is-valid recipient-quantity" id="recipient-quantity">
                         
                         <label for="recipient-img" class="col-form-label">상품 이미지 수정</label>
-                        <input th:name="img" type="file" accept=".jpg, .jpeg, .png, .gif"
-                               class="form-control recipient-img" id="recipient-img">
+                        <input th:name="img" type="file" accept=".jpg, .jpeg, .png, .gif" class="form-control recipient-img" id="recipient-img">
                         
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item">
@@ -169,7 +168,9 @@
                                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
                                      data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <img th:if="${!item.getImage().startsWith('/pimg/')}" th:src="@{/noimg.png}" class="noImg img-thumbnail rounded mx-auto d-block">
+                                        <div th:if="${!item.getImage().startsWith('/pimg/')}" class="falseValueImgBox">
+                                            <img th:src="@{/noimg.png}" class="noImg img-thumbnail rounded mx-auto d-block">
+                                        </div>
                                         <div th:if="${item.getImage().startsWith('/pimg/')}" class="trueValueImgBox align-content-center justify-content-center">
                                             <img th:src="${item.getImage()}" class="savedImg rounded img-fluid img-thumbnail" style="width: 45%">
                                             <img th:src="@{/arrow-bar-right.svg}">

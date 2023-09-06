@@ -129,6 +129,30 @@ export function itemButtonModifyMppaing() {
         $modalBackdrop.remove();
         sendModifyAjax(sendData);
     })
+
+    /**이미지 인풋시 변경할 이미지 미리보기*/
+    const $recipient_img = $('.recipient-img');
+    $recipient_img.change(function () {
+        const imgInput = this;
+        const $falseValueImgBox = $(this).siblings('.accordion').find('.falseValueImgBox');
+        const $modifyImg = $(this).siblings('.accordion').find('.moidfyImg');
+        if (imgInput.files && imgInput.files[0]) {
+            let reader = new FileReader();
+            reader.readAsDataURL(imgInput.files[0]);
+            reader.onload = function (event) {
+                if ($modifyImg.hasClass('moidfyImg')) {
+                    $modifyImg.attr('src', event.target.result);
+                } else {
+                    $falseValueImgBox.empty();
+                    $falseValueImgBox.append(
+                        '<img src="/noimg.png" class="savedImg rounded img-fluid img-thumbnail" style="width: 45%">'
+                        + '<img src="/arrow-bar-right.svg">'
+                        + '<img src="'+event.target.result+'" class="moidfyImg rounded img-fluid img-thumbnail" style="width: 45%">'
+                    );
+                }
+            }
+        }
+    })
 }
 
 
@@ -178,13 +202,12 @@ function conversionCommonFormData(targetFormClass, searchDataObject, targetInput
     partSendForm.append("searchData", searchDataBlob, 'data.json');
 
     if (targetInputClass[0] && targetInputClass[0].files[0]) {
-        console.log("파일 찾음");
-        console.log(targetInputClass[0].files[0]);
         partSendForm.append("imgData", targetInputClass[0].files[0]);
     } else {
-        console.log("파일 찾지 못함");
     }
 
     return partSendForm;
 }
+
+
 
