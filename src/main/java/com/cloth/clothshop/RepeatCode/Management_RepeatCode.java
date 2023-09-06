@@ -3,16 +3,9 @@ package com.cloth.clothshop.RepeatCode;
 import com.cloth.clothshop.Management.Form.ManagementMemberForm;
 import com.cloth.clothshop.Member.Member;
 import com.cloth.clothshop.Member.MemberRepository;
-import lombok.Getter;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,82 +13,12 @@ import java.util.Optional;
 @Configuration
 public class Management_RepeatCode {
 
-    private final ApplicationContext applicationContext;
-
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository mRepository;
 
-    public Management_RepeatCode(ApplicationContext applicationContext, PasswordEncoder passwordEncoder, MemberRepository memberRepository) {
-        this.applicationContext = applicationContext;
+    public Management_RepeatCode(PasswordEncoder passwordEncoder, MemberRepository memberRepository) {
         this.passwordEncoder = passwordEncoder;
         this.mRepository = memberRepository;
-    }
-
-    /**@deprecated 삭제할 예정*/
-    @Getter
-    public static class CustomPage<T> extends PageImpl<T> {
-
-        private final Class<?> entityClass;
-
-        public CustomPage(List<T> content, Pageable pageable, long total, Class<?> entityClass) {
-            super(content, pageable, total);
-            this.entityClass = entityClass;
-        }
-    }
-
-    /**@deprecated 삭제할 예정 복잡하기만하고 쓸모없음.*/
-    @SuppressWarnings("unchecked")
-    public <T> Page<T> autoWritePaging(Model model, String targetRCN, String sortBenchmark, Object[] requestParamArray) {
-
-        int page = 0;
-        String searchOption = null;
-        String searchKeyword = null;
-
-        for (int i = 0; i < requestParamArray.length; i++) {
-            if (i == 0) {
-                if (requestParamArray[i] != null) {
-                    page = Integer.parseInt(requestParamArray[i].toString());
-                }
-            } else if (i == 1) {
-
-                if (requestParamArray[i] != null) {
-                    searchOption = requestParamArray[i].toString();
-                }
-            } else if (i == 2) {
-                if (requestParamArray[i] != null) {
-                    searchKeyword = requestParamArray[i].toString();
-                }
-            }
-        }
-
-        Sort sort = Sort.by(sortBenchmark).ascending();
-        Pageable pageable = PageRequest.of(page, 15, sort);
-
-        try {
-            Class<?>[] parameterType = new Class<?>[]{String.class, String.class, Pageable.class};
-            Object[] arguments = new Object[]{searchOption, searchKeyword, pageable};
-            Object repositoryInstance = applicationContext.getBean(Class.forName(targetRCN));
-            Method method = repositoryInstance.getClass().getDeclaredMethod("findByOptionAndKeyword", parameterType);
-
-            Page<T> autoPaging;
-            Object result = method.invoke(repositoryInstance, arguments);
-            if (result instanceof Page<?>) {
-                autoPaging = (Page<T>) result;
-                model.addAttribute("option", searchOption);
-                model.addAttribute("keyword", searchKeyword);
-                return autoPaging;
-            } else {
-                throw new RuntimeException("Unexpected result type :::: ");
-            }
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("No such method found :::: ", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Illegal access :::: ", e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("Invocation target exception :::: ", e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Class not found :::: ", e);
-        }
     }
 
     public void encoderPwdModify(Map<String, Object> formData, String originPwd) {
