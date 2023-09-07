@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Getter @Setter @ToString
 public class ManagementItemForm {
@@ -44,6 +45,13 @@ public class ManagementItemForm {
     private String image;
 
     private Date indate;
+
+    public Date getIndate() {
+        if (indate == null) {
+            return Date.valueOf(LocalDateTime.now().toLocalDate());
+        }
+        return indate;
+    }
 
     private int prodRecsStatus;
 }
