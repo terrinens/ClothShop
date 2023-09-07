@@ -38,7 +38,10 @@ public class ProductsService {
         return pRepository.findByRecommendations();
     }
 
-    /** 검색 후 페이징 */
+    /**     
+     * @param model      반복되는 값 자동으로 반환을 위한 값
+     * @return model 속성 : keyword, option을 반환
+     */
     public Page<Products> managementGetPaging(Model model, int page, String keyword, String option) {
         //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(page, 10, Sort.by("indate").ascending());
@@ -48,7 +51,7 @@ public class ProductsService {
         return pRepository.findByOptionAndKeyword(option, keyword, pageable);
     }
 
-    /** 모든 값 가져오는 페이징 */
+    /** @return 모든 상품 데이터 */
     public Page<Products> managementGetPaging(Model model) {
         //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(0, 10, Sort.by("indate").ascending());
@@ -57,7 +60,11 @@ public class ProductsService {
         return pRepository.findByOptionAndKeyword("all", "", pageable);
     }
 
-    /** ManagmentItemDTO.SearchData 값으로 페이징 */
+    /**
+     * @param model      반복되는 값 자동으로 반환을 위한 값
+     * @param searchData 검색 데이터
+     * @return model 속성 : keyword, option을 반환
+     */
     public Page<Products> managementGetPaging(Model model, ManagmentItemDTO.SearchData searchData) {
         //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(searchData.getPage(), 10, Sort.by("indate").ascending());
@@ -70,8 +77,8 @@ public class ProductsService {
         return pRepository.findById(code);
     }
 
-    public void managementNewProductsItem(Map<String, Object> itemData) {
-        products.managementNewItemSave(mapDataConversionNewItemForm(itemData));
+    public void managementNewProductsItem(ManagementItemForm newItemForm) {
+        products.managementNewItemSave(newItemForm);
         pRepository.save(products);
     }
 
@@ -90,14 +97,16 @@ public class ProductsService {
         }
     }
 
-    /** wOptional로 검사후 수정함 만약 여러 Service를 사용시 반드시 entityManager.clear(); 할것 */
+    /**
+     * Optional로 검사후 수정함 Form의 image값이 null일 경우 자동처리
+     * 여러 Service를 사용시 반드시 entityManager.clear(); 할것
+     */
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void managementModifyProductsItem(ManagementItemForm itemForm) {
         Optional<Products> productsOptional = pRepository.findById(itemForm.getCode());
 
         if (productsOptional.isPresent()) {
             if (itemForm.getImage() == null) {
-                System.out.println(" { " + "값 비어 있음 재할당 시작" + " }");
                 itemForm.setImage(productsOptional.get().getImage());
             }
             pRepository.modifyItem(
