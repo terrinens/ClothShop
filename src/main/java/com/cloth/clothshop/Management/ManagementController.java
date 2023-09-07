@@ -51,13 +51,16 @@ public class ManagementController {
     @PostMapping("/item/new-Ajax")
     public String managementNewItem(@RequestPart("formData") String formData ,
                                     @RequestPart("searchData") String searchData ,
+                                    @RequestPart("imgData") Optional<MultipartFile> imgData ,
                                     Model model) {
         ManagementItemForm itemForm = ManagmentItemDTO.stringDataToFormData(formData);
         ManagmentItemDTO.SearchData toSearchData = ManagmentItemDTO.stringSearchDataToSearchData(searchData);
-        /*pService.managementNewProductsItem(itemData);*/
+
+        imgData.ifPresent(file -> itemForm.setImage(pService.saveFile(file)));
+        pService.managementNewProductsItem(itemForm);
+        entityManager.clear();
 
         Page<Products> paging = pService.managementGetPaging(model, toSearchData);
-
         model.addAttribute("itemPaging", paging);
 
         return "management/allitem_management_AjaxResult";
@@ -73,9 +76,6 @@ public class ManagementController {
 
         ManagementItemForm itemForm = ManagmentItemDTO.stringDataToFormData(formData);
         ManagmentItemDTO.SearchData toSearchData = ManagmentItemDTO.stringSearchDataToSearchData(searchData);
-        System.out.println("서치값 테스트? { " + toSearchData.getKeyword() + " }");
-        System.out.println("서치값 테스트? { " + toSearchData.getOption() + " }");
-        System.out.println("서치값 테스트? { " + toSearchData.getPage() + " }");
 
         imgData.ifPresent(file -> itemForm.setImage(pService.saveFile(file)));
         pService.managementModifyProductsItem(itemForm);

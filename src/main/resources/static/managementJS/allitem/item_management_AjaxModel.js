@@ -35,7 +35,6 @@ function sendModifyAjax(sendData) {
         },
         url: "/management/item/modify-Ajax",
         data: sendData,
-        /*contentType: "application/json",*/
         processData: false,
         contentType: false,
         success: function (html) {
@@ -68,8 +67,9 @@ function sendNewAjax(sendData) {
             xhr.setRequestHeader(header, token);
         },
         url: "/management/item/new-Ajax",
-        data: JSON.stringify(sendData),
-        contentType: "application/json",
+        data: sendData,
+        processData: false,
+        contentType: false,
         success: function (html) {
             $allItemAjax.html(html);
         }
@@ -92,12 +92,13 @@ $buttonNewItem.on('click', function (evnet) {
         return false;
     } else {
         const searchData = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
-        const serachDataToBlob = conversionJsonToBlob(searchData);
-        const formDataToBlob = conversionJsonToBlob(formData);
-
         let partSendForm = new FormData();
-        partSendForm.append("formData", formDataToBlob, 'data.json');
-        sendNewAjax();
+        const $newItemImg = newItemFormSelect.find($('.newItemImg'));
+        conversionJsonToBlob("formData", formData, partSendForm);
+        conversionJsonToBlob("searchData", searchData, partSendForm);
+        appendSingleFileToFormData("imgData" , $newItemImg, partSendForm)
+
+        sendNewAjax(partSendForm);
         newItemInputValueEmpty();
     }
 })
@@ -118,7 +119,6 @@ export function itemButtonModifyMppaing() {
         const $recipientPrice = $modifyForm.find($('.recipient-price'));
         const searchDataObject = {page: "0", keyword: $searchKeyword.val(), option: $searchOption.val()};
         const $imgInput = $modifyForm.find($('.recipient-img'));
-        const sendData = conversionCommonFormData($modifyForm, searchDataObject, $imgInput);
 
         validCheck($recipientName);
         validCheck($recipientPrice);
@@ -127,17 +127,23 @@ export function itemButtonModifyMppaing() {
             return false;
         }
 
+        const formData = new FormData($modifyForm[0]);
+        let partSendForm = new FormData();
+        conversionJsonToBlob("formData", formData, partSendForm);
+        conversionJsonToBlob("searchData", searchDataObject, partSendForm);
+        appendSingleFileToFormData("imgData", $imgInput, partSendForm);
+
         const $modalBackdrop = $('.modal-backdrop');
         $modalBackdrop.remove();
-        sendModifyAjax(sendData);
+        sendModifyAjax(partSendForm);
     })
 
     /**아이템 수정 이미지 인풋시 변경할 이미지 미리보기*/
     const $recipient_img = $('.recipient-img');
     $recipient_img.change(function () {
         const imgInput = this;
-        const $falseValueImgBox = $(this).siblings('.accordion').find('.falseValueImgBox');
-        const $modifyImg = $(this).siblings('.accordion').find('.moidfyImg');
+        const $falseValueImgBox = $(this).siblings('.accordion').find($('.falseValueImgBox'));
+        const $modifyImg = $(this).siblings('.accordion').find($('.moidfyImg'));
         if (imgInput.files && imgInput.files[0]) {
             let reader = new FileReader();
             reader.readAsDataURL(imgInput.files[0]);
@@ -170,26 +176,12 @@ function newItemInputValueEmpty() {
     $('#newItemContents').val(null);
 }
 
-/**이미지 파일을 따로 처리하기 위한 코드 null처리를 완벽하게 구현 못했으니 컨트롤에서 Optional로 받을것.*/
-function conversionCommonFormData(targetFormClass, searchDataObject, targetInputClass) {
-
-    let formData = new FormData(targetFormClass[0]);
-    let partSendForm = new FormData();
-    conversionJsonToBlob("formData", formData, partSendForm);
-    conversionJsonToBlob("searchData", searchDataObject, partSendForm);
-
-    if (targetInputClass[0] && targetInputClass[0].files[0]) {
-        partSendForm.append("imgData", targetInputClass[0].files[0]);
-    } else {
-        return null;
-    }
-    return partSendForm;
-}
 
 /**JSON 데이터를 FormData에서 Blob으로 변환하여 targetSendForm에 추가하는 메서드 form 클래스나 key:value를 보낼것
  * @param {string} appendName - Blob을 append할 때 사용할 이름
  * @param {Object|FormData} targetData - 변환할 JSON 데이터나 FormData
  * @param {FormData} targetNewForm - Blob을 추가할 대상 FormData
+ * @returns {void} - Blob을 대상 FormData에 추가.
  */
 function conversionJsonToBlob(appendName, targetData, targetNewForm) {
     let form = new FormData;
@@ -201,9 +193,9 @@ function conversionJsonToBlob(appendName, targetData, targetNewForm) {
         }
     } else {
         if (targetData.has("img")) {
-            targetData.delete("img");
+            form = targetData;
+            form.delete("img");
         }
-        form = targetData;
     }
 
     let object = {};
@@ -212,6 +204,17 @@ function conversionJsonToBlob(appendName, targetData, targetNewForm) {
     });
     const relust = new Blob([JSON.stringify(object)], {type: 'application/json'});
     return targetNewForm.append(appendName, relust, 'data.json');
+}
+
+/**해당 클래스에 이미지가 존재할시에 targetNewForm에 append하는 메서드
+ * @param {string} appendName - append할 때 사용할 이름
+ * @param {Class} targetInputClass - 해당 인풋 박스의 클래스
+ * @param {FormData} targetNewForm - 이미지값을 추가할 대상 FormData
+ * @return {void} - 이미지를 대상 FormData에 추가.*/
+function appendSingleFileToFormData(appendName, targetInputClass, targetNewForm) {
+    if (targetInputClass[0] && targetInputClass[0].files[0]) {
+        targetNewForm.append(appendName, targetInputClass[0].files[0]);
+    }
 }
 
 

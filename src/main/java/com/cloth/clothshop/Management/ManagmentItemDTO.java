@@ -32,6 +32,9 @@ public class ManagmentItemDTO {
 
 
     static ManagementItemForm stringDataToFormData(String stringData) {
+        if (stringData.isEmpty()) {
+            System.out.println(" { " + "dto로 변환중이지만 값이 존재하지 않음." + " }");
+        }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(stringData, ManagementItemForm.class);
