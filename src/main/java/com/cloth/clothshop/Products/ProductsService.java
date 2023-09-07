@@ -75,6 +75,13 @@ public class ProductsService {
         return pRepository.findByOptionAndKeyword(searchData.getOption(), searchData.getKeyword(), pageable);
     }
 
+    /**@param specificKind - 출력을 원하는 kind의 값을 배열로 전달할것. 배열 1번 이후 값들은 OR처리 됨
+     * @return specificKind로 전달된 값들 페이징 처리*/
+    public Page<Products> viewItemGetPaging(char [] specificKind) {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("indate").ascending());
+        return pRepository.findBySpecificKindOR(pageable, specificKind);
+    }
+
     public Optional<Products> productsItemSearch(String code) {
         return pRepository.findById(code);
     }

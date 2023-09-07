@@ -90,7 +90,7 @@ export function commonLink() {
     });
 }
 
-/**오류로 인해 임시적으로 commonaAction에 할당함 멤버 페이지에서만 사용할것*/
+/**오류로 인해 임시적으로 commonaAction에 할당함 멤버 페이지에서만 사용할것 $(function () {})? 시도해볼것?*/
 export function memberButtonModify() {
     const $buttonModify = $('.button_modify');
     $buttonModify.on('click', function (event) {
