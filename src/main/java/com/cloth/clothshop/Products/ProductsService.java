@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -39,7 +40,7 @@ public class ProductsService {
         return pRepository.findByRecommendations();
     }
 
-    /**     
+    /**
      * @param model      반복되는 값 자동으로 반환을 위한 값
      * @return model 속성 : keyword, option을 반환
      */
@@ -128,7 +129,6 @@ public class ProductsService {
         if (files.isEmpty()) {
             return null;
         } else {
-            try {
                 String originName = files.getOriginalFilename();
                 String uuid = UUID.randomUUID().toString();
                 String extend;
@@ -149,13 +149,20 @@ public class ProductsService {
                         .absolutePath(absolutePath)
                         .build();
 
-                files.transferTo(new File(absolutePath));
+                try {
+                    files.transferTo(new File(absolutePath));
+                } catch (IOException e) {
+                    try {
+                        String adminCommand = "chmod -R 755 " + absolutePath;
+                        Process process = Runtime.getRuntime().exec(adminCommand);
+                        int exitCode = process.waitFor();
+                    } catch (IOException | InterruptedException e2) {
+                        e2.printStackTrace();
+                    }
+                }
+
                 ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
                 return savedImg.getSavedPath();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
         }
     }
 
