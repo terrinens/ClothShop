@@ -92,10 +92,12 @@ $buttonNewItem.on('click', function (evnet) {
         return false;
     } else {
         const searchData = {page: 0, keyword: $searchKeyword.val(), option: $searchOption.val()};
-        const sendData = {
-            formData: Object.fromEntries(formData.entries()), searchData: searchData
-        };
-        sendNewAjax(sendData);
+        const serachDataToBlob = conversionJsonToBlob(searchData);
+        const formDataToBlob = conversionJsonToBlob(formData);
+
+        let partSendForm = new FormData();
+        partSendForm.append("formData", formDataToBlob, 'data.json');
+        sendNewAjax();
         newItemInputValueEmpty();
     }
 })
@@ -130,7 +132,7 @@ export function itemButtonModifyMppaing() {
         sendModifyAjax(sendData);
     })
 
-    /**이미지 인풋시 변경할 이미지 미리보기*/
+    /**아이템 수정 이미지 인풋시 변경할 이미지 미리보기*/
     const $recipient_img = $('.recipient-img');
     $recipient_img.change(function () {
         const imgInput = this;
@@ -168,45 +170,48 @@ function newItemInputValueEmpty() {
     $('#newItemContents').val(null);
 }
 
-/**이미지 파일을 따로 처리하기 위한 코드 form Class의 경우 FormData로 변환 시켜 넘길것
- * null처리를 완벽하게 구현 못했으니 컨트롤에서 Optional로 받을것.*/
+/**이미지 파일을 따로 처리하기 위한 코드 null처리를 완벽하게 구현 못했으니 컨트롤에서 Optional로 받을것.*/
 function conversionCommonFormData(targetFormClass, searchDataObject, targetInputClass) {
-    function conversionJsonToBlob(targetData) {
-        let form = new FormData;
-        if (!(targetData instanceof FormData) && targetData instanceof Object) {
-            let conversionNewForm = new FormData();
-            for (const key in targetData) {
-                conversionNewForm.append(key, targetData[key])
-                form = conversionNewForm;
-            }
-        } else {
-            if (formData.has("img")) {
-                formData.delete("img");
-            }
-            form = targetData;
-        }
-
-        let object = {};
-        form.forEach((value, key) => {
-            object[key] = value;
-        });
-        return new Blob([JSON.stringify(object)], {type: 'application/json'});
-    }
 
     let formData = new FormData(targetFormClass[0]);
-    let formDataBlob = conversionJsonToBlob(formData);
-    let searchDataBlob = conversionJsonToBlob(searchDataObject);
-
     let partSendForm = new FormData();
-    partSendForm.append("formData", formDataBlob, 'data.json');
-    partSendForm.append("searchData", searchDataBlob, 'data.json');
+    conversionJsonToBlob("formData", formData, partSendForm);
+    conversionJsonToBlob("searchData", searchDataObject, partSendForm);
 
     if (targetInputClass[0] && targetInputClass[0].files[0]) {
         partSendForm.append("imgData", targetInputClass[0].files[0]);
     } else {
+        return null;
+    }
+    return partSendForm;
+}
+
+/**JSON 데이터를 FormData에서 Blob으로 변환하여 targetSendForm에 추가하는 메서드 form 클래스나 key:value를 보낼것
+ * @param {string} appendName - Blob을 append할 때 사용할 이름
+ * @param {Object|FormData} targetData - 변환할 JSON 데이터나 FormData
+ * @param {FormData} targetNewForm - Blob을 추가할 대상 FormData
+ */
+function conversionJsonToBlob(appendName, targetData, targetNewForm) {
+    let form = new FormData;
+    if (!(targetData instanceof FormData) && targetData instanceof Object) {
+        let conversionNewForm = new FormData();
+        for (const key in targetData) {
+            conversionNewForm.append(key, targetData[key])
+            form = conversionNewForm;
+        }
+    } else {
+        if (targetData.has("img")) {
+            targetData.delete("img");
+        }
+        form = targetData;
     }
 
-    return partSendForm;
+    let object = {};
+    form.forEach((value, key) => {
+        object[key] = value;
+    });
+    const relust = new Blob([JSON.stringify(object)], {type: 'application/json'});
+    return targetNewForm.append(appendName, relust, 'data.json');
 }
 
 
