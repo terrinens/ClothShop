@@ -87,11 +87,22 @@ public class Products {
     @Column @ColumnDefault("'0'")
     @Enumerated(EnumType.ORDINAL)
     private ProductsRecsStatus prodRecsStatus;
+
+    /**편의성을 위한 int값 반환*/
+    public int getProdRecsStatus() {
+        return prodRecsStatus.getStatus();
+    }
+
+    /**가시성을 위한 자연상태값 반환*/
+    public ProductsRecsStatus getProdRecsStatusString() {
+        return prodRecsStatus;
+    }
+
     public void setProductsRecsStatus(int status) {
         this.prodRecsStatus = ProductsRecsStatus.fromStatus(status);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
+    /**@deprecated itemForm으로 변경할 예정*/
     public Products managementNewItemSave(ManagementItemForm newItemForm) {
         this.name = newItemForm.getName();
         this.kind = ProductsKind.fromChar(newItemForm.getKind());

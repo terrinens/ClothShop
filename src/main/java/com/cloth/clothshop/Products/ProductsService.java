@@ -5,6 +5,7 @@ import com.cloth.clothshop.Management.ManagmentItemDTO;
 import com.cloth.clothshop.Products.ImgSetting.ProductsImgStorage;
 import com.cloth.clothshop.Products.ImgSetting.ProductsImgStorageRepository;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
+import com.cloth.clothshop.Products.ProductsSetting.ProductsRecsStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -92,7 +93,7 @@ public class ProductsService {
                     newItemForm.getCode(), ProductsKind.getKind(newItemForm.getKind()), newItemForm.getName()
                     , newItemForm.getContents(), newItemForm.getSizeSt(), newItemForm.getSizeEt()
                     , newItemForm.getPrice(), newItemForm.getQuantity(), newItemForm.getUseyn()
-                    , newItemForm.getImage(), newItemForm.getIndate()
+                    , newItemForm.getImage(), newItemForm.getIndate(), ProductsRecsStatus.fromStatus(newItemForm.getProdRecsStatus())
             );
         }
     }
@@ -113,7 +114,7 @@ public class ProductsService {
                     itemForm.getCode(), ProductsKind.getKind(itemForm.getKind()), itemForm.getName()
                     , itemForm.getContents(), itemForm.getSizeSt(), itemForm.getSizeEt()
                     , itemForm.getPrice(), itemForm.getQuantity(), itemForm.getUseyn()
-                    , itemForm.getImage(), itemForm.getIndate()
+                    , itemForm.getImage(), itemForm.getIndate(), ProductsRecsStatus.fromStatus(itemForm.getProdRecsStatus())
             );
         }
     }

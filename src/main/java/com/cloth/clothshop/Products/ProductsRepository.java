@@ -2,6 +2,7 @@ package com.cloth.clothshop.Products;
 
 import com.cloth.clothshop.Products.ProductsQueryDSL.ProductsRepositoryCustom;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
+import com.cloth.clothshop.Products.ProductsSetting.ProductsRecsStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,7 +23,9 @@ public interface ProductsRepository extends JpaRepository<Products, String>, Pro
             ", sizeSt = :sizeSt, sizeEt = :sizeEt" +
             ", price = :price, quantity = :quantity" +
             ", useyn = :useyn, image = :img" +
-            ", indate = :indate  WHERE code = :code")
+            ", indate = :indate, prodRecsStatus = :prodRecsStatus" +
+            " WHERE code = :code"
+    )
     void modifyItem(
             @Param("code") String code
             , @Param("kind") ProductsKind kind
@@ -35,5 +38,6 @@ public interface ProductsRepository extends JpaRepository<Products, String>, Pro
             , @Param("useyn") char useyn
             , @Param("img") String img
             , @Param("indate") Date indate
-    );
+            , @Param("prodRecsStatus")ProductsRecsStatus productsRecsStatus
+            );
 }

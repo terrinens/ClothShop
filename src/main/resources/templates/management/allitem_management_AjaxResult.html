@@ -25,7 +25,7 @@
     <tbody>
     <tr th:each="item, i : ${itemPaging}" class="table-light" data-bs-toggle="modal"
         th:attr="data-bs-target='#itemDetail_' + ${item.getCode()}">
-        <th th:text="${item.getProdRecsStatus()}">admin추천여부</th>
+        <th th:text="${item.getProdRecsStatusString()}">admin추천여부</th>
         <th th:text="${item.getKind()}" scope="row">상품분류</th>
         <th th:text="${#strings.substring(item.getCode(), 0, 5) + '...'}" scope="row">상품코드</th>
         <th th:text="${item.getName()}" scope="row">상품이름</th>
@@ -138,11 +138,11 @@
                         <label for="recipient-productsRecsStatus">추천상품</label>
                         <select name="prodRecsStatus" id="recipient-productsRecsStatus"
                                 class="form-control-sm recipient-productsRecsStatus">
-                            <option value="1" th:selected="${item.getProdRecsStatus() == 'Yes'}">Yes</option>
-                            <option value="0" th:selected="${item.getProdRecsStatus() == 'No'}">No</option>
+                            <option value="1" th:selected="${item.getProdRecsStatus() == 1}">Yes</option>
+                            <option value="0" th:selected="${item.getProdRecsStatus() == 0}">No</option>
                         </select>
                         
-                        <label for="recipient-useyn">품절 여부 및 전시 여부</label>
+                        <label for="recipient-useyn">전시 여부(품절시 N)</label>
                         <select name="useyn" class="form-control-sm is-valid recipient-useyn" id="recipient-useyn">
                             <option value="Y" th:selected="${item.getUseyn() == 'Y'}">Y</option>
                             <option value="N" th:selected="${item.getUseyn() == 'N'}">N</option>
