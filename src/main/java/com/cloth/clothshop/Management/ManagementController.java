@@ -48,18 +48,15 @@ public class ManagementController {
         return "management/allitem_management_AjaxResult";
     }
 
-    @SuppressWarnings("unchecked")
     @PostMapping("/item/new-Ajax")
-    public String managementNewItem(@RequestBody Map<String, Object> newItemData, Model model) {
-        Map<String, Object> itemData = (Map<String, Object>) newItemData.get("formData");
-        Map<String, Object> searchData = (Map<String, Object>) newItemData.get("searchData");
+    public String managementNewItem(@RequestPart("formData") String formData ,
+                                    @RequestPart("searchData") String searchData ,
+                                    Model model) {
+        ManagementItemForm itemForm = ManagmentItemDTO.stringDataToFormData(formData);
+        ManagmentItemDTO.SearchData toSearchData = ManagmentItemDTO.stringSearchDataToSearchData(searchData);
+        /*pService.managementNewProductsItem(itemData);*/
 
-        pService.managementNewProductsItem(itemData);
-
-        int page = Integer.parseInt(searchData.get("page").toString());
-        String keyword = searchData.get("keyword").toString();
-        String option = searchData.get("option").toString();
-        Page<Products> paging = pService.managementGetPaging(model, page, keyword, option);
+        Page<Products> paging = pService.managementGetPaging(model, toSearchData);
 
         model.addAttribute("itemPaging", paging);
 
@@ -76,12 +73,15 @@ public class ManagementController {
 
         ManagementItemForm itemForm = ManagmentItemDTO.stringDataToFormData(formData);
         ManagmentItemDTO.SearchData toSearchData = ManagmentItemDTO.stringSearchDataToSearchData(searchData);
+        System.out.println("서치값 테스트? { " + toSearchData.getKeyword() + " }");
+        System.out.println("서치값 테스트? { " + toSearchData.getOption() + " }");
+        System.out.println("서치값 테스트? { " + toSearchData.getPage() + " }");
 
         imgData.ifPresent(file -> itemForm.setImage(pService.saveFile(file)));
         pService.managementModifyProductsItem(itemForm);
         entityManager.clear();
 
-        Page<Products> paging = pService.managementGetPaging(model, toSearchData.getPage(), toSearchData.getKeyword(), toSearchData.getOption());
+        Page<Products> paging = pService.managementGetPaging(model, toSearchData);
         model.addAttribute("itemPaging", paging);
 
         return "management/allitem_management_AjaxResult";

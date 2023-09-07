@@ -42,7 +42,7 @@ public class ManagmentItemDTO {
 
     @Getter
     @Setter
-    static class SearchData {
+    public static class SearchData {
         private int page;
         private String keyword;
         private String option;

@@ -1,6 +1,7 @@
 package com.cloth.clothshop.Products;
 
 import com.cloth.clothshop.Management.Form.ManagementItemForm;
+import com.cloth.clothshop.Management.ManagmentItemDTO;
 import com.cloth.clothshop.Products.ImgSetting.ProductsImgStorage;
 import com.cloth.clothshop.Products.ImgSetting.ProductsImgStorageRepository;
 import com.cloth.clothshop.Products.ProductsSetting.ProductsKind;
@@ -37,7 +38,7 @@ public class ProductsService {
         return pRepository.findByRecommendations();
     }
 
-    /**검색 후 페이징*/
+    /** 검색 후 페이징 */
     public Page<Products> managementGetPaging(Model model, int page, String keyword, String option) {
         //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(page, 10, Sort.by("indate").ascending());
@@ -47,13 +48,22 @@ public class ProductsService {
         return pRepository.findByOptionAndKeyword(option, keyword, pageable);
     }
 
-    /**모든 값 가져오는 페이징*/
+    /** 모든 값 가져오는 페이징 */
     public Page<Products> managementGetPaging(Model model) {
         //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(0, 10, Sort.by("indate").ascending());
         model.addAttribute("keyword", "");
         model.addAttribute("option", "all");
         return pRepository.findByOptionAndKeyword("all", "", pageable);
+    }
+
+    /** ManagmentItemDTO.SearchData 값으로 페이징 */
+    public Page<Products> managementGetPaging(Model model, ManagmentItemDTO.SearchData searchData) {
+        //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
+        Pageable pageable = PageRequest.of(searchData.getPage(), 10, Sort.by("indate").ascending());
+        model.addAttribute("keyword", searchData.getKeyword());
+        model.addAttribute("option", searchData.getOption());
+        return pRepository.findByOptionAndKeyword(searchData.getOption(), searchData.getKeyword(), pageable);
     }
 
     public Optional<Products> productsItemSearch(String code) {
@@ -65,7 +75,7 @@ public class ProductsService {
         pRepository.save(products);
     }
 
-    /**Map 데이터를 전달시 Optional로 검사후 수정함 만약 여러 Service를 사용시 반드시 entityManager.clear(); 할것*/
+    /** Map 데이터를 전달시 Optional로 검사후 수정함 만약 여러 Service를 사용시 반드시 entityManager.clear(); 할것 */
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void managementModifyProductsItem(Map<String, Object> itemData) {
         Optional<Products> productsOptional = pRepository.findById(mapDataConversionNewItemForm(itemData).getCode());
@@ -80,11 +90,16 @@ public class ProductsService {
         }
     }
 
-    /**wOptional로 검사후 수정함 만약 여러 Service를 사용시 반드시 entityManager.clear(); 할것*/
+    /** wOptional로 검사후 수정함 만약 여러 Service를 사용시 반드시 entityManager.clear(); 할것 */
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void managementModifyProductsItem(ManagementItemForm itemForm) {
         Optional<Products> productsOptional = pRepository.findById(itemForm.getCode());
+
         if (productsOptional.isPresent()) {
+            if (itemForm.getImage() == null) {
+                System.out.println(" { " + "값 비어 있음 재할당 시작" + " }");
+                itemForm.setImage(productsOptional.get().getImage());
+            }
             pRepository.modifyItem(
                     itemForm.getCode(), ProductsKind.getKind(itemForm.getKind()), itemForm.getName()
                     , itemForm.getContents(), itemForm.getSizeSt(), itemForm.getSizeEt()
@@ -94,7 +109,7 @@ public class ProductsService {
         }
     }
 
-    /**Optional 검사를 거친후 사용할것*/
+    /** Optional 검사를 거친후 사용할것 */
     public void managementDeleteProductsItem(String code) {
         pRepository.deleteById(code);
     }
