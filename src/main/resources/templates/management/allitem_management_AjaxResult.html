@@ -75,6 +75,7 @@
                     <!--<div th:replace="~{layout/formErrors::formErrorsFragment}"></div>-->
                     <div class="mb-3">
                         <label for="recipient-kindSelect" class="col-form-label">상품분류</label>
+                        <div th:text="${item.getKind()}"></div>
                         <select th:name="kind" class="form-control is-valid recipient-kindSelect"
                                 id="recipient-kindSelect">
                             <option value="A" th:selected="${item.getKind() == 'A'}">A(반팔)</option>

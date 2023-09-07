@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <!--각 항목에 class 안에 필터링의 이름을 넣으면 필터링 가능함. -->
-                <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
+                <div th:each="pItem, i : ${productsList}" id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="100">
                     <div class="item s_sleeve col-sm-6 col-md-4 col-lg-4 mb-4">
                         <a href="#" class="item-wrap fancybox">
                             <div class="work-info">
@@ -48,51 +48,6 @@
                                 <span>반팔 입니다.</span>
                             </div>
                             <img class="img-fluid" src="/cloth_imgs/sleeve_short1.jpg">
-                        </a>
-                    </div>
-                    <div class="item l_sleeve col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
-                            <div class="work-info">
-                                <h3>긴팔</h3>
-                                <span>긴팔 입니다.</span>
-                            </div>
-                            <img class="img-fluid" src="/cloth_imgs/sleeve_long1.jpg">
-                        </a>
-                    </div>
-                    <div class="item s_pants col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
-                            <div class="work-info">
-                                <h3>반바지</h3>
-                                <span>반바지 입니다.</span>
-                            </div>
-                            <img class="img-fluid" src="/cloth_imgs/pants_short1.jpg">
-                        </a>
-                    </div>
-                    <div class="item l_pants col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
-                            <div class="work-info">
-                                <h3>긴바지</h3>
-                                <span>간바지 입니다.</span>
-                            </div>
-                            <img class="img-fluid" src="/cloth_imgs/pants_long1.jpg">
-                        </a>
-                    </div>
-                    <div class="item skirt col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
-                            <div class="work-info">
-                                <h3>치마</h3>
-                                <span>치마 입니다.</span>
-                            </div>
-                            <img class="img-fluid" src="/cloth_imgs/skirt_long1.jpg">
-                        </a>
-                    </div>
-                    <div class="item skirt col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
-                            <div class="work-info">
-                                <h3>치마</h3>
-                                <span>치마 입니다.</span>
-                            </div>
-                            <img class="img-fluid" src="/cloth_imgs/skirt_short1.jpg">
                         </a>
                     </div>
                 </div>
@@ -234,6 +189,6 @@
     
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
-    
+
 </div>
 </html>

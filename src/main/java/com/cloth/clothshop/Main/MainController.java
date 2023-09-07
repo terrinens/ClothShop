@@ -16,6 +16,7 @@ public class MainController {
 	@GetMapping("/")
 	public String mainHome(Model model) {
 		List<Products> productsList = pService.indexGetList();
+		System.out.println("리스트 사이즈? { " + productsList.size() + " }");
 		model.addAttribute("productsList", productsList);
 		return "index";
 	}

@@ -48,6 +48,10 @@ public class Products {
     @Enumerated(EnumType.STRING)
     private ProductsKind kind;
 
+    /**편의성을 위해 String 타입으로 반환함*/
+    public String getKind() {
+        return kind.name();
+    }
     public void setKind(char kind) {
         this.kind = ProductsKind.fromChar(kind);
     }
