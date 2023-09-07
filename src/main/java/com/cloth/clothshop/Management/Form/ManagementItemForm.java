@@ -14,6 +14,7 @@ public class ManagementItemForm {
 
     private String code;
 
+    /**code_origin 값이 존재할시 자동적으로 할당됨 : 코드값을 수정하지 못하도록 조치한 설정*/
     public String getCode() {
         if (!code_origin.isEmpty()) {
             return code = code_origin;
@@ -22,7 +23,7 @@ public class ManagementItemForm {
         }
     }
 
-    /**DTO 통합을 위해 추가함*/
+    /**DTO 통합을 위해 추가함 가시성을 위해 Getter를 사용하지 못하도록 설정*/
     @Getter(AccessLevel.NONE)
     private String code_origin;
 
