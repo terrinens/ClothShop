@@ -104,7 +104,8 @@
                                     <option value="XS">XS</option>
                                 </select>
                                 <label for="newItemProductsRecsStatus" class="col-form-label">추천 상품 등록</label>
-                                <select name="productsRecsStatus" id="newItemProductsRecsStatus" class="form-control-sm">
+                                <select name="prodRecsStatus" id="newItemProductsRecsStatus"
+                                        class="form-control-sm">
                                     <option value="0" selected>NO</option>
                                     <option value="1">Yes</option>
                                 </select>
@@ -126,11 +127,8 @@
                                 </select>
                             </div>
                             
-                            <fieldset disabled="">
-                                <label for="newItemImg" class="col-form-label">상품 이미지 추가(구현중)</label>
-                                <input name="newItemImg" type="file" class="form-control" id="newItemImg">
-                            </fieldset>
-                            <input type="hidden" name="image" value="이미지 준비중!">
+                            <label for="newItemImg" class="col-form-label">상품 이미지 추가(구현중)</label>
+                            <input name="img" type="file" class="form-control" id="newItemImg">
                         </div>
                         <button type="button" class="btn btn-secondary" id="buttonNewItemCancel"
                                 data-bs-dismiss="modal">취소
