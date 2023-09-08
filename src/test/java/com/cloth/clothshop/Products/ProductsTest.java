@@ -51,17 +51,12 @@ class ProductsTest {
     }
 
     private MultipartFile testFile(int i) throws Exception {
-        String [] imagePath = {
-                "C:\\BackEndProj\\ClothShop\\src\\main\\resources\\static\\cloth_imgs\\sleeve_short1.jpg"
-                , "C:\\BackEndProj\\ClothShop\\src\\main\\resources\\static\\cloth_imgs\\sleeve_long1.jpg"
-                , "C:\\BackEndProj\\ClothShop\\src\\main\\resources\\static\\cloth_imgs\\pants_short1.jpg"
-                , "C:\\BackEndProj\\ClothShop\\src\\main\\resources\\static\\cloth_imgs\\pants_long1.jpg"
-                , "C:\\BackEndProj\\ClothShop\\src\\main\\resources\\static\\cloth_imgs\\skirt_short1.jpg"
-                , "C:\\BackEndProj\\ClothShop\\src\\main\\resources\\static\\cloth_imgs\\skirt_long1.jpg"
-        };
+        String userDir = System.getProperty("user.dir");
+        String[] imagePath = getStrings(userDir);
+
         String imgPathStr = imagePath[i];
         System.out.println("받은 i값으로 할당완료 { " + imgPathStr + " }");
-        String originFileName = imgPathStr.substring(imgPathStr.lastIndexOf("\\") + 1);
+        String originFileName = imgPathStr.substring(imgPathStr.lastIndexOf("/") + 1);
         System.out.println("파일 이름 추출 완료 { " + originFileName + " }");
         int lastDotIndex = originFileName.lastIndexOf(".");
         if (lastDotIndex != -1) {
@@ -76,6 +71,20 @@ class ProductsTest {
         System.out.println("완성값? { " + new MockMultipartFile(originFileName, originFileName, fileExtend, bytes).getSize() + " }");
 
         return new MockMultipartFile(originFileName, originFileName, fileExtend, bytes);
+    }
+
+    private static String[] getStrings(String userDir) {
+        String staticRoot = "/src/main/resources/static";
+        String relativePath = "/cloth_imgs/";
+        String resultRoot = userDir + staticRoot + relativePath;
+        return new String[]{
+                resultRoot + "sleeve_short1.jpg"
+                , resultRoot + "sleeve_long1.jpg"
+                , resultRoot + "pants_short1.jpg"
+                , resultRoot + "pants_long1.jpg"
+                , resultRoot + "skirt_short1.jpg"
+                , resultRoot + "skirt_long1.jpg"
+        };
     }
 
     @Test
