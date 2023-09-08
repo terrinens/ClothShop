@@ -1,5 +1,6 @@
 package com.cloth.clothshop.Products;
 
+import com.cloth.clothshop.FileStoragService;
 import com.cloth.clothshop.Management.Form.ManagementItemForm;
 import com.cloth.clothshop.Management.ManagmentItemDTO;
 import com.cloth.clothshop.Products.ImgSetting.ProductsImgStorage;
@@ -19,10 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -144,10 +141,8 @@ public class ProductsService {
 
     /**
      * 하나의 파일을 받아 설정된 경로에 파일을 저장하는 메서드.
-     *
      * @param files - 저장할 파일을 보낸다.
      * @return savedPath - 저장된 파일의 경로를 리턴한다.
-     * @throws IOException 저장에 실패시, 현재 환경에 대한 값을 받은후, 권한 수정을 실행한다. 현재 윈도우, 리눅스만 할당함
      */
     public String saveFile(MultipartFile files) {
         if (files.isEmpty()) {
@@ -173,43 +168,12 @@ public class ProductsService {
                     .absolutePath(absolutePath)
                     .build();
 
+            FileStoragService fileStoragService = new FileStoragService();
             try {
-                String os = System.getProperty("os.name").toLowerCase();
-                String mkdirDirectoryPath = absolutePath.substring(0, absolutePath.lastIndexOf("\\") + 1);
-                if (os.startsWith("win")) {
-                    Path directoryPath = Paths.get(mkdirDirectoryPath);
-                    if (!Files.exists(directoryPath)) {
-                        Files.createDirectories(directoryPath);
-                    }
-                } else if (os.startsWith("linux")) {
-                    Path directoryPath = Paths.get(mkdirDirectoryPath.replace("\\", "/"));
-                    if (!Files.exists(directoryPath)) {
-                        Files.createDirectories(directoryPath);
-                    }
-                }
+                fileStoragService.directoryCheck(absolutePath);
                 files.transferTo(new File(absolutePath));
             } catch (IOException e) {
-                try {
-                    String os = System.getProperty("os.name").toLowerCase();
-                    String command;
-                    if (os.startsWith("win")) {
-                        command = "icacls " + absolutePath + " /grant Everyone:(R,W)";
-                    } else if (os.startsWith("linux")) {
-                        command = "chmod -R 755 " + absolutePath;
-                    } else {
-                        throw new RuntimeException("설정된 환경이 아닙니다.");
-                    }
-
-                    Process process = Runtime.getRuntime().exec(command);
-                    int exitCode = process.waitFor();
-                    if (exitCode != 0) {
-                        throw new IOException("권한 수정 실패 혹은 폴더 존재하지 않음");
-                    }
-                } catch (InterruptedException e2) {
-                    e2.printStackTrace();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                fileStoragService.directoryAuthorityGet(absolutePath);
             }
             ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
             return savedImg.getSavedPath();
