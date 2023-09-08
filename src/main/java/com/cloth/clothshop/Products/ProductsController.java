@@ -17,7 +17,7 @@ public class ProductsController {
     @GetMapping("/cloth/sleeve")
     public String sleeveList(Model model) {
         char[] specificKind = {ProductsKind.A.getKind(), ProductsKind.B.getKind()};
-        Page<Products> productsPage = pService.viewItemGetPaging(specificKind);
+        Page<Products> productsPage = pService.viewItemGetPaging(specificKind, 0);
         model.addAttribute("productsPage", productsPage);
         return "cloths/sleeve";
     }

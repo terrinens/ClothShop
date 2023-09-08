@@ -24,16 +24,15 @@
                     </div>
                 </div>
                 <!--각 항목에 class 안에 필터링의 이름을 넣으면 필터링 가능함. -->
-                <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
-                    <div th:each="products, i : ${paging}"
-                         th:class="'item ' +${products.getKind()}+ ' col-sm-6 col-md-4 col-lg-4 mb-4'">
+                <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="100">
+                    <div th:each="pItem, i : ${productsPage}"
+                         th:classappend="${pItem.getKind()}" class="item col-sm-6 col-md-4 col-lg-4 mb-4">
                         <a href="#" class="item-wrap fancybox">
                             <div class="work-info">
-                                <h3 th:text="${products.getName()}"></h3>
-                                <span th:text="${products.getConent()}"></span>
+                                <h3 th:text="${pItem.getName()}">상품 이름</h3>
+                                <span th:text="${pItem.getContents()}">상품 설명</span>
                             </div>
-                            <img class="img-fluid" src="">
-                            <div th:class="'ard text-white bg-danger mb-3'" th:text="${products.getImage()}"></div>
+                            <img class="img-fluid img-thumbnail" th:src="${pItem.getImage()}">
                         </a>
                     </div>
                 </div>
