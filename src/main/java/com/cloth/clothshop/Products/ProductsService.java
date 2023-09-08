@@ -77,8 +77,11 @@ public class ProductsService {
 
     /**@param specificKind - 출력을 원하는 kind의 값을 배열로 전달할것. 배열 1번 이후 값들은 OR처리 됨
      * @return specificKind로 전달된 값들 페이징 처리*/
-    public Page<Products> viewItemGetPaging(char [] specificKind, int page) {
+    public Page<Products> viewItemGetPaging(Model model ,char [] specificKind, int page) {
         Pageable pageable = PageRequest.of(page, 9, Sort.by("indate").ascending());
+        List<Character> productsKindList = new LinkedList<>();
+        for (char c : specificKind) {productsKindList.add(c);}
+        model.addAttribute("kindList", productsKindList);
         return pRepository.findBySpecificKindOR(pageable, specificKind);
     }
 

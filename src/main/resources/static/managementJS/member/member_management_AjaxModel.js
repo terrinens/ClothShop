@@ -34,7 +34,6 @@ function sendModifyAjax(sendData) {
         , url: "/management/member/modify-Ajax"
         , data: JSON.stringify(sendData)
         , contentType: "application/json"
-        , async: false
         , success: function (html) {
             $memberAjax.html(html);
         }
