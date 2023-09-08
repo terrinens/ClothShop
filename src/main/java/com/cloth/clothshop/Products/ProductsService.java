@@ -191,6 +191,7 @@ public class ProductsService {
         }
     }
 
+    /**@deprecated 기존 itemForm 통합으로 인한 삭제 예정*/
     private ManagementItemForm mapDataConversionNewItemForm(Map<String, Object> data) {
         ManagementItemForm newItemForm = new ManagementItemForm();
         if (data.get("code_origin") != null) {
