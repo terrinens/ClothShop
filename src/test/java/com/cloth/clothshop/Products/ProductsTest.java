@@ -77,4 +77,10 @@ class ProductsTest {
 
         return new MockMultipartFile(originFileName, originFileName, fileExtend, bytes);
     }
+
+    @Test
+    public void osTest() {
+        String os = System.getProperty("os.name").toLowerCase();
+        System.out.println("환경 테스트? { " + os + " }");
+    }
 }

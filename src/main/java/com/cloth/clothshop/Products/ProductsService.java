@@ -160,11 +160,25 @@ public class ProductsService {
                     files.transferTo(new File(absolutePath));
                 } catch (IOException e) {
                     try {
-                        String adminCommand = "chmod -R 755 " + absolutePath;
-                        Process process = Runtime.getRuntime().exec(adminCommand);
+                        String os = System.getProperty("os.name").toLowerCase();
+                        String command = null;
+                        if (os.startsWith("win")) {
+                            command = "icacls " + absolutePath + "/grant Everyone:(R,W)";
+                        } else if (os.startsWith("linux")) {
+                            command = "chmod -R 755 " + absolutePath;
+                        } else {
+                            throw new RuntimeException("설정된 환경이 아닙니다.");
+                        }
+
+                        Process process = Runtime.getRuntime().exec(command);
                         int exitCode = process.waitFor();
-                    } catch (IOException | InterruptedException e2) {
+                        if (exitCode != 0) {
+                            throw new IOException("권한 수정 실패");
+                        }
+                    } catch (InterruptedException e2) {
                         e2.printStackTrace();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
                     }
                 }
 
