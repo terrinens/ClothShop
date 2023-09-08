@@ -20,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -41,7 +44,7 @@ public class ProductsService {
     }
 
     /**
-     * @param model      반복되는 값 자동으로 반환을 위한 값
+     * @param model 반복되는 값 자동으로 반환을 위한 값
      * @return model 속성 : keyword, option을 반환
      */
     public Page<Products> managementGetPaging(Model model, int page, String keyword, String option) {
@@ -75,12 +78,16 @@ public class ProductsService {
         return pRepository.findByOptionAndKeyword(searchData.getOption(), searchData.getKeyword(), pageable);
     }
 
-    /**@param specificKind - 출력을 원하는 kind의 값을 배열로 전달할것. 배열 1번 이후 값들은 OR처리 됨
-     * @return specificKind로 전달된 값들 페이징 처리*/
-    public Page<Products> viewItemGetPaging(Model model ,char [] specificKind, int page) {
+    /**
+     * @param specificKind - 출력을 원하는 kind의 값을 배열로 전달할것. 배열 1번 이후 값들은 OR처리 됨
+     * @return specificKind로 전달된 값들 페이징 처리
+     */
+    public Page<Products> viewItemGetPaging(Model model, char[] specificKind, int page) {
         Pageable pageable = PageRequest.of(page, 9, Sort.by("indate").ascending());
         List<Character> productsKindList = new LinkedList<>();
-        for (char c : specificKind) {productsKindList.add(c);}
+        for (char c : specificKind) {
+            productsKindList.add(c);
+        }
         model.addAttribute("kindList", productsKindList);
         return pRepository.findBySpecificKindOR(pageable, specificKind);
     }
@@ -135,66 +142,82 @@ public class ProductsService {
         pRepository.deleteById(code);
     }
 
-    /**하나의 파일을 받아 설정된 경로에 파일을 저장하는 메서드.
+    /**
+     * 하나의 파일을 받아 설정된 경로에 파일을 저장하는 메서드.
+     *
      * @param files - 저장할 파일을 보낸다.
      * @return savedPath - 저장된 파일의 경로를 리턴한다.
-     * @throws IOException 저장에 실패시, 현재 환경에 대한 값을 받은후, 권한 수정을 실행한다. 현재 윈도우, 리눅스만 할당함*/
+     * @throws IOException 저장에 실패시, 현재 환경에 대한 값을 받은후, 권한 수정을 실행한다. 현재 윈도우, 리눅스만 할당함
+     */
     public String saveFile(MultipartFile files) {
         if (files.isEmpty()) {
             return null;
         } else {
-                String originName = files.getOriginalFilename();
-                String uuid = UUID.randomUUID().toString();
-                String extend;
-                if (Objects.requireNonNull(originName).lastIndexOf(".") != -1) {
-                    extend = Objects.requireNonNull(originName).substring(originName.lastIndexOf("."));
-                } else {
-                    extend = files.getContentType();
-                }
+            String originName = files.getOriginalFilename();
+            String uuid = UUID.randomUUID().toString();
+            String extend;
+            if (Objects.requireNonNull(originName).lastIndexOf(".") != -1) {
+                extend = Objects.requireNonNull(originName).substring(originName.lastIndexOf("."));
+            } else {
+                extend = files.getContentType();
+            }
 
-                String savedName = uuid + extend;
-                String savedPath = imgLootDir + savedName;
-                String absolutePath = imgSaveDir + savedName;
+            String savedName = uuid + extend;
+            String savedPath = imgLootDir + savedName;
+            String absolutePath = imgSaveDir + savedName;
 
-                ProductsImgStorage storage = ProductsImgStorage.builder()
-                        .originUploadName(originName)
-                        .savedName(savedName)
-                        .savedPath(savedPath)
-                        .absolutePath(absolutePath)
-                        .build();
+            ProductsImgStorage storage = ProductsImgStorage.builder()
+                    .originUploadName(originName)
+                    .savedName(savedName)
+                    .savedPath(savedPath)
+                    .absolutePath(absolutePath)
+                    .build();
 
-                try {
-                    files.transferTo(new File(absolutePath));
-                } catch (IOException e) {
-                    try {
-                        String os = System.getProperty("os.name").toLowerCase();
-                        String command;
-                        if (os.startsWith("win")) {
-                            command = "icacls " + absolutePath + "/grant Everyone:(R,W)";
-                        } else if (os.startsWith("linux")) {
-                            command = "chmod -R 755 " + absolutePath;
-                        } else {
-                            throw new RuntimeException("설정된 환경이 아닙니다.");
-                        }
-
-                        Process process = Runtime.getRuntime().exec(command);
-                        int exitCode = process.waitFor();
-                        if (exitCode != 0) {
-                            throw new IOException("권한 수정 실패");
-                        }
-                    } catch (InterruptedException e2) {
-                        e2.printStackTrace();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+            try {
+                String os = System.getProperty("os.name").toLowerCase();
+                String mkdirDirectoryPath = absolutePath.substring(0, absolutePath.lastIndexOf("\\") + 1);
+                if (os.startsWith("win")) {
+                    Path directoryPath = Paths.get(mkdirDirectoryPath);
+                    if (!Files.exists(directoryPath)) {
+                        Files.createDirectories(directoryPath);
+                    }
+                } else if (os.startsWith("linux")) {
+                    Path directoryPath = Paths.get(mkdirDirectoryPath.replace("\\", "/"));
+                    if (!Files.exists(directoryPath)) {
+                        Files.createDirectories(directoryPath);
                     }
                 }
+                files.transferTo(new File(absolutePath));
+            } catch (IOException e) {
+                try {
+                    String os = System.getProperty("os.name").toLowerCase();
+                    String command;
+                    if (os.startsWith("win")) {
+                        command = "icacls " + absolutePath + " /grant Everyone:(R,W)";
+                    } else if (os.startsWith("linux")) {
+                        command = "chmod -R 755 " + absolutePath;
+                    } else {
+                        throw new RuntimeException("설정된 환경이 아닙니다.");
+                    }
 
-                ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
-                return savedImg.getSavedPath();
+                    Process process = Runtime.getRuntime().exec(command);
+                    int exitCode = process.waitFor();
+                    if (exitCode != 0) {
+                        throw new IOException("권한 수정 실패 혹은 폴더 존재하지 않음");
+                    }
+                } catch (InterruptedException e2) {
+                    e2.printStackTrace();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
+            return savedImg.getSavedPath();
         }
     }
 
-    /**@deprecated 기존 itemForm 통합으로 인한 삭제 예정*/
+
+    /** @deprecated 기존 itemForm 통합으로 인한 삭제 예정 */
     private ManagementItemForm mapDataConversionNewItemForm(Map<String, Object> data) {
         ManagementItemForm newItemForm = new ManagementItemForm();
         if (data.get("code_origin") != null) {
