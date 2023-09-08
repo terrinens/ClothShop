@@ -169,12 +169,7 @@ public class ProductsService {
                     .build();
 
             FileStoragService fileStoragService = new FileStoragService();
-            try {
-                fileStoragService.directoryCheck(absolutePath);
-                files.transferTo(new File(absolutePath));
-            } catch (IOException e) {
-                fileStoragService.directoryAuthorityGet(absolutePath);
-            }
+            fileStoragService.directoryCheckAndHandleErrors(absolutePath, files);
             ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
             return savedImg.getSavedPath();
         }

@@ -1,5 +1,8 @@
 package com.cloth.clothshop;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,6 +51,21 @@ public class FileStoragService {
             }
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**오류시 디렉토리 생성, 권한 획득을 순서에 맞게 처리하는 메서드
+     * @param pathString - 저장할 경로를 전달 받아야함
+     * @param files - 오류시 디렉토리 생성후 파일을 추가하기 위한 전달.
+     * @return files로 전달받은 파일 저장*/
+    public void directoryCheckAndHandleErrors(String pathString, MultipartFile files) {
+        try {
+            directoryCheck(pathString);
+            files.transferTo(new File(pathString));
+        } catch (IOException e1) {
+            directoryAuthorityGet(pathString);
+        } catch (RuntimeException e2) {
+            e2.printStackTrace();
         }
     }
 }
