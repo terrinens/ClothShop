@@ -132,6 +132,10 @@ public class ProductsService {
         pRepository.deleteById(code);
     }
 
+    /**하나의 파일을 받아 설정된 경로에 파일을 저장하는 메서드.
+     * @param files - 저장할 파일을 보낸다.
+     * @return savedPath - 저장된 파일의 경로를 리턴한다.
+     * @throws IOException 저장에 실패시, 현재 환경에 대한 값을 받은후, 권한 수정을 실행한다. 현재 윈도우, 리눅스만 할당함*/
     public String saveFile(MultipartFile files) {
         if (files.isEmpty()) {
             return null;
@@ -161,7 +165,7 @@ public class ProductsService {
                 } catch (IOException e) {
                     try {
                         String os = System.getProperty("os.name").toLowerCase();
-                        String command = null;
+                        String command;
                         if (os.startsWith("win")) {
                             command = "icacls " + absolutePath + "/grant Everyone:(R,W)";
                         } else if (os.startsWith("linux")) {
