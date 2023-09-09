@@ -12,7 +12,7 @@ public interface ProductsRepositoryCustom {
     List<Products> findByRecommendations();
     Page<Products> findBySpecificKindOR(Pageable pageable, char [] specificKind);
 
-    Page<Products> findBySpecificKindOR(Pageable pageable, List<Products> productsList);
+    Page<Products> findBySpecificKindOR(Pageable pageable, List<Products> productsList, long total);
 
     List<Products> findBySpecificKindOR(char[] specificKind);
 }

@@ -73,11 +73,10 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
     }
 
     @Override
-    public Page<Products> findBySpecificKindOR(Pageable pageable, List<Products> productsList) {
+    public Page<Products> findBySpecificKindOR(Pageable pageable, List<Products> productsList, long total) {
         productsList = query.offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        long total = query.fetch().size();
 
         return new PageImpl<>(productsList, pageable, total);
     }
