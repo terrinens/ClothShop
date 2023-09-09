@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 class ProductsTest {
@@ -26,8 +27,13 @@ class ProductsTest {
 
         Random random = new Random();
         int c = 1;
-        for (int t = 0; t < 20; t++) {
+        for (int t = 0, fe = 0; t < 20; t++) {
             for (int i = 0; i < kindValue.length; i++) {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Products product = new Products();
 
                 product.setName(productName[i] + c);
@@ -38,13 +44,19 @@ class ProductsTest {
                 String price = String.format("%d000", priceThousand);
                 product.setPrice(price);
 
-                product.setImage(productsService.saveFile(testFile(i)));
+                product.setImage(productsService.saveFile(testFile(fe)));
+
                 product.setSizeSt("XS");
                 product.setSizeEt("XL");
                 product.setQuantity(random.nextInt(100) + 1);
                 product.setUseyn('Y');
                 product.setProductsRecsStatus(0);
                 productsRepository.save(product);
+                if (fe >= 17) {
+                    fe = 0;
+                } else {
+                    fe++;
+                }
             }
             c++;
         }
@@ -66,10 +78,7 @@ class ProductsTest {
         String fileExtend = imagePath[i].substring(imagePath[i].lastIndexOf("."));
         Path path = Paths.get(imagePath[i]);
         byte[] bytes = Files.readAllBytes(path);
-        System.out.println("완성값? { " + new MockMultipartFile(originFileName, originFileName, fileExtend, bytes).getName() + " }");
-        System.out.println("완성값? { " + new MockMultipartFile(originFileName, originFileName, fileExtend, bytes).getContentType() + " }");
-        System.out.println("완성값? { " + new MockMultipartFile(originFileName, originFileName, fileExtend, bytes).getSize() + " }");
-
+        System.out.println(" { 이미지 추가 중" + " }");
         return new MockMultipartFile(originFileName, originFileName, fileExtend, bytes);
     }
 
@@ -84,6 +93,18 @@ class ProductsTest {
                 , resultRoot + "pants_long1.jpg"
                 , resultRoot + "skirt_short1.jpg"
                 , resultRoot + "skirt_long1.jpg"
+                , resultRoot + "sleeve_short2.jpg"
+                , resultRoot + "sleeve_long2.jpg"
+                , resultRoot + "pants_short2.jpg"
+                , resultRoot + "skirt_short2.jpg"
+                , resultRoot + "pants_long2.jpg"
+                , resultRoot + "skirt_long2.jpg"
+                , resultRoot + "sleeve_short3.jpg"
+                , resultRoot + "sleeve_long3.jpg"
+                , resultRoot + "pants_short3.jpg"
+                , resultRoot + "pants_long3.jpg"
+                , resultRoot + "skirt_short3.jpg"
+                , resultRoot + "skirt_long3.jpg"
         };
     }
 
