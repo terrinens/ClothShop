@@ -88,6 +88,7 @@ public class ProductsService {
         }
 
         List<Products> productsList = pRepository.findBySpecificKindOR(specificKind);
+        Page<Products> productsPage = pRepository.findBySpecificKindOR(pageable, productsList);
         long total = (long) Math.ceil((double) productsList.size() / pageable.getPageSize());
         System.out.println("리스트 사이즈? { " + productsList.size() + " }");
         System.out.println("토탈값? { " + total + " }");
@@ -95,7 +96,7 @@ public class ProductsService {
         model.addAttribute("kindList", productsKindList);
         model.addAttribute("total", total);
 
-        return new PageImpl<>(productsList, pageable, productsList.size());
+        return productsPage;
     }
 
     public Optional<Products> productsItemSearch(String code) {

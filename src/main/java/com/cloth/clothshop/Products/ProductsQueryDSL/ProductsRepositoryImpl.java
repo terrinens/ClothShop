@@ -24,6 +24,7 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
 
     private final QueryDSL_RepeatCode queryDSLRepeatCode;
     private final JPAQueryFactory queryFactory;
+    private JPAQuery<Products> query = null;
     private BooleanExpression condition = null;
 
     @Override
@@ -63,16 +64,22 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
     @Override
     public Page<Products> findBySpecificKindOR(Pageable pageable, char[] specificKind) {
         getConditionSpecifickKind(specificKind);
-        JPAQuery<Products> query = queryFactory.selectFrom(products)
-                .where(condition)
-                .orderBy(products.prodRecsStatus.desc(), products.indate.asc());
-
         List<Products> page = query.offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         long total = query.fetch().size();
 
         return new PageImpl<>(page, pageable, total);
+    }
+
+    @Override
+    public Page<Products> findBySpecificKindOR(Pageable pageable, List<Products> productsList) {
+        productsList = query.offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        long total = query.fetch().size();
+
+        return new PageImpl<>(productsList, pageable, total);
     }
 
     @Override
@@ -83,11 +90,17 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
                 .fetch();
     }
 
+    /**@param specificKind - or 처리할 kind값을 전달.
+     * @return {@code 전달받은 값 OR 실행값, sort.indate.asc} */
+    @SuppressWarnings("JavadocDeclaration")
     private void getConditionSpecifickKind(char[] specificKind) {
         condition = products.kind.eq(ProductsKind.fromChar(specificKind[0]));
         for (int i = 1; i < specificKind.length; i++) {
-            condition = condition .or(products.kind.eq(ProductsKind.fromChar(specificKind[i])));
+            condition = condition.or(products.kind.eq(ProductsKind.fromChar(specificKind[i])));
         }
         condition = condition.and(products.useyn.eq('Y'));
+        query = queryFactory.selectFrom(products)
+                .where(condition)
+                .orderBy(products.prodRecsStatus.desc(), products.indate.asc());
     }
 }
