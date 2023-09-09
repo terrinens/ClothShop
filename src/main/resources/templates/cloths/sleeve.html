@@ -7,25 +7,24 @@
     <main id="main">
         <script src="/itemJS/itemCommonScript.js" type="module"></script>
         <form id="hiddenKindValueBox">
-            <input type="text" th:each="kind, i : ${kindList}" th:data-th="${kind}" th:classappend="'kindValue-' + ${i.index}">
+            <input type="hidden" th:each="kind, i : ${kindList}" th:data-th="${kind}" th:classappend="'kindValue-' + ${i.index}">
         </form>
+        <input type="hidden" id="totalPageInput" th:data-totalPage="${productsPage.getTotalPages()}">
         <section class="section site-portfolio">
             <div class="container">
                 <div class="row mb-5 align-items-center">
                     <div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
-                        <h2>추천 상품</h2>
-                        <p class="mb-0">추천하는 상품이에요!</p>
+                        <h2>상의</h2>
+                        <p class="mb-0">현재 판매중인 상품이에요!</p>
                     </div>
                     <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
                         <div id="filters" class="filters">
-                            <!--data-filter에서 필터링 할 목록들을 추가 시킬 수 있음 js에서 자동적으로 처리-->
                             <a href="#" data-filter="*">전체 상의</a>
-                            <a href="#" data-filter=".a">반팔 상의</a>
-                            <a href="#" data-filter=".b">긴팔 상의</a>
+                            <a href="#" data-filter=".A">반팔 상의</a>
+                            <a href="#" data-filter=".B">긴팔 상의</a>
                         </div>
                     </div>
                 </div>
-                <!--각 항목에 class 안에 필터링의 이름을 넣으면 필터링 가능함. -->
                 <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="100">
                     <div th:each="pItem, i : ${productsPage}"
                          th:classappend="${pItem.getKind()}" class="item col-sm-6 col-md-4 col-lg-4 mb-4">
@@ -38,6 +37,7 @@
                         </a>
                     </div>
                 </div>
+                <div id="beforeBox"><!--more버튼 클릭시 상품값들을 추가 하기 위한 블락이니 삭제하지 말것--></div>
             </div>
             <div class="d-grid gap-2" id="moreButtonBox">
                 <button class="btn btn-secondary" id="moreButton" type="button">More</button>

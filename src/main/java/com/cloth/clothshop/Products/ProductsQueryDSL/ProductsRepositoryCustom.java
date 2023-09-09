@@ -11,4 +11,6 @@ public interface ProductsRepositoryCustom {
     Page<Products> findByOptionAndKeyword(String searchOption, String searchKeyword, Pageable pageable);
     List<Products> findByRecommendations();
     Page<Products> findBySpecificKindOR(Pageable pageable, char [] specificKind);
+
+    List<Products> findBySpecificKindOR(char[] specificKind);
 }

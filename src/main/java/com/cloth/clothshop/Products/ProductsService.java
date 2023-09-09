@@ -10,10 +10,7 @@ import com.cloth.clothshop.Products.ProductsSetting.ProductsRecsStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,17 +73,29 @@ public class ProductsService {
     }
 
     /**
-     * @param specificKind - 출력을 원하는 kind의 값을 배열로 전달할것. 배열 1번 이후 값들은 OR처리 됨
-     * @return specificKind로 전달된 값들 페이징 처리
+     * 특정 kind 값들을 사용하여 상품을 페이징 처리하여 반환.
+     * @param model - 재검색을 위해 kind 값, total값을 뷰로 전달하기 위함.
+     * @param specificKind - 출력을 원하는 kind 값의 배열을 전달. 배열의 1번 이후 값들은 OR 연산으로 처리.
+     * @param page - 페이징 처리를 위한 페이지 번호.
+     * @return 특정 kind 값들에 대한 페이징된 상품 목록을 반환과 동시에
+     *         검색을 위한 kind 값, 버튼 제한을 위한 total값을 모델에 추가하여 뷰로 전달.
      */
     public Page<Products> viewItemGetPaging(Model model, char[] specificKind, int page) {
-        Pageable pageable = PageRequest.of(page, 9, Sort.by("indate").ascending());
+        Pageable pageable = PageRequest.of(page, 9);
         List<Character> productsKindList = new LinkedList<>();
         for (char c : specificKind) {
             productsKindList.add(c);
         }
+
+        List<Products> productsList = pRepository.findBySpecificKindOR(specificKind);
+        long total = (long) Math.ceil((double) productsList.size() / pageable.getPageSize());
+
+        Page<Products> productsPage = new PageImpl<>(productsList, pageable, total);
+
         model.addAttribute("kindList", productsKindList);
-        return pRepository.findBySpecificKindOR(pageable, specificKind);
+        model.addAttribute("total", total);
+
+        return productsPage;
     }
 
     public Optional<Products> productsItemSearch(String code) {

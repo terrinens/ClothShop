@@ -62,13 +62,10 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
 
     @Override
     public Page<Products> findBySpecificKindOR(Pageable pageable, char[] specificKind) {
-        condition = products.kind.eq(ProductsKind.fromChar(specificKind[0]));
-        for (int i = 1; i < specificKind.length; i++) {
-            condition .or(products.kind.eq(ProductsKind.fromChar(specificKind[i])));
-        }
-
+        getConditionSpecifickKind(specificKind);
         JPAQuery<Products> query = queryFactory.selectFrom(products)
-                .where(condition);
+                .where(condition)
+                .orderBy(products.prodRecsStatus.desc(), products.indate.asc());
 
         List<Products> page = query.offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -76,5 +73,21 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
         long total = query.fetch().size();
 
         return new PageImpl<>(page, pageable, total);
+    }
+
+    @Override
+    public List<Products> findBySpecificKindOR(char[] specificKind) {
+        getConditionSpecifickKind(specificKind);
+        return queryFactory.selectFrom(products)
+                .where(condition)
+                .fetch();
+    }
+
+    private void getConditionSpecifickKind(char[] specificKind) {
+        condition = products.kind.eq(ProductsKind.fromChar(specificKind[0]));
+        for (int i = 1; i < specificKind.length; i++) {
+            condition .or(products.kind.eq(ProductsKind.fromChar(specificKind[i])));
+        }
+        condition.and(products.prodRecsStatus.eq(ProductsRecsStatus.fromStatus(1)));
     }
 }
