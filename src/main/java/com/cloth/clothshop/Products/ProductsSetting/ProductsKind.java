@@ -2,6 +2,7 @@ package com.cloth.clothshop.Products.ProductsSetting;
 
 import com.cloth.clothshop.DataNotFoundException;
 import lombok.Getter;
+import org.springframework.security.access.method.P;
 
 @Getter
 public enum ProductsKind {
@@ -19,6 +20,15 @@ public enum ProductsKind {
         for (ProductsKind productsKind : ProductsKind.values()) {
             if (Character.toUpperCase(productsKind.getKind()) == Character.toUpperCase(kind)) {
                 return productsKind;
+            }
+        }
+        throw new DataNotFoundException("찾는 kind값 없음");
+    }
+
+    public static char getKindChar (char kind) {
+        for (ProductsKind productsKind : ProductsKind.values()) {
+            if (Character.toUpperCase(productsKind.getKind()) == Character.toUpperCase(kind)) {
+                return productsKind.getKind();
             }
         }
         throw new DataNotFoundException("찾는 kind값 없음");
