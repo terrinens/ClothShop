@@ -86,8 +86,8 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
     private void getConditionSpecifickKind(char[] specificKind) {
         condition = products.kind.eq(ProductsKind.fromChar(specificKind[0]));
         for (int i = 1; i < specificKind.length; i++) {
-            condition .or(products.kind.eq(ProductsKind.fromChar(specificKind[i])));
+            condition = condition .or(products.kind.eq(ProductsKind.fromChar(specificKind[i])));
         }
-        condition.and(products.prodRecsStatus.eq(ProductsRecsStatus.fromStatus(1)));
+        condition = condition.and(products.useyn.eq('Y'));
     }
 }
