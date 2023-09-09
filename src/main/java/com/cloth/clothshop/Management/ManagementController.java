@@ -143,17 +143,25 @@ public class ManagementController {
     public String managementMemberModify(@RequestBody Map<String, Object> modifyData, Principal principal, Model model) {
         /*BindingResult bindingResult,*/
 
+        System.out.println(" { 진입성공" + " }");
         Map<String, Object> formData = (Map<String, Object>) modifyData.get("formData");
-        Map<String, Object> serachData = (Map<String, Object>) modifyData.get("serachData");
+        System.out.println(" { 맵 데이터 분리중...." + " }");
+        Map<String, Object> serachData = (Map<String, Object>) modifyData.get("searchData");
+        System.out.println(" { 맵 데이터 분리중...." + " }");
 
+        System.out.println(" { 맵 데이터 분리 성공 및 옵셔널 할당중..." + " }");
         String memberId = formData.get("id").toString();
         Optional<Member> optionalMember = mService.memberSearch(memberId);
 
         if (optionalMember.isPresent()) {
+            System.out.println(" { 옵셔널 진입성공" + " }");
             String originPwd = optionalMember.get().getPwd();
+            System.out.println(" { 비밀번호 할당 성공..." + " }");
             mService.managementMemberModify(formData, originPwd);
+            System.out.println(" { 서비스 진입 성공...." + " }");
             entityManager.clear();
 
+            System.out.println(" { 페이징처리 성공!!" + " }");
             modelAajxCommonPaging(serachData, model);
         }
         return "/management/member_management_AjaxResult";
@@ -163,7 +171,7 @@ public class ManagementController {
     @DeleteMapping("/member/delete-Ajax")
     public String managementMemberDelete(@RequestBody Map<String, Object> delData, Model model) {
         String targetId = delData.get("targetId").toString();
-        Map<String, Object> serachData = (Map<String, Object>) delData.get("serachData");
+        Map<String, Object> serachData = (Map<String, Object>) delData.get("searchData");
 
         Optional<Member> optionalMember = mService.memberSearch(targetId);
         if (optionalMember.isPresent()) {
