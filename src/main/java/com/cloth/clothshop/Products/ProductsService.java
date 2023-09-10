@@ -42,7 +42,6 @@ public class ProductsService {
      * @return model 속성 : keyword, option을 반환
      */
     public Page<Products> managementGetPaging(Model model, int page, String keyword, String option) {
-        //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(page, 10, Sort.by("indate").ascending());
         model.addAttribute("page", 0);
         model.addAttribute("keyword", keyword);
@@ -52,7 +51,6 @@ public class ProductsService {
 
     /** @return 모든 상품 데이터 */
     public Page<Products> managementGetPaging(Model model) {
-        //해결할 문제 kind 별로 정렬을 잡을것. 현재 kind로 정렬을 잡으면 인식하지 못함.
         Pageable pageable = PageRequest.of(0, 10, Sort.by("indate").ascending());
         model.addAttribute("keyword", "");
         model.addAttribute("option", "all");

@@ -52,6 +52,7 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
         return queryDSLRepeatCode.keywordIsEmpty(products, condition, searchKeyword, pageable);
     }
 
+    /**index 페이지 처리를 위한 메서드*/
     @Override
     public List<Products> findByRecommendations() {
         condition = products.prodRecsStatus.eq(ProductsRecsStatus.fromStatus(1))
@@ -61,6 +62,7 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
                 .fetch();
     }
 
+    /**item view의 공통적인 부분은 getConditionSpecifickKind에서 처리하니 참고할것.*/
     @Override
     public Page<Products> findBySpecificKindOR(Pageable pageable, char[] specificKind) {
         getConditionSpecifickKind(specificKind);
@@ -72,6 +74,7 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
         return new PageImpl<>(page, pageable, total);
     }
 
+    /**리스트를 페이징 처리하는 메서드*/
     @Override
     public Page<Products> findBySpecificKindOR(Pageable pageable, List<Products> productsList, long total) {
         productsList = query.offset(pageable.getOffset())
@@ -81,6 +84,7 @@ public class ProductsRepositoryImpl implements ProductsRepositoryCustom {
         return new PageImpl<>(productsList, pageable, total);
     }
 
+    /**의도적으로 kind값으로 리스트를 반환하기 위한 메서드*/
     @Override
     public List<Products> findBySpecificKindOR(char[] specificKind) {
         getConditionSpecifickKind(specificKind);
