@@ -9,7 +9,7 @@
         <form id="hiddenKindValueBox">
             <input type="hidden" th:each="kind, i : ${kindList}" th:data-th="${kind}" th:classappend="'kindValue-' + ${i.index}">
         </form>
-        <input type="hidden" id="totalPageInput" th:data-totalPage="${productsPage.getTotalPages()}">
+        <input type="hidden" id="totalInput" th:data-total="${total}">
         <section class="section site-portfolio">
             <div class="container">
                 <div class="row mb-5 align-items-center">
@@ -17,7 +17,7 @@
                         <h2>상의</h2>
                         <p class="mb-0">현재 판매중인 상품이에요!</p>
                     </div>
-                    <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
+                    <div id="filtersBox" class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
                         <div id="filters" class="filters">
                             <a href="#" data-filter="*">전체 상의</a>
                             <a href="#" data-filter=".A">반팔 상의</a>
@@ -28,7 +28,7 @@
                 <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="100">
                     <div th:each="pItem, i : ${productsPage}"
                          th:classappend="${pItem.getKind()}" class="item col-sm-6 col-md-4 col-lg-4 mb-4">
-                        <a href="#" class="item-wrap fancybox">
+                        <a href="#" class="item-wrap">
                             <div class="work-info">
                                 <h3 th:text="${pItem.getName()}">상품 이름</h3>
                                 <span th:text="${pItem.getContents()}">상품 설명</span>

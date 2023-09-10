@@ -25,12 +25,18 @@ public class ProductsController {
     }
 
     @GetMapping("/cloth/pants")
-    public String pantsList() {
+    public String pantsList(Model model) {
+        char[] specificKind = {ProductsKind.C.getKind(), ProductsKind.D.getKind()};
+        Page<Products> productsPage = pService.viewItemGetPaging(model ,specificKind, 0);
+        model.addAttribute("productsPage", productsPage);
         return "cloths/pants";
     }
 
     @GetMapping("/cloth/skirt")
-    public String skirt() {
+    public String skirt(Model model) {
+        char[] specificKind = {ProductsKind.E.getKind(), ProductsKind.F.getKind()};
+        Page<Products> productsPage = pService.viewItemGetPaging(model ,specificKind, 0);
+        model.addAttribute("productsPage", productsPage);
         return "cloths/skirt";
     }
 
