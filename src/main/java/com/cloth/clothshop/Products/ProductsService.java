@@ -89,7 +89,7 @@ public class ProductsService {
         long total = (long) Math.ceil((double) productsList.size() / pageable.getPageSize());
 
         Page<Products> productsPage = pRepository.findBySpecificKindOR(pageable, productsList, total);
-
+        
         model.addAttribute("kindList", productsKindList);
         model.addAttribute("total", total);
 

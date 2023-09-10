@@ -3,7 +3,7 @@ let pageCount = 0;
 const $moreButton = $('#moreButton');
 const $hiddenKindValueBox = $('#hiddenKindValueBox')
 const $beforeBox = $('#beforeBox');
-const $totalPageInput = $('#totalPageInput');
+const totalInputData = $('#totalInput').data('total');
 
 $moreButton.on('click', function () {
     const kindvalues = $hiddenKindValueBox.children('input');
@@ -15,11 +15,15 @@ $moreButton.on('click', function () {
         sendData['kind' + i] = $(targetKindValue).data('th');
     }
 
-    pageCount++;
+    /**상품 페이지 한계까지 도달시 버튼을 비활성화 하기 위한 코드*/
+    if (pageCount === totalInputData-1) {
+        $moreButton.addClass('disabled');
+        $moreButton.text('No More');
+    } else if (pageCount < totalInputData) {
+        pageCount++
+    }
     sendData ['pageCount'] = pageCount;
     moreItemCallAjax(sendData);
-    if (pageCount) {
-    }
 });
 
 function moreItemCallAjax(sendData) {
