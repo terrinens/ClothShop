@@ -23,7 +23,7 @@ class ProductsTest {
     @Test
     void tempProducts2() throws Exception {
         char[] kindValue = {'a', 'b', 'c', 'd', 'e', 'f'};
-        String[] productName = {"반팔", "긴팔", "반바지", "긴바지", "짧은치마", "긴치마"};
+        String[] productName = {"반팔", "긴팔", "반바지", "긴바지", "단치마", "장치마"};
 
         Random random = new Random();
         int c = 1;
