@@ -2,7 +2,6 @@ package com.cloth.clothshop.Products.ProductsSetting;
 
 import com.cloth.clothshop.DataNotFoundException;
 import lombok.Getter;
-import org.springframework.security.access.method.P;
 
 @Getter
 public enum ProductsKind {

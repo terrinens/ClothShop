@@ -2,21 +2,21 @@
       layout:decorate="~{/layout/layout}">
 
 <div layout:fragment="content">
-    <form th:action="@{/member/signin}" method="post">
-        <!--<div th:if="${param.error}">
+    <form th:action="@{/member/signin}" th:form="${signin_form}" method="post">
+        <div th:if="${param.error}">
             <div class="alert alert-dismissible alert-danger">
                 ID 또는 비밀번호를 확인해 주세요.
             </div>
-        </div>-->
+        </div>
         <fieldset>
             <legend>로그인</legend>
             <div class="form-group">
                 <label for="id" class="form-label mt-4">ID를 입력해주세요</label>
-                <input name="id" id="id" type="text" class="form-control">
+                <input id="id" type="text" class="form-control">
             </div>
             <div class="form-group">
                 <label for="pwd" class="form-label mt-4">비밀번호를 입력해주세요</label>
-                <input name="pwd" id="pwd" type="password" class="form-control" autocomplete="off">
+                <input id="pwd" type="password" class="form-control" autocomplete="off">
             </div>
             <br>
             <button type="submit" class="btn btn-primary">로그인</button>

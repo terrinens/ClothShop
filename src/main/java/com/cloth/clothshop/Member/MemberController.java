@@ -1,13 +1,13 @@
 package com.cloth.clothshop.Member;
 
+import com.cloth.clothshop.Member.FormAndDTO.MemberForm;
+import com.cloth.clothshop.Member.FormAndDTO.MemberSigninForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -21,7 +21,6 @@ public class MemberController {
 
 	@GetMapping("/signup")
 	public String memberSingup(MemberForm memberForm){
-		
 		return "/member/signup_form";
 	}
 	
@@ -29,7 +28,6 @@ public class MemberController {
 	public String memberSingup(@Valid MemberForm memberForm, BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
-
 			return "/member/signup_form";
 		}
 
@@ -42,7 +40,6 @@ public class MemberController {
 
 		Optional<Member> memberCheck = memberRepository.findById(memberForm.getId());
 		if (memberCheck.isPresent()) {
-
 			return "/member/signup_form";
 		}
 
@@ -55,7 +52,6 @@ public class MemberController {
 					memberForm.getTel()
 			);
 		} catch (Exception e) {
-
 			e.printStackTrace();
 			bindingResult.rejectValue("id", "","이미 등록된 사용자 입니다.");
 		}
@@ -64,16 +60,12 @@ public class MemberController {
 	}
 
 	@GetMapping("/signin")
-	public String memberSignin() {
-
+	public String memberSignin(MemberSigninForm signinForm, Model model) {
+		model.addAttribute("signin_form", signinForm);
 		return "member/signin_form";
 	}
 
 	@PostMapping("/signin")
-	public void memberSignin(@RequestParam("id") String id, @RequestParam("pwd") String pwd) {
-
-		System.out.println(id);
-		System.out.println(pwd);
+	public void memberSignin(@Valid @RequestBody MemberSigninForm signinForm, BindingResult bindingResult, Model model) {
 	}
-	
 }
