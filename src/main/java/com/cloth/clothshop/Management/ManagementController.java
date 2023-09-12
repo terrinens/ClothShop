@@ -134,7 +134,7 @@ public class ManagementController {
         model.addAttribute("memberPaging", paging);
         model.addAttribute("page", page);
 
-        return "/management/member_management_AjaxResult";
+        return "management/member_management_AjaxResult";
     }
 
     @SuppressWarnings("unchecked")
@@ -156,7 +156,7 @@ public class ManagementController {
 
             modelAajxCommonPaging(serachData, model);
         }
-        return "/management/member_management_AjaxResult";
+        return "management/member_management_AjaxResult";
     }
 
     @SuppressWarnings("unchecked")
@@ -170,7 +170,7 @@ public class ManagementController {
             mService.memberDelete(targetId);
             modelAajxCommonPaging(serachData, model);
         }
-        return "/management/member_management_AjaxResult";
+        return "management/member_management_AjaxResult";
     }
 
     @GetMapping("/order")
