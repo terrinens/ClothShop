@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layout/layout}">
+      layout:decorate="~{layout/layout}">
 
 <head>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
 </head>
 
 <div layout:fragment="content">
-    <nav th:replace="/layout/selectnav"></nav>
+    <nav th:replace="layout/selectnav"></nav>
     
     <main id="main">
         <section class="section site-portfolio">

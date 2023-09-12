@@ -34,8 +34,15 @@ out/
 /.nb-gradle/
 
 ### Qmodal ###
+/src/main/generated/**
 .vscode/
 /src/main/generated/com/cloth/clothshop/Member/QMember.java
 /src/main/generated/com/cloth/clothshop/Orders/QOrders.java
 /src/main/generated/com/cloth/clothshop/Products/QProducts.java
 /src/main/generated/com/cloth/clothshop/tb_Zipcode/Qtb_Zipcode.java
+/src/main/generated/
+/src/main/java/generated/com/cloth/clothshop/Member/QMember.java
+/src/main/java/generated/com/cloth/clothshop/Orders/QOrders.java
+/src/main/java/generated/com/cloth/clothshop/Products/QProducts.java
+/src/main/java/generated/com/cloth/clothshop/Products/ImgSetting/QProductsImgStorage.java
+/src/main/java/generated/com/cloth/clothshop/tb_Zipcode/Qtb_Zipcode.java

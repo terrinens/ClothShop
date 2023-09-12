@@ -79,23 +79,35 @@ dependencies {
 // Querydsl 설정부
 def generated = 'src/main/generated'
 
+
 querydsl {
+    library = "com.querydsl:querydsl-apt:5.0.0:jakarta"
     jpa = true
     querydslSourcesDir = generated
-}
-sourceSets {
-    main.java.srcDir generated
 }
 
 compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
+    source = file(generated)
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+
+/**
+ * comileQuerydsl.doFirst 추가
+ */
+compileQuerydsl.doFirst {
+    if(file(generated).exists()) {
+        delete((file(generated)))
     }
-    querydsl.extendsFrom compileClasspath
+}
+
+clean {
+    delete file(generated)
+    delete file("src/main/java/generated")
+}
+
+jar {
+    enabled = false
 }
 
 tasks.named('test') {
