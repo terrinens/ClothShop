@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -29,6 +30,7 @@ public class ProductsService {
     private String imgSaveDir;
     @Value("${pimgloot.dir}")
     private String imgLootDir;
+    private final String os = System.getProperty("os.name").toLowerCase();
     private final ProductsRepository pRepository;
     private final ProductsImgStorageRepository pImgStorageRepository;
     private final Products products = new Products();
@@ -152,6 +154,8 @@ public class ProductsService {
      * @return savedPath - 저장된 파일의 경로를 리턴한다.
      */
     public String saveFile(MultipartFile files) {
+        FileStoragService fileStoragService = new FileStoragService();
+
         if (files.isEmpty()) {
             return null;
         } else {
@@ -164,20 +168,33 @@ public class ProductsService {
                 extend = files.getContentType();
             }
 
+
             String savedName = uuid + extend;
             String savedPath = imgLootDir + savedName;
-            String absolutePath = imgSaveDir + savedName;
+            ProductsImgStorage storage = new ProductsImgStorage();
+            String absolutePathsTest = null;
+            if (os.startsWith("win")) {
+                storage = ProductsImgStorage.builder()
+                        .originUploadName(originName)
+                        .savedName(savedName)
+                        .savedPath(savedPath)
+                        .absolutePath(imgSaveDir + savedName)
+                        .build();
+            } else {
+                System.out.println(" { 프로덕 서비스에서 이미지 저장 메서드에서 리눅스 감지함" + " }");
+                storage = ProductsImgStorage.builder()
+                        .originUploadName(originName)
+                        .savedName(savedName)
+                        .savedPath(savedPath)
+                        .absolutePath(fileStoragService.linuxRootString(imgSaveDir) +"/"+ savedName)
+                        .build();
+            }
 
-            ProductsImgStorage storage = ProductsImgStorage.builder()
-                    .originUploadName(originName)
-                    .savedName(savedName)
-                    .savedPath(savedPath)
-                    .absolutePath(absolutePath)
-                    .build();
-
-            FileStoragService fileStoragService = new FileStoragService();
-            fileStoragService.directoryCheckAndHandleErrors(absolutePath, files);
+            System.out.println("프로덕 서비스에서 이미지 저장 메서드에서 출력됨 { " + storage.getAbsolutePath() + " }");
+            System.out.println(" { 프로덕 서비스에서 에러 체크 진입 시작...." + " }");
+            fileStoragService.directoryCheckAndHandleErrors(storage.getAbsolutePath(), files);
             ProductsImgStorage savedImg = pImgStorageRepository.save(storage);
+            System.out.println(" { 프로덕 서비스 에러 체크 통과!!!!" + " }");
             return savedImg.getSavedPath();
         }
     }
