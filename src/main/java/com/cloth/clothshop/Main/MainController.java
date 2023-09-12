@@ -20,22 +20,4 @@ public class MainController {
 		System.out.println(" { 메인 컨트롤러 호출 완료" + " }");
 		return "index";
 	}
-
-	@GetMapping("/test")
-	public String testIndex() {
-		/*성공*/
-		return "indexTest";
-	}
-
-	@GetMapping("/testT")
-	public String testT() {
-		/*성공*/
-		return "indexTestThymeleaf";
-	}
-
-	@GetMapping("/testL")
-	public String testL() {
-		/*성공*/
-		return "indexTestLayout";
-	}
 }

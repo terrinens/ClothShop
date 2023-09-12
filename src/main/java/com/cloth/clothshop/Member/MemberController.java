@@ -71,9 +71,12 @@ public class MemberController {
 
 	@PostMapping("/signin")
 	public void memberSignin(@RequestParam("id") String id, @RequestParam("pwd") String pwd) {
-
 		System.out.println(id);
 		System.out.println(pwd);
 	}
-	
+
+	@GetMapping("dammy")
+	public void memberDammy() {
+		memberService.dummyMember();
+	}
 }

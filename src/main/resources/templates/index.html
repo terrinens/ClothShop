@@ -13,7 +13,17 @@
 
 <div layout:fragment="content">
     <nav th:replace="layout/selectnav"></nav>
-    
+    <button id="dummyButton" type="button">멤버 더미값 넣기</button>
+    <!--시현을 위한 더미값 넣기. 시현 완료시 삭제할것-->
+    <script>
+        const dummyButton = document.getElementById('dummyButton');
+        dummyButton.addEventListener('click', function () {
+            $.ajax({
+                type: 'get'
+                , url: '/member/dammy'
+            });
+        })
+    </script>
     <main id="main">
         <section class="section site-portfolio">
             <div class="container">

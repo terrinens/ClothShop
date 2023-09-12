@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class MemberService {
         managementRepeatCode.encoderPwdModify(member, mmForm);
     }
 
-    /**반드시 Optional로 체크한 Password값을 넘길것*/
+    /** 반드시 Optional로 체크한 Password값을 넘길것 */
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void managementMemberModify(Map<String, Object> formData, String originPwd) {
         managementRepeatCode.encoderPwdModify(formData, originPwd);
@@ -68,10 +69,44 @@ public class MemberService {
         return mRepository.findMemberById(id);
     }
 
-    public  void memberDelete(String id) {
-        if (memberSearch(id).isPresent()){
+    public void memberDelete(String id) {
+        if (memberSearch(id).isPresent()) {
             mRepository.delete(memberSearch(id).get());
         }
+    }
+
+    public void dummyMember() {
+        Member m1 = new Member();
+
+        m1.setId("admin");
+        m1.setPwd("1234");
+        m1.setName("어드민");
+        m1.setRole("Admin");
+        m1.setAddress("admin@admin.com");
+        m1.setTel("010-1111-1111");
+
+        adminSignup(m1.getId(), m1.getPwd(), m1.getName(), m1.getAddress(), m1.getTel(), m1.getRole());
+
+        for (int i = 1; i < 100; i++) {
+
+            Member m2 = new Member();
+
+            int rendomNum1 = generateRandomNumbers();
+            int rendomNum2 = generateRandomNumbers();
+
+            m2.setId("user" + i);
+            m2.setPwd("1234");
+            m2.setName("유저" + i);
+            m2.setAddress("user" + i + "@user.com");
+            m2.setTel("010-" + rendomNum1 + "-" + rendomNum2);
+
+            memberSignup(m2.getId(), m2.getPwd(), m2.getName(), m2.getAddress(), m2.getTel());
+        }
+    }
+
+    private static int generateRandomNumbers() {
+        Random random = new Random();
+        return 1000 + random.nextInt(9000);
     }
 }
 
