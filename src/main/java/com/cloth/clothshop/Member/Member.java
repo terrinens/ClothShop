@@ -13,7 +13,6 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Date;
 
-/**TODO 메서드체인 제작할것*/
 @DynamicInsert @DynamicUpdate @Entity @Setter @Getter
 public class Member {
 	

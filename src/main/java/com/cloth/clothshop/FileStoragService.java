@@ -10,6 +10,11 @@ import java.nio.file.Paths;
 
 public class FileStoragService {
     private final String os = System.getProperty("os.name").toLowerCase();
+
+    /**
+     * 디렉토리 체크를 진행후 존재하지 않을시 생성을 시도하는 메서드
+     * @param pathString - 저장해야할 디렉토리 경로값을 전달 받야야함
+     */
     public void directoryCheck(String pathString) throws IOException {
         String mkDirectoryPath = pathString.substring(0, pathString.lastIndexOf("\\"));
         Path directoryPath = Paths.get(mkDirectoryPath);
@@ -23,6 +28,10 @@ public class FileStoragService {
         }
     }
 
+    /**
+     * 디렉토리 권한이 없어 실패시 각 os 환경마다 권한 획득을 시도하는 메서드
+     * @param pathString - 권한을 획득해야하는 디렉토리 경로값을 전달 받야아함
+     */
     public void directoryAuthorityGet(String pathString) {
         String command;
 
@@ -45,6 +54,10 @@ public class FileStoragService {
         }
     }
 
+    /**오류시 디렉토리 생성, 권한 획득을 순서에 맞게 처리하는 메서드
+     * @param pathString - 저장할 경로를 전달 받아야함
+     * @param files - 오류시 디렉토리 생성후 파일을 추가하기 위한 전달.
+     * @return files로 전달받은 파일 저장*/
     public void directoryCheckAndHandleErrors(String pathString, MultipartFile files) {
         try {
             directoryCheck(pathString);

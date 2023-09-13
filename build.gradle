@@ -98,21 +98,6 @@ configurations {
     querydsl.extendsFrom compileClasspath
 }
 
-/**
- * comileQuerydsl.doFirst 추가
- */
-/*compileQuerydsl.doFirst {
-    if(file(generated).exists()) {
-        delete((file(generated)))
-    }
-}*/
-
-clean {
-    delete file(generated)
-}
-
-/*
 tasks.named('test') {
     useJUnitPlatform()
 }
-*/

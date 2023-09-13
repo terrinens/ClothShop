@@ -10,14 +10,15 @@ import java.util.Random;
 class MemberTest {
 
     @Autowired
-    private MemberRepository memberRepository;
+    MemberRepository memberRepository;
     @Autowired
-    private MemberService memberService;
+    MemberService memberService;
 	
     @Test
     void temporarilyMember2() {
 
         Member m1 = new Member();
+
         m1.setId("admin");
         m1.setPwd("1234");
         m1.setName("어드민");
@@ -38,7 +39,6 @@ class MemberTest {
             m2.setPwd("1234");
             m2.setName("유저" + i);
             m2.setAddress("user" + i + "@user.com");
-            m2.setRole("User");
             m2.setTel("010-" + rendomNum1 + "-" + rendomNum2);
 
             memberService.memberSignup(m2.getId(), m2.getPwd(), m2.getName(), m2.getAddress(), m2.getTel());
